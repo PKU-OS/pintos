@@ -1,0 +1,32 @@
+diff -Naur bochs-2.6.2/main.cc bochs-2.6.2.new/main.cc
+--- bochs-2.6.2/main.cc	2014-01-06 23:29:42.000000001 -0800
++++ bochs-2.6.2.new/main.cc	2014-01-06 22:33:42.000000001 -0800
+@@ -105,23 +105,23 @@
+ 
+ void bx_print_header()
+ {
+-  printf("%s\n", divider);
++  fprintf(stderr, "%s\n", divider);
+   char buffer[128];
+   sprintf (buffer, "Bochs x86 Emulator %s\n", VER_STRING);
+-  bx_center_print(stdout, buffer, 72);
++  bx_center_print(stderr, buffer, 72);
+   if (REL_STRING[0]) {
+     sprintf(buffer, "%s\n", REL_STRING);
+-    bx_center_print(stdout, buffer, 72);
++    bx_center_print(stderr, buffer, 72);
+ #ifdef __DATE__
+ #ifdef __TIME__
+     sprintf(buffer, "Compiled on %s at %s\n", __DATE__, __TIME__);
+ #else
+     sprintf(buffer, "Compiled on %s\n", __DATE__);
+ #endif
+-    bx_center_print(stdout, buffer, 72);
++    bx_center_print(stderr, buffer, 72);
+ #endif
+   }
+-  printf("%s\n", divider);
++  fprintf(stderr, "%s\n", divider);
+ }
+ 
+ #if BX_WITH_CARBON

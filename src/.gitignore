@@ -1,0 +1,7 @@
+cscope.files
+cscope.*out
+TAGS
+tags
+*.a
+*.o
+.*.swp

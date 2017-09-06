@@ -1,0 +1,12 @@
+diff -Naur bochs-2.6.2/iodev/hdimage/hdimage.cc bochs-2.6.2.new/iodev/hdimage/hdimage.cc
+--- bochs-2.6.2/iodev/hdimage/hdimage.cc	2013-03-08 10:25:32.000000001 -0800
++++ bochs-2.6.2.new/iodev/hdimage/hdimage.cc	2014-01-10 06:54:24.000000001 -0800
+@@ -200,7 +200,7 @@
+       return -1;
+     }
+ #ifdef linux
+-    if (stat_buf.st_rdev) { // Is this a special device file (e.g. /dev/sde) ?
++    if (S_ISBLK(stat_buf.st_mode)) { // Is this a special device file (e.g. /dev/sde) ?
+       ioctl(fd, BLKGETSIZE64, fsize); // yes it's!
+     }
+     else
