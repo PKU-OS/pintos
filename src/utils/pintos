@@ -14,6 +14,8 @@ BEGIN { my $self = $0; $self =~ s%/+[^/]*$%%; require "$self/Pintos.pm"; }
 our ($start_time) = time ();
 our ($sim);			# Simulator: bochs, qemu, or player.
 our ($debug) = "none";		# Debugger: none, monitor, or gdb.
+our ($gdbport) = 1234;    # GDB connection port. Default 1234.
+our ($uidport) = $< % 5000 + 25000; # GDB port based on user id
 our ($mem) = 4;			# Physical RAM in MB.
 our ($serial) = 1;		# Use serial port for input and output?
 our ($vga);			# VGA output: window, terminal, or none.
@@ -65,6 +67,8 @@ sub parse_command_line {
     "no-debug" => sub { set_debug ("none") },
     "monitor" => sub { set_debug ("monitor") },
     "gdb" => sub { set_debug ("gdb") },
+    "uport" => sub { $gdbport = $uidport; },
+    "gdb-port=i" => \$gdbport,
 
     "m|memory=i" => \$mem,
     "j|jitter=i" => sub { set_jitter ($_[1]) },
@@ -137,6 +141,8 @@ Debugger selection:
   --no-debug               (default) No debugger
   --monitor                Debug with simulator's monitor
   --gdb                    Debug with gdb
+  --uport                  Use a port based on user id for gdb connection
+  --gdb-port=NUM           Port to use for gdb connection (default: 1234)
 Display options: (default is both VGA and serial)
   -v, --no-vga             No VGA display or keyboard
   -s, --no-serial          No serial input or output
@@ -633,7 +639,7 @@ sub run_qemu {
   push (@cmd, '-nographic') if $vga eq 'none';
   push (@cmd, '-serial', 'stdio') if $serial && $vga ne 'none';
   push (@cmd, '-S') if $debug eq 'monitor';
-  push (@cmd, '-s', '-S') if $debug eq 'gdb';
+  push (@cmd, '-gdb', 'tcp::' . $gdbport, '-S') if $debug eq 'gdb';
   push (@cmd, '-monitor', 'null') if $vga eq 'none' && $debug eq 'none';
   run_command (@cmd);
 }
