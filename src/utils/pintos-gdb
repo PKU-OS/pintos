@@ -5,16 +5,24 @@ GDBMACROS=$(dirname $0)/../misc/gdb-macros
 
 # Choose correct GDB.
 if command -v i386-elf-gdb >/dev/null 2>&1; then
-	GDB=i386-elf-gdb
+  GDB=i386-elf-gdb
 else
-	GDB=gdb
+  GDB=gdb
 fi
 
 # Run GDB.
 if test -f "$GDBMACROS"; then
-	exec $GDB -x "$GDBMACROS" "$@"
+  if command -v cgdb >/dev/null 2>&1; then
+    exec cgdb -d $GDB -x "$GDBMACROS" "$@"
+  else
+    exec $GDB -x "$GDBMACROS" "$@"
+  fi
 else
-	echo "*** $GDBMACROS does not exist ***"
-	echo "*** Pintos GDB macros will not be available ***"
-	exec $GDB "$@"
+  echo "*** $GDBMACROS does not exist ***"
+  echo "*** Pintos GDB macros will not be available ***"
+  if command -v cgdb >/dev/null 2>&1; then
+    exec cgdb -d $GDB "$@"
+  else
+    exec $GDB "$@"
+  fi
 fi
