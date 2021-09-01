@@ -80,6 +80,7 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PREFIX=
 ARGS=""
 while (( "$#" )); do
@@ -151,6 +152,10 @@ if [ $tool == "all" -o $tool == "gcc" ]; then
   if [ ! -d $CWD/src/gcc-6.2.0/mpfr ]; then
     cd $CWD/src/gcc-6.2.0 && contrib/download_prerequisites || perror "Failed to download pre-requisite for GCC"
   fi
+  echo "Patching GCC..."
+  pushd $CWD/src/gcc-6.2.0
+  cat $SCRIPT_DIR/gcc-6.2.0-ubsan.patch | patch -p2
+  popd
 fi
 if [ $tool == "all" -o $tool == "gdb" ]; then
   download_and_check https://ftp.gnu.org/gnu/gdb/gdb-7.9.1.tar.xz cd9c543a411a05b2b647dd38936034b68c2b5d6f10e0d51dc168c166c973ba40
