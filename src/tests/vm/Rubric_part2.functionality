@@ -1,0 +1,25 @@
+Functionality of virtual memory subsystem:
+- Test paging behavior.
+4	page-merge-mm
+4	page-merge-stk
+
+- Test stack growth.
+3	pt-grow-stack
+3	pt-grow-stk-sc
+3	pt-big-stk-obj
+3	pt-grow-pusha
+
+- Test "mmap" system call.
+2	mmap-read
+2	mmap-write
+2	mmap-shuffle
+
+2	mmap-twice
+
+2	mmap-unmap
+1	mmap-exit
+
+3	mmap-clean
+
+2	mmap-close
+2	mmap-remove

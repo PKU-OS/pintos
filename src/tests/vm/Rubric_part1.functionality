@@ -1,0 +1,7 @@
+Functionality of virtual memory subsystem:
+- Test paging behavior.
+3	page-linear
+3	page-parallel
+3	page-shuffle
+4	page-merge-seq
+4	page-merge-par
