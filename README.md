@@ -9,4 +9,4 @@ are developed by Ben Pfaff and others from Stanford (refer to its [LICENSE](./LI
 This code source is adapted from professor ([Ryan Huang](huang@cs.jhu.edu)) at JHU, who also taught a undergraduate OS class. He made some changes to the original
 Pintos labs (add lab0 and fix some bugs for MacOS). The upstream for this branch comes from 
 https://github.com/ryanphuang/PintosM.git. For students in the class, please
-download the release version for this branch at git@github.com:PKU-OS/pintos.git.
+download the release version for this branch by `git clone git@github.com:PKU-OS/pintos.git`.
