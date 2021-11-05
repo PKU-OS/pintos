@@ -1,4 +1,4 @@
-/* Encrypts, then decrypts, 2 MB of memory and verifies that the
+/** Encrypts, then decrypts, 2 MB of memory and verifies that the
    values are as they should be. */
 
 #include <string.h>

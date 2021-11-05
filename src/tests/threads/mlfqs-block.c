@@ -1,4 +1,4 @@
-/* Checks that recent_cpu and priorities are updated for blocked
+/** Checks that recent_cpu and priorities are updated for blocked
    threads.
 
    The main thread sleeps for 25 seconds, spins for 5 seconds,

@@ -4,17 +4,17 @@
 #include "threads/interrupt.h"
 #include "threads/io.h"
 
-/* Interface to 8254 Programmable Interrupt Timer (PIT).
+/** Interface to 8254 Programmable Interrupt Timer (PIT).
    Refer to [8254] for details. */
 
-/* 8254 registers. */
-#define PIT_PORT_CONTROL          0x43                /* Control port. */
-#define PIT_PORT_COUNTER(CHANNEL) (0x40 + (CHANNEL))  /* Counter port. */
+/** 8254 registers. */
+#define PIT_PORT_CONTROL          0x43                /**< Control port. */
+#define PIT_PORT_COUNTER(CHANNEL) (0x40 + (CHANNEL))  /**< Counter port. */
 
-/* PIT cycles per second. */
+/** PIT cycles per second. */
 #define PIT_HZ 1193180
 
-/* Configure the given CHANNEL in the PIT.  In a PC, the PIT's
+/** Configure the given CHANNEL in the PIT.  In a PC, the PIT's
    three output channels are hooked up like this:
 
      - Channel 0 is connected to interrupt line 0, so that it can

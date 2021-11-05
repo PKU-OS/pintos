@@ -6,4 +6,4 @@
 #define BUF_SIZE (CHILD_CNT * CHUNK_SIZE)
 static const char file_name[] = "stuff";
 
-#endif /* tests/filesys/base/syn-write.h */
+#endif /**< tests/filesys/base/syn-write.h */

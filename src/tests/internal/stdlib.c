@@ -1,4 +1,4 @@
-/* Test program for sorting and searching in lib/stdlib.c.
+/** Test program for sorting and searching in lib/stdlib.c.
 
    Attempts to test the sorting and searching functionality that
    is not sufficiently tested elsewhere in Pintos.
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include "threads/test.h"
 
-/* Maximum number of elements in an array that we will test. */
+/** Maximum number of elements in an array that we will test. */
 #define MAX_CNT 4096
 
 static void shuffle (int[], size_t);
@@ -23,7 +23,7 @@ static int compare_ints (const void *, const void *);
 static void verify_order (const int[], size_t);
 static void verify_bsearch (const int[], size_t);
 
-/* Test sorting and searching implementations. */
+/** Test sorting and searching implementations. */
 void
 test (void) 
 {
@@ -56,7 +56,7 @@ test (void)
   printf ("stdlib: PASS\n");
 }
 
-/* Shuffles the CNT elements in ARRAY into random order. */
+/** Shuffles the CNT elements in ARRAY into random order. */
 static void
 shuffle (int *array, size_t cnt) 
 {
@@ -71,7 +71,7 @@ shuffle (int *array, size_t cnt)
     }
 }
 
-/* Returns 1 if *A is greater than *B,
+/** Returns 1 if *A is greater than *B,
    0 if *A equals *B,
    -1 if *A is less than *B. */
 static int
@@ -83,7 +83,7 @@ compare_ints (const void *a_, const void *b_)
   return *a < *b ? -1 : *a > *b;
 }
 
-/* Verifies that ARRAY contains the CNT ints 0...CNT-1. */
+/** Verifies that ARRAY contains the CNT ints 0...CNT-1. */
 static void
 verify_order (const int *array, size_t cnt) 
 {
@@ -93,7 +93,7 @@ verify_order (const int *array, size_t cnt)
     ASSERT (array[i] == i);
 }
 
-/* Checks that bsearch() works properly in ARRAY.  ARRAY must
+/** Checks that bsearch() works properly in ARRAY.  ARRAY must
    contain the values 0...CNT-1. */
 static void
 verify_bsearch (const int *array, size_t cnt) 

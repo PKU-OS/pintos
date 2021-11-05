@@ -1,4 +1,4 @@
-/* Allocates and writes to a 64 kB object on the stack.
+/** Allocates and writes to a 64 kB object on the stack.
    This must succeed. */
 
 #include <string.h>

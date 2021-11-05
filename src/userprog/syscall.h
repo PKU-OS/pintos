@@ -3,4 +3,4 @@
 
 void syscall_init (void);
 
-#endif /* userprog/syscall.h */
+#endif /**< userprog/syscall.h */

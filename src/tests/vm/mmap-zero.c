@@ -1,4 +1,4 @@
-/* Tries to map a zero-length file, which may or may not work but
+/** Tries to map a zero-length file, which may or may not work but
    should not terminate the process or crash.
    Then dereferences the address that we tried to map,
    and the process must be terminated with -1 exit code. */

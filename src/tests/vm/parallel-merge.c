@@ -1,4 +1,4 @@
-/* Generates about 1 MB of random data that is then divided into
+/** Generates about 1 MB of random data that is then divided into
    16 chunks.  A separate subprocess sorts each chunk; the
    subprocesses run in parallel.  Then we merge the chunks and
    verify that the result is what it should be. */
@@ -11,13 +11,13 @@
 #include "tests/main.h"
 
 #define CHUNK_SIZE (128 * 1024)
-#define CHUNK_CNT 8                             /* Number of chunks. */
-#define DATA_SIZE (CHUNK_CNT * CHUNK_SIZE)      /* Buffer size. */
+#define CHUNK_CNT 8                             /**< Number of chunks. */
+#define DATA_SIZE (CHUNK_CNT * CHUNK_SIZE)      /**< Buffer size. */
 
 unsigned char buf1[DATA_SIZE], buf2[DATA_SIZE];
 size_t histogram[256];
 
-/* Initialize buf1 with random data,
+/** Initialize buf1 with random data,
    then count the number of instances of each value within it. */
 static void
 init (void) 
@@ -33,7 +33,7 @@ init (void)
     histogram[buf1[i]]++;
 }
 
-/* Sort each chunk of buf1 using SUBPROCESS,
+/** Sort each chunk of buf1 using SUBPROCESS,
    which is expected to return EXIT_STATUS. */
 static void
 sort_chunks (const char *subprocess, int exit_status)
@@ -80,7 +80,7 @@ sort_chunks (const char *subprocess, int exit_status)
     }
 }
 
-/* Merge the sorted chunks in buf1 into a fully sorted buf2. */
+/** Merge the sorted chunks in buf1 into a fully sorted buf2. */
 static void
 merge (void) 
 {

@@ -1,4 +1,4 @@
-/* This program attempts to write to kernel memory. 
+/** This program attempts to write to kernel memory. 
    This should terminate the process with a -1 exit code. */
 
 #include "tests/lib.h"

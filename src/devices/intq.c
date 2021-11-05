@@ -6,7 +6,7 @@ static int next (int pos);
 static void wait (struct intq *q, struct thread **waiter);
 static void signal (struct intq *q, struct thread **waiter);
 
-/* Initializes interrupt queue Q. */
+/** Initializes interrupt queue Q. */
 void
 intq_init (struct intq *q) 
 {
@@ -15,7 +15,7 @@ intq_init (struct intq *q)
   q->head = q->tail = 0;
 }
 
-/* Returns true if Q is empty, false otherwise. */
+/** Returns true if Q is empty, false otherwise. */
 bool
 intq_empty (const struct intq *q) 
 {
@@ -23,7 +23,7 @@ intq_empty (const struct intq *q)
   return q->head == q->tail;
 }
 
-/* Returns true if Q is full, false otherwise. */
+/** Returns true if Q is full, false otherwise. */
 bool
 intq_full (const struct intq *q) 
 {
@@ -31,7 +31,7 @@ intq_full (const struct intq *q)
   return next (q->head) == q->tail;
 }
 
-/* Removes a byte from Q and returns it.
+/** Removes a byte from Q and returns it.
    If Q is empty, sleeps until a byte is added.
    When called from an interrupt handler, Q must not be empty. */
 uint8_t
@@ -54,7 +54,7 @@ intq_getc (struct intq *q)
   return byte;
 }
 
-/* Adds BYTE to the end of Q.
+/** Adds BYTE to the end of Q.
    If Q is full, sleeps until a byte is removed.
    When called from an interrupt handler, Q must not be full. */
 void
@@ -74,14 +74,14 @@ intq_putc (struct intq *q, uint8_t byte)
   signal (q, &q->not_empty);
 }
 
-/* Returns the position after POS within an intq. */
+/** Returns the position after POS within an intq. */
 static int
 next (int pos) 
 {
   return (pos + 1) % INTQ_BUFSIZE;
 }
 
-/* WAITER must be the address of Q's not_empty or not_full
+/** WAITER must be the address of Q's not_empty or not_full
    member.  Waits until the given condition is true. */
 static void
 wait (struct intq *q UNUSED, struct thread **waiter) 
@@ -95,7 +95,7 @@ wait (struct intq *q UNUSED, struct thread **waiter)
   thread_block ();
 }
 
-/* WAITER must be the address of Q's not_empty or not_full
+/** WAITER must be the address of Q's not_empty or not_full
    member, and the associated condition must be true.  If a
    thread is waiting for the condition, wakes it up and resets
    the waiting thread. */

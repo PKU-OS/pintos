@@ -1,4 +1,4 @@
-/* cat.c
+/** cat.c
 
 Copies one file to another. */
 

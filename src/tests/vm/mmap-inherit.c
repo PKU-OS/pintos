@@ -1,4 +1,4 @@
-/* Maps a file into memory and runs child-inherit to verify that
+/** Maps a file into memory and runs child-inherit to verify that
    mappings are not inherited. */
 
 #include <string.h>

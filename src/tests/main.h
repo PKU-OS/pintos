@@ -3,4 +3,4 @@
 
 void test_main (void);
 
-#endif /* tests/main.h */
+#endif /**< tests/main.h */

@@ -13,7 +13,7 @@
 #include "devices/serial.h"
 #include "devices/shutdown.h"
 
-/* Halts the OS, printing the source file name, line number, and
+/** Halts the OS, printing the source file name, line number, and
    function name, plus a user-specific message. */
 void
 debug_panic (const char *file, int line, const char *function,
@@ -50,7 +50,7 @@ debug_panic (const char *file, int line, const char *function,
   for (;;);
 }
 
-/* Print call stack of a thread.
+/** Print call stack of a thread.
    The thread may be running, ready, or blocked. */
 static void
 print_stacktrace(struct thread *t, void *aux UNUSED)
@@ -112,7 +112,7 @@ print_stacktrace(struct thread *t, void *aux UNUSED)
   printf (".\n");
 }
 
-/* Prints call stack of all threads. */
+/** Prints call stack of all threads. */
 void
 debug_backtrace_all (void)
 {

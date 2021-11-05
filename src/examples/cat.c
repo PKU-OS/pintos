@@ -1,4 +1,4 @@
-/* cat.c
+/** cat.c
 
    Prints files specified on command line to the console. */
 

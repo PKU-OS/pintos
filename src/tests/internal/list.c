@@ -1,4 +1,4 @@
-/* Test program for lib/kernel/list.c.
+/** Test program for lib/kernel/list.c.
 
    Attempts to test the list functionality that is not
    sufficiently tested elsewhere in Pintos.
@@ -14,15 +14,15 @@
 #include <stdio.h>
 #include "threads/test.h"
 
-/* Maximum number of elements in a linked list that we will
+/** Maximum number of elements in a linked list that we will
    test. */
 #define MAX_SIZE 64
 
-/* A linked list element. */
+/** A linked list element. */
 struct value 
   {
-    struct list_elem elem;      /* List element. */
-    int value;                  /* Item value. */
+    struct list_elem elem;      /**< List element. */
+    int value;                  /**< Item value. */
   };
 
 static void shuffle (struct value[], size_t);
@@ -31,7 +31,7 @@ static bool value_less (const struct list_elem *, const struct list_elem *,
 static void verify_list_fwd (struct list *, int size);
 static void verify_list_bkwd (struct list *, int size);
 
-/* Test the linked list implementation. */
+/** Test the linked list implementation. */
 void
 test (void) 
 {
@@ -108,7 +108,7 @@ test (void)
   printf ("list: PASS\n");
 }
 
-/* Shuffles the CNT elements in ARRAY into random order. */
+/** Shuffles the CNT elements in ARRAY into random order. */
 static void
 shuffle (struct value *array, size_t cnt) 
 {
@@ -123,7 +123,7 @@ shuffle (struct value *array, size_t cnt)
     }
 }
 
-/* Returns true if value A is less than value B, false
+/** Returns true if value A is less than value B, false
    otherwise. */
 static bool
 value_less (const struct list_elem *a_, const struct list_elem *b_,
@@ -135,7 +135,7 @@ value_less (const struct list_elem *a_, const struct list_elem *b_,
   return a->value < b->value;
 }
 
-/* Verifies that LIST contains the values 0...SIZE when traversed
+/** Verifies that LIST contains the values 0...SIZE when traversed
    in forward order. */
 static void
 verify_list_fwd (struct list *list, int size) 
@@ -154,7 +154,7 @@ verify_list_fwd (struct list *list, int size)
   ASSERT (e == list_end (list));
 }
 
-/* Verifies that LIST contains the values 0...SIZE when traversed
+/** Verifies that LIST contains the values 0...SIZE when traversed
    in reverse order. */
 static void
 verify_list_bkwd (struct list *list, int size) 

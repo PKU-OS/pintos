@@ -1,4 +1,4 @@
-/* Writes to a file through a mapping, and unmaps the file,
+/** Writes to a file through a mapping, and unmaps the file,
    then reads the data in the file back using the read system
    call to verify. */
 

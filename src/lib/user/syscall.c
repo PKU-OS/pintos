@@ -1,7 +1,7 @@
 #include <syscall.h>
 #include "../syscall-nr.h"
 
-/* Invokes syscall NUMBER, passing no arguments, and returns the
+/** Invokes syscall NUMBER, passing no arguments, and returns the
    return value as an `int'. */
 #define syscall0(NUMBER)                                        \
         ({                                                      \
@@ -14,7 +14,7 @@
           retval;                                               \
         })
 
-/* Invokes syscall NUMBER, passing argument ARG0, and returns the
+/** Invokes syscall NUMBER, passing argument ARG0, and returns the
    return value as an `int'. */
 #define syscall1(NUMBER, ARG0)                                           \
         ({                                                               \
@@ -28,7 +28,7 @@
           retval;                                                        \
         })
 
-/* Invokes syscall NUMBER, passing arguments ARG0 and ARG1, and
+/** Invokes syscall NUMBER, passing arguments ARG0 and ARG1, and
    returns the return value as an `int'. */
 #define syscall2(NUMBER, ARG0, ARG1)                            \
         ({                                                      \
@@ -44,7 +44,7 @@
           retval;                                               \
         })
 
-/* Invokes syscall NUMBER, passing arguments ARG0, ARG1, and
+/** Invokes syscall NUMBER, passing arguments ARG0, ARG1, and
    ARG2, and returns the return value as an `int'. */
 #define syscall3(NUMBER, ARG0, ARG1, ARG2)                      \
         ({                                                      \

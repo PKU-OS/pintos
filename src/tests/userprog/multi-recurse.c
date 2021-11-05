@@ -1,4 +1,4 @@
-/* Executes itself recursively to the depth indicated by the
+/** Executes itself recursively to the depth indicated by the
    first command-line argument. */
 
 #include <debug.h>

@@ -1,4 +1,4 @@
-/* Tests that the highest-priority thread waiting on a semaphore
+/** Tests that the highest-priority thread waiting on a semaphore
    is the first to wake up. */
 
 #include <stdio.h>

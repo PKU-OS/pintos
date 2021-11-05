@@ -1,4 +1,4 @@
-/* Measures the correctness of the "nice" implementation.
+/** Measures the correctness of the "nice" implementation.
 
    The "fair" tests run either 2 or 20 threads all niced to 0.
    The threads should all receive approximately the same number

@@ -1,4 +1,4 @@
-/* matmult.c 
+/** matmult.c 
 
    Test program to do matrix multiplication on large arrays.
  
@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <syscall.h>
 
-/* You should define DIM to be large enough that the arrays
+/** You should define DIM to be large enough that the arrays
    don't fit in physical memory.
 
     Dim       Memory

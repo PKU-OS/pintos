@@ -6,4 +6,4 @@
 void kbd_init (void);
 void kbd_print_stats (void);
 
-#endif /* devices/kbd.h */
+#endif /**< devices/kbd.h */

@@ -1,4 +1,4 @@
-/* Starts 60 threads that each sleep for 10 seconds, then spin in
+/** Starts 60 threads that each sleep for 10 seconds, then spin in
    a tight loop for 60 seconds, and sleep for another 60 seconds.
    Every 2 seconds after the initial sleep, the main thread
    prints the load average.

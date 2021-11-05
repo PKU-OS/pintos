@@ -1,4 +1,4 @@
-/* Open a file. */
+/** Open a file. */
 
 #include <syscall.h>
 #include "tests/lib.h"

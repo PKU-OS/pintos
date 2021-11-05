@@ -1,4 +1,4 @@
-/* Creates directories /0/0/0 through /3/2/2 and files in the
+/** Creates directories /0/0/0 through /3/2/2 and files in the
    leaf directories, then removes them. */
 
 #include <stdarg.h>

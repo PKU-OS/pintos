@@ -3,17 +3,17 @@
 #include "devices/intq.h"
 #include "devices/serial.h"
 
-/* Stores keys from the keyboard and serial port. */
+/** Stores keys from the keyboard and serial port. */
 static struct intq buffer;
 
-/* Initializes the input buffer. */
+/** Initializes the input buffer. */
 void
 input_init (void) 
 {
   intq_init (&buffer);
 }
 
-/* Adds a key to the input buffer.
+/** Adds a key to the input buffer.
    Interrupts must be off and the buffer must not be full. */
 void
 input_putc (uint8_t key) 
@@ -25,7 +25,7 @@ input_putc (uint8_t key)
   serial_notify ();
 }
 
-/* Retrieves a key from the input buffer.
+/** Retrieves a key from the input buffer.
    If the buffer is empty, waits for a key to be pressed. */
 uint8_t
 input_getc (void) 
@@ -41,7 +41,7 @@ input_getc (void)
   return key;
 }
 
-/* Returns true if the input buffer is full,
+/** Returns true if the input buffer is full,
    false otherwise.
    Interrupts must be off. */
 bool

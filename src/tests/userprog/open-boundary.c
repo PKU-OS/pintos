@@ -1,4 +1,4 @@
-/* Creates a file whose name spans the boundary between two pages.
+/** Creates a file whose name spans the boundary between two pages.
    This is valid, so it must succeed. */
 
 #include <syscall.h>

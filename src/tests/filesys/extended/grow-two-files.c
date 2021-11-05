@@ -1,4 +1,4 @@
-/* Grows two files in parallel and checks that their contents are
+/** Grows two files in parallel and checks that their contents are
    correct. */
 
 #include <random.h>

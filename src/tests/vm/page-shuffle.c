@@ -1,4 +1,4 @@
-/* Shuffles a 128 kB data buffer 10 times, printing the checksum
+/** Shuffles a 128 kB data buffer 10 times, printing the checksum
    after each time. */
 
 #include <stdbool.h>

@@ -6,7 +6,7 @@
 #include "threads/palloc.h"
 #include "threads/vaddr.h"
 
-/* The Task-State Segment (TSS).
+/** The Task-State Segment (TSS).
 
    Instances of the TSS, an x86-specific structure, are used to
    define "tasks", a form of support for multitasking built right
@@ -51,8 +51,8 @@
 struct tss
   {
     uint16_t back_link, :16;
-    void *esp0;                         /* Ring 0 stack virtual address. */
-    uint16_t ss0, :16;                  /* Ring 0 stack segment selector. */
+    void *esp0;                         /**< Ring 0 stack virtual address. */
+    uint16_t ss0, :16;                  /**< Ring 0 stack segment selector. */
     void *esp1;
     uint16_t ss1, :16;
     void *esp2;
@@ -72,10 +72,10 @@ struct tss
     uint16_t trace, bitmap;
   };
 
-/* Kernel TSS. */
+/** Kernel TSS. */
 static struct tss *tss;
 
-/* Initializes the kernel TSS. */
+/** Initializes the kernel TSS. */
 void
 tss_init (void) 
 {
@@ -88,7 +88,7 @@ tss_init (void)
   tss_update ();
 }
 
-/* Returns the kernel TSS. */
+/** Returns the kernel TSS. */
 struct tss *
 tss_get (void) 
 {
@@ -96,7 +96,7 @@ tss_get (void)
   return tss;
 }
 
-/* Sets the ring 0 stack pointer in the TSS to point to the end
+/** Sets the ring 0 stack pointer in the TSS to point to the end
    of the thread stack. */
 void
 tss_update (void) 

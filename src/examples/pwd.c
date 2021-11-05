@@ -1,4 +1,4 @@
-/* pwd.c
+/** pwd.c
    
    Prints the absolute name of the present working directory. */
 
@@ -25,7 +25,7 @@ main (void)
     }
 }
 
-/* Stores the inode number for FILE_NAME in *INUM.
+/** Stores the inode number for FILE_NAME in *INUM.
    Returns true if successful, false if the file could not be
    opened. */
 static bool
@@ -42,7 +42,7 @@ get_inumber (const char *file_name, int *inum)
     return false;
 }
 
-/* Prepends PREFIX to the characters stored in the final *DST_LEN
+/** Prepends PREFIX to the characters stored in the final *DST_LEN
    bytes of the DST_SIZE-byte buffer that starts at DST.
    Returns true if successful, false if adding that many
    characters, plus a null terminator, would overflow the buffer.
@@ -63,7 +63,7 @@ prepend (const char *prefix,
     return false;
 }
 
-/* Stores the current working directory, as a null-terminated
+/** Stores the current working directory, as a null-terminated
    string, in the CWD_SIZE bytes in CWD.
    Returns true if successful, false on error.  Errors include
    system errors, directory trees deeper than MAX_LEVEL levels,

@@ -1,4 +1,4 @@
-/* Reads data spanning two pages in virtual address space,
+/** Reads data spanning two pages in virtual address space,
    which must succeed. */
 
 #include <string.h>

@@ -1,4 +1,4 @@
-/* Tests mkdir(). */
+/** Tests mkdir(). */
 
 #include <syscall.h>
 #include "tests/lib.h"

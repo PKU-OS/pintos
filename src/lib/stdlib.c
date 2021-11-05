@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-/* Converts a string representation of a signed decimal integer
+/** Converts a string representation of a signed decimal integer
    in S into an `int', which is returned. */
 int
 atoi (const char *s) 
@@ -40,7 +40,7 @@ atoi (const char *s)
   return value;
 }
 
-/* Compares A and B by calling the AUX function. */
+/** Compares A and B by calling the AUX function. */
 static int
 compare_thunk (const void *a, const void *b, void *aux) 
 {
@@ -48,7 +48,7 @@ compare_thunk (const void *a, const void *b, void *aux)
   return (*compare) (a, b);
 }
 
-/* Sorts ARRAY, which contains CNT elements of SIZE bytes each,
+/** Sorts ARRAY, which contains CNT elements of SIZE bytes each,
    using COMPARE.  When COMPARE is passed a pair of elements A
    and B, respectively, it must return a strcmp()-type result,
    i.e. less than zero if A < B, zero if A == B, greater than
@@ -61,7 +61,7 @@ qsort (void *array, size_t cnt, size_t size,
   sort (array, cnt, size, compare_thunk, &compare);
 }
 
-/* Swaps elements with 1-based indexes A_IDX and B_IDX in ARRAY
+/** Swaps elements with 1-based indexes A_IDX and B_IDX in ARRAY
    with elements of SIZE bytes each. */
 static void
 do_swap (unsigned char *array, size_t a_idx, size_t b_idx, size_t size)
@@ -78,7 +78,7 @@ do_swap (unsigned char *array, size_t a_idx, size_t b_idx, size_t size)
     }
 }
 
-/* Compares elements with 1-based indexes A_IDX and B_IDX in
+/** Compares elements with 1-based indexes A_IDX and B_IDX in
    ARRAY with elements of SIZE bytes each, using COMPARE to
    compare elements, passing AUX as auxiliary data, and returns a
    strcmp()-type result. */
@@ -90,7 +90,7 @@ do_compare (unsigned char *array, size_t a_idx, size_t b_idx, size_t size,
   return compare (array + (a_idx - 1) * size, array + (b_idx - 1) * size, aux);
 }
 
-/* "Float down" the element with 1-based index I in ARRAY of CNT
+/** "Float down" the element with 1-based index I in ARRAY of CNT
    elements of SIZE bytes each, using COMPARE to compare
    elements, passing AUX as auxiliary data. */
 static void
@@ -122,7 +122,7 @@ heapify (unsigned char *array, size_t i, size_t cnt, size_t size,
     }
 }
 
-/* Sorts ARRAY, which contains CNT elements of SIZE bytes each,
+/** Sorts ARRAY, which contains CNT elements of SIZE bytes each,
    using COMPARE to compare elements, passing AUX as auxiliary
    data.  When COMPARE is passed a pair of elements A and B,
    respectively, it must return a strcmp()-type result, i.e. less
@@ -151,7 +151,7 @@ sort (void *array, size_t cnt, size_t size,
     }
 }
 
-/* Searches ARRAY, which contains CNT elements of SIZE bytes
+/** Searches ARRAY, which contains CNT elements of SIZE bytes
    each, for the given KEY.  Returns a match is found, otherwise
    a null pointer.  If there are multiple matches, returns an
    arbitrary one of them.
@@ -169,7 +169,7 @@ bsearch (const void *key, const void *array, size_t cnt,
   return binary_search (key, array, cnt, size, compare_thunk, &compare);
 }
 
-/* Searches ARRAY, which contains CNT elements of SIZE bytes
+/** Searches ARRAY, which contains CNT elements of SIZE bytes
    each, for the given KEY.  Returns a match is found, otherwise
    a null pointer.  If there are multiple matches, returns an
    arbitrary one of them.

@@ -5,31 +5,31 @@
 #include "devices/ide.h"
 #include "threads/malloc.h"
 
-/* A block device. */
+/** A block device. */
 struct block
   {
-    struct list_elem list_elem;         /* Element in all_blocks. */
+    struct list_elem list_elem;         /**< Element in all_blocks. */
 
-    char name[16];                      /* Block device name. */
-    enum block_type type;                /* Type of block device. */
-    block_sector_t size;                 /* Size in sectors. */
+    char name[16];                      /**< Block device name. */
+    enum block_type type;                /**< Type of block device. */
+    block_sector_t size;                 /**< Size in sectors. */
 
-    const struct block_operations *ops;  /* Driver operations. */
-    void *aux;                          /* Extra data owned by driver. */
+    const struct block_operations *ops;  /**< Driver operations. */
+    void *aux;                          /**< Extra data owned by driver. */
 
-    unsigned long long read_cnt;        /* Number of sectors read. */
-    unsigned long long write_cnt;       /* Number of sectors written. */
+    unsigned long long read_cnt;        /**< Number of sectors read. */
+    unsigned long long write_cnt;       /**< Number of sectors written. */
   };
 
-/* List of all block devices. */
+/** List of all block devices. */
 static struct list all_blocks = LIST_INITIALIZER (all_blocks);
 
-/* The block block assigned to each Pintos role. */
+/** The block block assigned to each Pintos role. */
 static struct block *block_by_role[BLOCK_ROLE_CNT];
 
 static struct block *list_elem_to_block (struct list_elem *);
 
-/* Returns a human-readable name for the given block device
+/** Returns a human-readable name for the given block device
    TYPE. */
 const char *
 block_type_name (enum block_type type)
@@ -48,7 +48,7 @@ block_type_name (enum block_type type)
   return block_type_names[type];
 }
 
-/* Returns the block device fulfilling the given ROLE, or a null
+/** Returns the block device fulfilling the given ROLE, or a null
    pointer if no block device has been assigned that role. */
 struct block *
 block_get_role (enum block_type role)
@@ -57,7 +57,7 @@ block_get_role (enum block_type role)
   return block_by_role[role];
 }
 
-/* Assigns BLOCK the given ROLE. */
+/** Assigns BLOCK the given ROLE. */
 void
 block_set_role (enum block_type role, struct block *block)
 {
@@ -65,7 +65,7 @@ block_set_role (enum block_type role, struct block *block)
   block_by_role[role] = block;
 }
 
-/* Returns the first block device in kernel probe order, or a
+/** Returns the first block device in kernel probe order, or a
    null pointer if no block devices are registered. */
 struct block *
 block_first (void)
@@ -73,7 +73,7 @@ block_first (void)
   return list_elem_to_block (list_begin (&all_blocks));
 }
 
-/* Returns the block device following BLOCK in kernel probe
+/** Returns the block device following BLOCK in kernel probe
    order, or a null pointer if BLOCK is the last block device. */
 struct block *
 block_next (struct block *block)
@@ -81,7 +81,7 @@ block_next (struct block *block)
   return list_elem_to_block (list_next (&block->list_elem));
 }
 
-/* Returns the block device with the given NAME, or a null
+/** Returns the block device with the given NAME, or a null
    pointer if no block device has that name. */
 struct block *
 block_get_by_name (const char *name)
@@ -99,7 +99,7 @@ block_get_by_name (const char *name)
   return NULL;
 }
 
-/* Verifies that SECTOR is a valid offset within BLOCK.
+/** Verifies that SECTOR is a valid offset within BLOCK.
    Panics if not. */
 static void
 check_sector (struct block *block, block_sector_t sector)
@@ -113,7 +113,7 @@ check_sector (struct block *block, block_sector_t sector)
     }
 }
 
-/* Reads sector SECTOR from BLOCK into BUFFER, which must
+/** Reads sector SECTOR from BLOCK into BUFFER, which must
    have room for BLOCK_SECTOR_SIZE bytes.
    Internally synchronizes accesses to block devices, so external
    per-block device locking is unneeded. */
@@ -125,7 +125,7 @@ block_read (struct block *block, block_sector_t sector, void *buffer)
   block->read_cnt++;
 }
 
-/* Write sector SECTOR to BLOCK from BUFFER, which must contain
+/** Write sector SECTOR to BLOCK from BUFFER, which must contain
    BLOCK_SECTOR_SIZE bytes.  Returns after the block device has
    acknowledged receiving the data.
    Internally synchronizes accesses to block devices, so external
@@ -139,28 +139,28 @@ block_write (struct block *block, block_sector_t sector, const void *buffer)
   block->write_cnt++;
 }
 
-/* Returns the number of sectors in BLOCK. */
+/** Returns the number of sectors in BLOCK. */
 block_sector_t
 block_size (struct block *block)
 {
   return block->size;
 }
 
-/* Returns BLOCK's name (e.g. "hda"). */
+/** Returns BLOCK's name (e.g. "hda"). */
 const char *
 block_name (struct block *block)
 {
   return block->name;
 }
 
-/* Returns BLOCK's type. */
+/** Returns BLOCK's type. */
 enum block_type
 block_type (struct block *block)
 {
   return block->type;
 }
 
-/* Prints statistics for each block device used for a Pintos role. */
+/** Prints statistics for each block device used for a Pintos role. */
 void
 block_print_stats (void)
 {
@@ -178,7 +178,7 @@ block_print_stats (void)
     }
 }
 
-/* Registers a new block device with the given NAME.  If
+/** Registers a new block device with the given NAME.  If
    EXTRA_INFO is non-null, it is printed as part of a user
    message.  The block device's SIZE in sectors and its TYPE must
    be provided, as well as the it operation functions OPS, which
@@ -211,7 +211,7 @@ block_register (const char *name, enum block_type type,
   return block;
 }
 
-/* Returns the block device corresponding to LIST_ELEM, or a null
+/** Returns the block device corresponding to LIST_ELEM, or a null
    pointer if LIST_ELEM is the list end of all_blocks. */
 static struct block *
 list_elem_to_block (struct list_elem *list_elem)

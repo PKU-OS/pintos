@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-/* Prints the call stack, that is, a list of addresses, one in
+/** Prints the call stack, that is, a list of addresses, one in
    each of the functions we are nested within.  gdb or addr2line
    may be applied to kernel.o to translate these into file names,
    line numbers, and function names.  */

@@ -1,4 +1,4 @@
-/* Executes and waits for a single child process. */
+/** Executes and waits for a single child process. */
 
 #include <syscall.h>
 #include "tests/lib.h"

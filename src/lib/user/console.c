@@ -3,7 +3,7 @@
 #include <syscall.h>
 #include <syscall-nr.h>
 
-/* The standard vprintf() function,
+/** The standard vprintf() function,
    which is like printf() but uses a va_list. */
 int
 vprintf (const char *format, va_list args) 
@@ -11,7 +11,7 @@ vprintf (const char *format, va_list args)
   return vhprintf (STDOUT_FILENO, format, args);
 }
 
-/* Like printf(), but writes output to the given HANDLE. */
+/** Like printf(), but writes output to the given HANDLE. */
 int
 hprintf (int handle, const char *format, ...) 
 {
@@ -25,7 +25,7 @@ hprintf (int handle, const char *format, ...)
   return retval;
 }
 
-/* Writes string S to the console, followed by a new-line
+/** Writes string S to the console, followed by a new-line
    character. */
 int
 puts (const char *s) 
@@ -36,7 +36,7 @@ puts (const char *s)
   return 0;
 }
 
-/* Writes C to the console. */
+/** Writes C to the console. */
 int
 putchar (int c) 
 {
@@ -45,19 +45,19 @@ putchar (int c)
   return c;
 }
 
-/* Auxiliary data for vhprintf_helper(). */
+/** Auxiliary data for vhprintf_helper(). */
 struct vhprintf_aux 
   {
-    char buf[64];       /* Character buffer. */
-    char *p;            /* Current position in buffer. */
-    int char_cnt;       /* Total characters written so far. */
-    int handle;         /* Output file handle. */
+    char buf[64];       /**< Character buffer. */
+    char *p;            /**< Current position in buffer. */
+    int char_cnt;       /**< Total characters written so far. */
+    int handle;         /**< Output file handle. */
   };
 
 static void add_char (char, void *);
 static void flush (struct vhprintf_aux *);
 
-/* Formats the printf() format specification FORMAT with
+/** Formats the printf() format specification FORMAT with
    arguments given in ARGS and writes the output to the given
    HANDLE. */
 int
@@ -72,7 +72,7 @@ vhprintf (int handle, const char *format, va_list args)
   return aux.char_cnt;
 }
 
-/* Adds C to the buffer in AUX, flushing it if the buffer fills
+/** Adds C to the buffer in AUX, flushing it if the buffer fills
    up. */
 static void
 add_char (char c, void *aux_) 
@@ -84,7 +84,7 @@ add_char (char c, void *aux_)
   aux->char_cnt++;
 }
 
-/* Flushes the buffer in AUX. */
+/** Flushes the buffer in AUX. */
 static void
 flush (struct vhprintf_aux *aux)
 {

@@ -12,7 +12,7 @@ extern bool quiet;
 void msg (const char *, ...) PRINTF_FORMAT (1, 2);
 void fail (const char *, ...) PRINTF_FORMAT (1, 2) NO_RETURN;
 
-/* Takes an expression to test for SUCCESS and a message, which
+/** Takes an expression to test for SUCCESS and a message, which
    may include printf-style arguments.  Logs the message, then
    tests the expression.  If it is zero, indicating failure,
    emits the message as a failure.
@@ -47,4 +47,4 @@ void check_file (const char *file_name, const void *buf, size_t filesize);
 void compare_bytes (const void *read_data, const void *expected_data,
                     size_t size, size_t ofs, const char *file_name);
 
-#endif /* test/lib.h */
+#endif /**< test/lib.h */

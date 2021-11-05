@@ -5,4 +5,4 @@ void speaker_on (int frequency);
 void speaker_off (void);
 void speaker_beep (void);
 
-#endif /* devices/speaker.h */
+#endif /**< devices/speaker.h */

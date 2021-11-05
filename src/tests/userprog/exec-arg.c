@@ -1,4 +1,4 @@
-/* Tests argument passing to child processes. */
+/** Tests argument passing to child processes. */
 
 #include <syscall.h>
 #include "tests/main.h"

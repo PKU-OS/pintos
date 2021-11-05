@@ -1,4 +1,4 @@
-/* Creates and removes a directory, then makes sure that it's
+/** Creates and removes a directory, then makes sure that it's
    really gone. */
 
 #include <syscall.h>

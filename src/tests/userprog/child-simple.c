@@ -1,4 +1,4 @@
-/* Child process run by exec-multiple, exec-one, wait-simple, and
+/** Child process run by exec-multiple, exec-one, wait-simple, and
    wait-twice tests.
    Just prints a single message and terminates. */
 

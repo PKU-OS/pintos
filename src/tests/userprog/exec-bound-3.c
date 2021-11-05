@@ -1,4 +1,4 @@
-/* Invokes an exec system call with the exec string straddling a
+/** Invokes an exec system call with the exec string straddling a
    page boundary such that the first byte of the string is valid
    but the remainder of the string is in invalid memory. Must
    kill process. */

@@ -3,4 +3,4 @@
 
 void ide_init (void);
 
-#endif /* devices/ide.h */
+#endif /**< devices/ide.h */

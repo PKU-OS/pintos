@@ -21,7 +21,7 @@ fail_io (const char *msg, ...)
      __attribute__ ((noreturn))
      __attribute__ ((format (printf, 1, 2)));
 
-/* Prints MSG, formatting as with printf(),
+/** Prints MSG, formatting as with printf(),
    plus an error message based on errno,
    and exits. */
 static void
@@ -39,7 +39,7 @@ fail_io (const char *msg, ...)
   exit (EXIT_FAILURE);
 }
 
-/* If FD is a terminal, configures it for noncanonical input mode
+/** If FD is a terminal, configures it for noncanonical input mode
    with VMIN and VTIME set as indicated.
    If FD is not a terminal, has no effect. */
 static void
@@ -58,7 +58,7 @@ make_noncanon (int fd, int vmin, int vtime)
     }
 }
 
-/* Make FD non-blocking if NONBLOCKING is true,
+/** Make FD non-blocking if NONBLOCKING is true,
    or blocking if NONBLOCKING is false. */
 static void
 make_nonblocking (int fd, bool nonblocking) 
@@ -74,7 +74,7 @@ make_nonblocking (int fd, bool nonblocking)
     fail_io ("fcntl");
 }
 
-/* Handle a read or write on *FD, which is the pty if FD_IS_PTY
+/** Handle a read or write on *FD, which is the pty if FD_IS_PTY
    is true, that returned end-of-file or error indication RETVAL.
    The system call is named CALL, for use in error messages.
    Sets *FD to -1 if the fd is no longer readable or writable. */
@@ -106,7 +106,7 @@ handle_error (ssize_t retval, int *fd, bool fd_is_pty, const char *call)
     }
 }
 
-/* Copies data from stdin to PTY and from PTY to stdout until no
+/** Copies data from stdin to PTY and from PTY to stdout until no
    more data can be read or written. */
 static void
 relay (int pty, int dead_child_fd) 

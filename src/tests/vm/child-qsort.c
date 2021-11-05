@@ -1,4 +1,4 @@
-/* Reads a 128 kB file onto the stack and "sorts" the bytes in
+/** Reads a 128 kB file onto the stack and "sorts" the bytes in
    it, using quick sort, a multi-pass divide and conquer
    algorithm.  The sorted data is written back to the same file
    in-place. */

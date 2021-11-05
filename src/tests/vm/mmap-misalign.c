@@ -1,4 +1,4 @@
-/* Verifies that misaligned memory mappings are disallowed. */
+/** Verifies that misaligned memory mappings are disallowed. */
 
 #include <syscall.h>
 #include "tests/lib.h"

@@ -1,4 +1,4 @@
-/* Executes child-mm-wrt and verifies that the writes that should
+/** Executes child-mm-wrt and verifies that the writes that should
    have occurred really did. */
 
 #include <syscall.h>

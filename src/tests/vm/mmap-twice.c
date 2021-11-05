@@ -1,4 +1,4 @@
-/* Maps the same file into memory twice and verifies that the
+/** Maps the same file into memory twice and verifies that the
    same data is readable in both. */
 
 #include <string.h>

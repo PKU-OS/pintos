@@ -1,4 +1,4 @@
-/* halt.c
+/** halt.c
 
    Simple program to test whether running a user program works.
  	

@@ -1,4 +1,4 @@
-/* Creates N threads, each of which sleeps a different, fixed
+/** Creates N threads, each of which sleeps a different, fixed
    duration, M times.  Records the wake-up order and verifies
    that it is valid. */
 
@@ -18,17 +18,17 @@ test_alarm_simultaneous (void)
   test_sleep (3, 5);
 }
 
-/* Information about the test. */
+/** Information about the test. */
 struct sleep_test 
   {
-    int64_t start;              /* Current time at start of test. */
-    int iterations;             /* Number of iterations per thread. */
-    int *output_pos;            /* Current position in output buffer. */
+    int64_t start;              /**< Current time at start of test. */
+    int iterations;             /**< Number of iterations per thread. */
+    int *output_pos;            /**< Current position in output buffer. */
   };
 
 static void sleeper (void *);
 
-/* Runs THREAD_CNT threads thread sleep ITERATIONS times each. */
+/** Runs THREAD_CNT threads thread sleep ITERATIONS times each. */
 static void
 test_sleep (int thread_cnt, int iterations) 
 {
@@ -74,7 +74,7 @@ test_sleep (int thread_cnt, int iterations)
   free (output);
 }
 
-/* Sleeper thread. */
+/** Sleeper thread. */
 static void
 sleeper (void *test_) 
 {

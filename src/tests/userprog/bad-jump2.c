@@ -1,4 +1,4 @@
-/* This program attempts to execute code at a kernel virtual address. 
+/** This program attempts to execute code at a kernel virtual address. 
    This should terminate the process with a -1 exit code. */
 
 #include "tests/lib.h"

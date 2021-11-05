@@ -1,4 +1,4 @@
-/* Child process for syn-rw.
+/** Child process for syn-rw.
    Reads from a file created by our parent process, which is
    growing it.  We loop until we've read the whole file
    successfully.  Many iterations through the loop will return 0

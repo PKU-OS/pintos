@@ -1,4 +1,4 @@
-/* Tries to write to an invalid fd,
+/** Tries to write to an invalid fd,
    which must either fail silently or terminate the process with
    exit code -1. */
 

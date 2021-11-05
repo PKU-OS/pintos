@@ -1,4 +1,4 @@
-/* Try writing to fd 0 (stdin), 
+/** Try writing to fd 0 (stdin), 
    which may just fail or terminate the process with -1 exit
    code. */
 

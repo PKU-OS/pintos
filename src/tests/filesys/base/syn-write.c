@@ -1,4 +1,4 @@
-/* Spawns several child processes to write out different parts of
+/** Spawns several child processes to write out different parts of
    the contents of a file and waits for them to finish.  Then
    reads back the file and verifies its contents. */
 

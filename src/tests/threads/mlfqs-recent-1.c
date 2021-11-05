@@ -1,4 +1,4 @@
-/* Checks that recent_cpu is calculated properly for the case of
+/** Checks that recent_cpu is calculated properly for the case of
    a single ready process.
 
    The expected output is this (some margin of error is allowed):
@@ -103,7 +103,7 @@
 #include "threads/thread.h"
 #include "devices/timer.h"
 
-/* Sensitive to assumption that recent_cpu updates happen exactly
+/** Sensitive to assumption that recent_cpu updates happen exactly
    when timer_ticks() % TIMER_FREQ == 0. */
 
 void

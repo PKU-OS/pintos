@@ -1,4 +1,4 @@
-/* Verifies that mapping over the data segment is disallowed. */
+/** Verifies that mapping over the data segment is disallowed. */
 
 #include <stdint.h>
 #include <round.h>

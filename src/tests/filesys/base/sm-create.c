@@ -1,4 +1,4 @@
-/* Tests that create properly zeros out the contents of a fairly
+/** Tests that create properly zeros out the contents of a fairly
    small file. */
 
 #define TEST_SIZE 5678

@@ -1,4 +1,4 @@
-/* Test program for printf() in lib/stdio.c.
+/** Test program for printf() in lib/stdio.c.
 
    Attempts to test printf() functionality that is not
    sufficiently tested elsewhere in Pintos.
@@ -16,7 +16,7 @@
 #include <string.h>
 #include "threads/test.h"
 
-/* Number of failures so far. */
+/** Number of failures so far. */
 static int failure_cnt;
 
 static void
@@ -40,7 +40,7 @@ checkf (const char *expect, const char *format, ...)
     printf ("okay\n");
 }
 
-/* Test printf() implementation. */
+/** Test printf() implementation. */
 void
 test (void) 
 {

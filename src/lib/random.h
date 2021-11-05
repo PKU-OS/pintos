@@ -7,4 +7,4 @@ void random_init (unsigned seed);
 void random_bytes (void *, size_t);
 unsigned long random_ulong (void);
 
-#endif /* lib/random.h */
+#endif /**< lib/random.h */

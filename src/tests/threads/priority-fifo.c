@@ -1,4 +1,4 @@
-/* Creates several threads all at the same priority and ensures
+/** Creates several threads all at the same priority and ensures
    that they consistently run in the same round-robin order.
 
    Based on a test originally submitted for Stanford's CS 140 in
@@ -17,10 +17,10 @@
 
 struct simple_thread_data 
   {
-    int id;                     /* Sleeper ID. */
-    int iterations;             /* Iterations so far. */
-    struct lock *lock;          /* Lock on output. */
-    int **op;                   /* Output buffer position. */
+    int id;                     /**< Sleeper ID. */
+    int iterations;             /**< Iterations so far. */
+    struct lock *lock;          /**< Lock on output. */
+    int **op;                   /**< Output buffer position. */
   };
 
 #define THREAD_CNT 16

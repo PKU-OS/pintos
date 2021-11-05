@@ -10,14 +10,14 @@
 static void vprintf_helper (char, void *);
 static void putchar_have_lock (uint8_t c);
 
-/* The console lock.
+/** The console lock.
    Both the vga and serial layers do their own locking, so it's
    safe to call them at any time.
    But this lock is useful to prevent simultaneous printf() calls
    from mixing their output, which looks confusing. */
 static struct lock console_lock;
 
-/* True in ordinary circumstances: we want to use the console
+/** True in ordinary circumstances: we want to use the console
    lock to avoid mixing output between threads, as explained
    above.
 
@@ -30,7 +30,7 @@ static struct lock console_lock;
    likely just recurse. */
 static bool use_console_lock;
 
-/* It's possible, if you add enough debug output to Pintos, to
+/** It's possible, if you add enough debug output to Pintos, to
    try to recursively grab console_lock from a single thread.  As
    a real example, I added a printf() call to palloc_free().
    Here's a real backtrace that resulted:
@@ -56,10 +56,10 @@ static bool use_console_lock;
    counter. */
 static int console_lock_depth;
 
-/* Number of characters written to console. */
+/** Number of characters written to console. */
 static int64_t write_cnt;
 
-/* Enable console locking. */
+/** Enable console locking. */
 void
 console_init (void) 
 {
@@ -67,7 +67,7 @@ console_init (void)
   use_console_lock = true;
 }
 
-/* Notifies the console that a kernel panic is underway,
+/** Notifies the console that a kernel panic is underway,
    which warns it to avoid trying to take the console lock from
    now on. */
 void
@@ -76,14 +76,14 @@ console_panic (void)
   use_console_lock = false;
 }
 
-/* Prints console statistics. */
+/** Prints console statistics. */
 void
 console_print_stats (void) 
 {
   printf ("Console: %lld characters output\n", write_cnt);
 }
 
-/* Acquires the console lock. */
+/** Acquires the console lock. */
 static void
 acquire_console (void) 
 {
@@ -96,7 +96,7 @@ acquire_console (void)
     }
 }
 
-/* Releases the console lock. */
+/** Releases the console lock. */
 static void
 release_console (void) 
 {
@@ -109,7 +109,7 @@ release_console (void)
     }
 }
 
-/* Returns true if the current thread has the console lock,
+/** Returns true if the current thread has the console lock,
    false otherwise. */
 static bool
 console_locked_by_current_thread (void) 
@@ -119,7 +119,7 @@ console_locked_by_current_thread (void)
           || lock_held_by_current_thread (&console_lock));
 }
 
-/* The standard vprintf() function,
+/** The standard vprintf() function,
    which is like printf() but uses a va_list.
    Writes its output to both vga display and serial port. */
 int
@@ -134,7 +134,7 @@ vprintf (const char *format, va_list args)
   return char_cnt;
 }
 
-/* Writes string S to the console, followed by a new-line
+/** Writes string S to the console, followed by a new-line
    character. */
 int
 puts (const char *s) 
@@ -148,7 +148,7 @@ puts (const char *s)
   return 0;
 }
 
-/* Writes the N characters in BUFFER to the console. */
+/** Writes the N characters in BUFFER to the console. */
 void
 putbuf (const char *buffer, size_t n) 
 {
@@ -158,7 +158,7 @@ putbuf (const char *buffer, size_t n)
   release_console ();
 }
 
-/* Writes C to the vga display and serial port. */
+/** Writes C to the vga display and serial port. */
 int
 putchar (int c) 
 {
@@ -169,7 +169,7 @@ putchar (int c)
   return c;
 }
 
-/* Helper function for vprintf(). */
+/** Helper function for vprintf(). */
 static void
 vprintf_helper (char c, void *char_cnt_) 
 {
@@ -178,7 +178,7 @@ vprintf_helper (char c, void *char_cnt_)
   putchar_have_lock (c);
 }
 
-/* Writes C to the vga display and serial port.
+/** Writes C to the vga display and serial port.
    The caller has already acquired the console lock if
    appropriate. */
 static void

@@ -1,4 +1,4 @@
-/* The main thread set its priority to PRI_MIN and creates 7 threads 
+/** The main thread set its priority to PRI_MIN and creates 7 threads 
    (thread 1..7) with priorities PRI_MIN + 3, 6, 9, 12, ...
    The main thread initializes 8 locks: lock 0..7 and acquires lock 0.
 

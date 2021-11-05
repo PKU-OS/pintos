@@ -1,4 +1,4 @@
-/* Verifies that mapping over the stack segment is disallowed. */
+/** Verifies that mapping over the stack segment is disallowed. */
 
 #include <stdint.h>
 #include <round.h>

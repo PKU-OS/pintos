@@ -1,4 +1,4 @@
-/* Passes an invalid pointer to the open system call.
+/** Passes an invalid pointer to the open system call.
    The process must be terminated with -1 exit code. */
 
 #include <syscall.h>

@@ -6,7 +6,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-/* Page directory with kernel mappings only. */
+/** Page directory with kernel mappings only. */
 extern uint32_t *init_page_dir;
 
-#endif /* threads/init.h */
+#endif /**< threads/init.h */

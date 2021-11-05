@@ -1,4 +1,4 @@
-/* Grows a file in chunks while subprocesses read the growing
+/** Grows a file in chunks while subprocesses read the growing
    file. */
 
 #include <random.h>

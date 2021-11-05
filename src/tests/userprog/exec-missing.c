@@ -1,4 +1,4 @@
-/* Tries to execute a nonexistent process.
+/** Tries to execute a nonexistent process.
    The exec system call must return -1. */
 
 #include <syscall.h>

@@ -1,4 +1,4 @@
-/* Invokes a system call with one byte of the system call's
+/** Invokes a system call with one byte of the system call's
    argument on a separate page from the rest of the bytes.  This
    must work. */
 

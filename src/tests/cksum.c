@@ -1,4 +1,4 @@
-/* crctab[] and cksum() are from the `cksum' entry in SUSv3. */
+/** crctab[] and cksum() are from the `cksum' entry in SUSv3. */
 
 #include <stdint.h>
 #include "tests/cksum.h"
@@ -58,7 +58,7 @@ static unsigned long crctab[] = {
   0xa2f33668, 0xbcb4666d, 0xb8757bda, 0xb5365d03, 0xb1f740b4
 };
 
-/* This is the algorithm used by the Posix `cksum' utility. */
+/** This is the algorithm used by the Posix `cksum' utility. */
 unsigned long
 cksum (const void *b_, size_t n)
 {

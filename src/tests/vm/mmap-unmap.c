@@ -1,4 +1,4 @@
-/* Maps and unmaps a file and verifies that the mapped region is
+/** Maps and unmaps a file and verifies that the mapped region is
    inaccessible afterward. */
 
 #include <syscall.h>

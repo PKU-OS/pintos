@@ -1,4 +1,4 @@
-/* Verifies that memory mappings persist after file close. */
+/** Verifies that memory mappings persist after file close. */
 
 #include <string.h>
 #include <syscall.h>

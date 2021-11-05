@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-/* Standard. */
+/** Standard. */
 void *memcpy (void *, const void *, size_t);
 void *memmove (void *, const void *, size_t);
 char *strncat (char *, const char *, size_t);
@@ -19,17 +19,17 @@ char *strstr (const char *, const char *);
 void *memset (void *, int, size_t);
 size_t strlen (const char *);
 
-/* Extensions. */
+/** Extensions. */
 size_t strlcpy (char *, const char *, size_t);
 size_t strlcat (char *, const char *, size_t);
 char *strtok_r (char *, const char *, char **);
 size_t strnlen (const char *, size_t);
 
-/* Try to be helpful. */
+/** Try to be helpful. */
 #define strcpy dont_use_strcpy_use_strlcpy
 #define strncpy dont_use_strncpy_use_strlcpy
 #define strcat dont_use_strcat_use_strlcat
 #define strncat dont_use_strncat_use_strlcat
 #define strtok dont_use_strtok_use_strtok_r
 
-#endif /* lib/string.h */
+#endif /**< lib/string.h */

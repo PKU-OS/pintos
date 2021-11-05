@@ -1,4 +1,4 @@
-/* Recursively executes itself until the child fails to execute.
+/** Recursively executes itself until the child fails to execute.
    We expect that at least 30 copies can run.
 
    We count how many children your kernel was able to execute
@@ -31,7 +31,7 @@ const char *test_name = "multi-oom";
 
 enum child_termination_mode { RECURSE, CRASH };
 
-/* Spawn a recursive copy of ourselves, passing along instructions
+/** Spawn a recursive copy of ourselves, passing along instructions
    for the child. */
 static pid_t
 spawn_child (int c, enum child_termination_mode mode)
@@ -42,7 +42,7 @@ spawn_child (int c, enum child_termination_mode mode)
   return exec (child_cmd);
 }
 
-/* Open a number of files (and fail to close them).
+/** Open a number of files (and fail to close them).
    The kernel must free any kernel resources associated
    with these file descriptors. */
 static void
@@ -60,7 +60,7 @@ consume_some_resources (void)
       break;
 }
 
-/* Consume some resources, then terminate this process
+/** Consume some resources, then terminate this process
    in some abnormal way.  */
 static int NO_INLINE
 consume_some_resources_and_die (int seed)
@@ -93,7 +93,7 @@ consume_some_resources_and_die (int seed)
   return 0;
 }
 
-/* The first copy is invoked without command line arguments.
+/** The first copy is invoked without command line arguments.
    Subsequent copies are invoked with a parameter 'depth'
    that describes how many parent processes preceded them.
    Each process spawns one or multiple recursive copies of

@@ -1,4 +1,4 @@
-/* Insult.c
+/** Insult.c
 
    This is a version of the famous CS 107 random sentence
    generator.  I wrote a program that reads a grammar definition

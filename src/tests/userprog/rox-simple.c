@@ -1,4 +1,4 @@
-/* Ensure that the executable of a running process cannot be
+/** Ensure that the executable of a running process cannot be
    modified. */
 
 #include <syscall.h>

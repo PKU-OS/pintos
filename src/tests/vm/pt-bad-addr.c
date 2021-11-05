@@ -1,4 +1,4 @@
-/* Accesses a bad address.
+/** Accesses a bad address.
    The process must be terminated with -1 exit code. */
 
 #include "tests/lib.h"

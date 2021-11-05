@@ -1,4 +1,4 @@
-/* Tests that cond_signal() wakes up the highest-priority thread
+/** Tests that cond_signal() wakes up the highest-priority thread
    waiting in cond_wait(). */
 
 #include <stdio.h>

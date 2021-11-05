@@ -1,4 +1,4 @@
-/* Low priority thread L acquires a lock, then blocks downing a
+/** Low priority thread L acquires a lock, then blocks downing a
    semaphore.  Medium priority thread M then blocks waiting on
    the same semaphore.  Next, high priority thread H attempts to
    acquire the lock, donating its priority to L.

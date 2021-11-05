@@ -9,7 +9,7 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 
-/* A simple implementation of malloc().
+/** A simple implementation of malloc().
 
    The size of each request, in bytes, is rounded up to a power
    of 2 and assigned to the "descriptor" that manages blocks of
@@ -34,40 +34,40 @@
    with the page allocator and sticking the allocation size at
    the beginning of the allocated block's arena header. */
 
-/* Descriptor. */
+/** Descriptor. */
 struct desc
   {
-    size_t block_size;          /* Size of each element in bytes. */
-    size_t blocks_per_arena;    /* Number of blocks in an arena. */
-    struct list free_list;      /* List of free blocks. */
-    struct lock lock;           /* Lock. */
+    size_t block_size;          /**< Size of each element in bytes. */
+    size_t blocks_per_arena;    /**< Number of blocks in an arena. */
+    struct list free_list;      /**< List of free blocks. */
+    struct lock lock;           /**< Lock. */
   };
 
-/* Magic number for detecting arena corruption. */
+/** Magic number for detecting arena corruption. */
 #define ARENA_MAGIC 0x9a548eed
 
-/* Arena. */
+/** Arena. */
 struct arena 
   {
-    unsigned magic;             /* Always set to ARENA_MAGIC. */
-    struct desc *desc;          /* Owning descriptor, null for big block. */
-    size_t free_cnt;            /* Free blocks; pages in big block. */
+    unsigned magic;             /**< Always set to ARENA_MAGIC. */
+    struct desc *desc;          /**< Owning descriptor, null for big block. */
+    size_t free_cnt;            /**< Free blocks; pages in big block. */
   };
 
-/* Free block. */
+/** Free block. */
 struct block 
   {
-    struct list_elem free_elem; /* Free list element. */
+    struct list_elem free_elem; /**< Free list element. */
   };
 
-/* Our set of descriptors. */
-static struct desc descs[10];   /* Descriptors. */
-static size_t desc_cnt;         /* Number of descriptors. */
+/** Our set of descriptors. */
+static struct desc descs[10];   /**< Descriptors. */
+static size_t desc_cnt;         /**< Number of descriptors. */
 
 static struct arena *block_to_arena (struct block *);
 static struct block *arena_to_block (struct arena *, size_t idx);
 
-/* Initializes the malloc() descriptors. */
+/** Initializes the malloc() descriptors. */
 void
 malloc_init (void) 
 {
@@ -84,7 +84,7 @@ malloc_init (void)
     }
 }
 
-/* Obtains and returns a new block of at least SIZE bytes.
+/** Obtains and returns a new block of at least SIZE bytes.
    Returns a null pointer if memory is not available. */
 void *
 malloc (size_t size) 
@@ -153,7 +153,7 @@ malloc (size_t size)
   return b;
 }
 
-/* Allocates and return A times B bytes initialized to zeroes.
+/** Allocates and return A times B bytes initialized to zeroes.
    Returns a null pointer if memory is not available. */
 void *
 calloc (size_t a, size_t b) 
@@ -174,7 +174,7 @@ calloc (size_t a, size_t b)
   return p;
 }
 
-/* Returns the number of bytes allocated for BLOCK. */
+/** Returns the number of bytes allocated for BLOCK. */
 static size_t
 block_size (void *block) 
 {
@@ -185,7 +185,7 @@ block_size (void *block)
   return d != NULL ? d->block_size : PGSIZE * a->free_cnt - pg_ofs (block);
 }
 
-/* Attempts to resize OLD_BLOCK to NEW_SIZE bytes, possibly
+/** Attempts to resize OLD_BLOCK to NEW_SIZE bytes, possibly
    moving it in the process.
    If successful, returns the new block; on failure, returns a
    null pointer.
@@ -213,7 +213,7 @@ realloc (void *old_block, size_t new_size)
     }
 }
 
-/* Frees block P, which must have been previously allocated with
+/** Frees block P, which must have been previously allocated with
    malloc(), calloc(), or realloc(). */
 void
 free (void *p) 
@@ -263,7 +263,7 @@ free (void *p)
     }
 }
 
-/* Returns the arena that block B is inside. */
+/** Returns the arena that block B is inside. */
 static struct arena *
 block_to_arena (struct block *b)
 {
@@ -281,7 +281,7 @@ block_to_arena (struct block *b)
   return a;
 }
 
-/* Returns the (IDX - 1)'th block within arena A. */
+/** Returns the (IDX - 1)'th block within arena A. */
 static struct block *
 arena_to_block (struct arena *a, size_t idx) 
 {

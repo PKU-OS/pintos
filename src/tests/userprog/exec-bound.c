@@ -1,4 +1,4 @@
-/* Exec a child with an exec string that spans a page boundary. */
+/** Exec a child with an exec string that spans a page boundary. */
 
 #include <syscall.h>
 #include "tests/userprog/boundary.h"

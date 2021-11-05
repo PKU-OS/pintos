@@ -5,4 +5,4 @@ void console_init (void);
 void console_panic (void);
 void console_print_stats (void);
 
-#endif /* lib/kernel/console.h */
+#endif /**< lib/kernel/console.h */

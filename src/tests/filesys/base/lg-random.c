@@ -1,4 +1,4 @@
-/* Writes out the content of a fairly large file in random order,
+/** Writes out the content of a fairly large file in random order,
    then reads it back in random order to verify that it was
    written properly. */
 

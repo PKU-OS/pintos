@@ -1,4 +1,4 @@
-/* Verifies that mmap'd regions are only written back on munmap
+/** Verifies that mmap'd regions are only written back on munmap
    if the data was actually modified in memory. */
 
 #include <string.h>

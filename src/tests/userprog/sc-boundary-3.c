@@ -1,4 +1,4 @@
-/* Invokes a system call with the system call number positioned
+/** Invokes a system call with the system call number positioned
    such that its first byte is valid but the remaining bytes of
    the number are in invalid memory. Must kill process. */
 

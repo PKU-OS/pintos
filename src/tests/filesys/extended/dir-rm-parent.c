@@ -1,4 +1,4 @@
-/* Tries to remove a parent of the current directory.  This must
+/** Tries to remove a parent of the current directory.  This must
    fail, because that directory is non-empty. */
 
 #include <syscall.h>

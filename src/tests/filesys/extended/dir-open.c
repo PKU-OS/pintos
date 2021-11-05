@@ -1,4 +1,4 @@
-/* Opens a directory, then tries to write to it, which must
+/** Opens a directory, then tries to write to it, which must
    fail. */
 
 #include <syscall.h>

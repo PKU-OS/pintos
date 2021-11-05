@@ -1,4 +1,4 @@
-/* Tries to open the same file twice,
+/** Tries to open the same file twice,
    which must succeed and must return a different file descriptor
    in each case. */
 

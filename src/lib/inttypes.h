@@ -45,4 +45,4 @@
 #define PRIxPTR "tx"
 #define PRIXPTR "tX"
 
-#endif /* lib/inttypes.h */
+#endif /**< lib/inttypes.h */

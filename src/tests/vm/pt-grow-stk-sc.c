@@ -1,4 +1,4 @@
-/* This test checks that the stack is properly extended even if
+/** This test checks that the stack is properly extended even if
    the first access to a stack location occurs inside a system
    call.
 

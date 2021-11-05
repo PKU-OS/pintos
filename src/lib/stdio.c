@@ -5,17 +5,17 @@
 #include <stdint.h>
 #include <string.h>
 
-/* Auxiliary data for vsnprintf_helper(). */
+/** Auxiliary data for vsnprintf_helper(). */
 struct vsnprintf_aux 
   {
-    char *p;            /* Current output position. */
-    int length;         /* Length of output string. */
-    int max_length;     /* Max length of output string. */
+    char *p;            /**< Current output position. */
+    int length;         /**< Length of output string. */
+    int max_length;     /**< Max length of output string. */
   };
 
 static void vsnprintf_helper (char, void *);
 
-/* Like vprintf(), except that output is stored into BUFFER,
+/** Like vprintf(), except that output is stored into BUFFER,
    which must have space for BUF_SIZE characters.  Writes at most
    BUF_SIZE - 1 characters to BUFFER, followed by a null
    terminator.  BUFFER will always be null-terminated unless
@@ -41,7 +41,7 @@ vsnprintf (char *buffer, size_t buf_size, const char *format, va_list args)
   return aux.length;
 }
 
-/* Helper function for vsnprintf(). */
+/** Helper function for vsnprintf(). */
 static void
 vsnprintf_helper (char ch, void *aux_)
 {
@@ -51,7 +51,7 @@ vsnprintf_helper (char ch, void *aux_)
     *aux->p++ = ch;
 }
 
-/* Like printf(), except that output is stored into BUFFER,
+/** Like printf(), except that output is stored into BUFFER,
    which must have space for BUF_SIZE characters.  Writes at most
    BUF_SIZE - 1 characters to BUFFER, followed by a null
    terminator.  BUFFER will always be null-terminated unless
@@ -71,7 +71,7 @@ snprintf (char *buffer, size_t buf_size, const char *format, ...)
   return retval;
 }
 
-/* Writes formatted output to the console.
+/** Writes formatted output to the console.
    In the kernel, the console is both the video display and first
    serial port.
    In userspace, the console is file descriptor 1. */
@@ -88,20 +88,20 @@ printf (const char *format, ...)
   return retval;
 }
 
-/* printf() formatting internals. */
+/** printf() formatting internals. */
 
-/* A printf() conversion. */
+/** A printf() conversion. */
 struct printf_conversion 
   {
     /* Flags. */
     enum 
       {
-        MINUS = 1 << 0,         /* '-' */
-        PLUS = 1 << 1,          /* '+' */
-        SPACE = 1 << 2,         /* ' ' */
-        POUND = 1 << 3,         /* '#' */
-        ZERO = 1 << 4,          /* '0' */
-        GROUP = 1 << 5          /* '\'' */
+        MINUS = 1 << 0,         /**< '-' */
+        PLUS = 1 << 1,          /**< '+' */
+        SPACE = 1 << 2,         /**< ' ' */
+        POUND = 1 << 3,         /**< '#' */
+        ZERO = 1 << 4,          /**< '0' */
+        GROUP = 1 << 5          /**< '\'' */
       }
     flags;
 
@@ -115,24 +115,24 @@ struct printf_conversion
     /* Type of argument to format. */
     enum 
       {
-        CHAR = 1,               /* hh */
-        SHORT = 2,              /* h */
-        INT = 3,                /* (none) */
-        INTMAX = 4,             /* j */
-        LONG = 5,               /* l */
-        LONGLONG = 6,           /* ll */
-        PTRDIFFT = 7,           /* t */
-        SIZET = 8               /* z */
+        CHAR = 1,               /**< hh */
+        SHORT = 2,              /**< h */
+        INT = 3,                /**< (none) */
+        INTMAX = 4,             /**< j */
+        LONG = 5,               /**< l */
+        LONGLONG = 6,           /**< ll */
+        PTRDIFFT = 7,           /**< t */
+        SIZET = 8               /**< z */
       }
     type;
   };
 
 struct integer_base 
   {
-    int base;                   /* Base. */
-    const char *digits;         /* Collection of digits. */
-    int x;                      /* `x' character to use, for base 16 only. */
-    int group;                  /* Number of digits to group with ' flag. */
+    int base;                   /**< Base. */
+    const char *digits;         /**< Collection of digits. */
+    int x;                      /**< `x' character to use, for base 16 only. */
+    int group;                  /**< Number of digits to group with ' flag. */
   };
 
 static const struct integer_base base_d = {10, "0123456789", 0, 3};
@@ -332,7 +332,7 @@ __vprintf (const char *format, va_list args,
     }
 }
 
-/* Parses conversion option characters starting at FORMAT and
+/** Parses conversion option characters starting at FORMAT and
    initializes C appropriately.  Returns the character in FORMAT
    that indicates the conversion (e.g. the `d' in `%d').  Uses
    *ARGS for `*' field widths and precisions. */
@@ -459,7 +459,7 @@ parse_conversion (const char *format, struct printf_conversion *c,
   return format;
 }
 
-/* Performs an integer conversion, writing output to OUTPUT with
+/** Performs an integer conversion, writing output to OUTPUT with
    auxiliary data AUX.  The integer converted has absolute value
    VALUE.  If IS_SIGNED is true, does a signed conversion with
    NEGATIVE indicating a negative value; otherwise does an
@@ -472,12 +472,12 @@ format_integer (uintmax_t value, bool is_signed, bool negative,
                 const struct printf_conversion *c,
                 void (*output) (char, void *), void *aux)
 {
-  char buf[64], *cp;            /* Buffer and current position. */
-  int x;                        /* `x' character to use or 0 if none. */
-  int sign;                     /* Sign character or 0 if none. */
-  int precision;                /* Rendered precision. */
-  int pad_cnt;                  /* # of pad characters to fill field width. */
-  int digit_cnt;                /* # of digits output so far. */
+  char buf[64], *cp;            /**< Buffer and current position. */
+  int x;                        /**< `x' character to use or 0 if none. */
+  int sign;                     /**< Sign character or 0 if none. */
+  int precision;                /**< Rendered precision. */
+  int pad_cnt;                  /**< # of pad characters to fill field width. */
+  int digit_cnt;                /**< # of digits output so far. */
 
   /* Determine sign character, if any.
      An unsigned conversion will never have a sign character,
@@ -546,7 +546,7 @@ format_integer (uintmax_t value, bool is_signed, bool negative,
     output_dup (' ', pad_cnt, output, aux);
 }
 
-/* Writes CH to OUTPUT with auxiliary data AUX, CNT times. */
+/** Writes CH to OUTPUT with auxiliary data AUX, CNT times. */
 static void
 output_dup (char ch, size_t cnt, void (*output) (char, void *), void *aux) 
 {
@@ -554,7 +554,7 @@ output_dup (char ch, size_t cnt, void (*output) (char, void *), void *aux)
     output (ch, aux);
 }
 
-/* Formats the LENGTH characters starting at STRING according to
+/** Formats the LENGTH characters starting at STRING according to
    the conversion specified in C.  Writes output to OUTPUT with
    auxiliary data AUX. */
 static void
@@ -571,7 +571,7 @@ format_string (const char *string, int length,
     output_dup (' ', c->width - length, output, aux);
 }
 
-/* Wrapper for __vprintf() that converts varargs into a
+/** Wrapper for __vprintf() that converts varargs into a
    va_list. */
 void
 __printf (const char *format,
@@ -584,7 +584,7 @@ __printf (const char *format,
   va_end (args);
 }
 
-/* Dumps the SIZE bytes in BUF to the console as hex bytes
+/** Dumps the SIZE bytes in BUF to the console as hex bytes
    arranged 16 per line.  Numeric offsets are also included,
    starting at OFS for the first byte in BUF.  If ASCII is true
    then the corresponding ASCII characters are also rendered
@@ -593,7 +593,7 @@ void
 hex_dump (uintptr_t ofs, const void *buf_, size_t size, bool ascii)
 {
   const uint8_t *buf = buf_;
-  const size_t per_line = 16; /* Maximum bytes per line. */
+  const size_t per_line = 16; /**< Maximum bytes per line. */
 
   while (size > 0)
     {
@@ -636,7 +636,7 @@ hex_dump (uintptr_t ofs, const void *buf_, size_t size, bool ascii)
     }
 }
 
-/* Prints SIZE, which represents a number of bytes, in a
+/** Prints SIZE, which represents a number of bytes, in a
    human-readable format, e.g. "256 kB". */
 void
 print_human_readable_size (uint64_t size) 

@@ -1,4 +1,4 @@
-/* Demonstrate that the stack can grow.
+/** Demonstrate that the stack can grow.
    This must succeed. */
 
 #include <string.h>

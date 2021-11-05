@@ -8,4 +8,4 @@ void seq_test (const char *file_name,
                size_t (*block_size_func) (void),
                void (*check_func) (int fd, long ofs));
 
-#endif /* tests/filesys/seq-test.h */
+#endif /**< tests/filesys/seq-test.h */

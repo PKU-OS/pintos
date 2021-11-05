@@ -1,4 +1,4 @@
-/* Low-priority main thread L acquires lock A.  Medium-priority
+/** Low-priority main thread L acquires lock A.  Medium-priority
    thread M then acquires lock B then blocks on acquiring lock A.
    High-priority thread H then blocks on acquiring lock B.  Thus,
    thread H donates its priority to M, which in turn donates it

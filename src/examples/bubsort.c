@@ -1,4 +1,4 @@
-/* sort.c 
+/** sort.c 
 
    Test program to sort a large number of integers.
  
@@ -8,7 +8,7 @@
    system, and store the result back to the file system! */
 #include <stdio.h>
 
-/* Size of array to sort. */
+/** Size of array to sort. */
 #define SORT_SIZE 128
 
 int

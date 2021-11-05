@@ -1,4 +1,4 @@
-/* Child process of page-parallel.
+/** Child process of page-parallel.
    Encrypts 1 MB of zeros, then decrypts it, and ensures that
    the zeros are back. */
 

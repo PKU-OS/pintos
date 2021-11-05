@@ -1,4 +1,4 @@
-/* Tries to create a file with the same name as an existing
+/** Tries to create a file with the same name as an existing
    directory, which must return failure. */
 
 #include <syscall.h>

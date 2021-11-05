@@ -1,4 +1,4 @@
-/* Tests timer_sleep(0), which should return immediately. */
+/** Tests timer_sleep(0), which should return immediately. */
 
 #include <stdio.h>
 #include "tests/threads/tests.h"

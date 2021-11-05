@@ -1,4 +1,4 @@
-/* cat.c
+/** cat.c
 
    Compares two files. */
 

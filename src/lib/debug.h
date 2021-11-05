@@ -1,7 +1,7 @@
 #ifndef __LIB_DEBUG_H
 #define __LIB_DEBUG_H
 
-/* GCC lets us add "attributes" to functions, function
+/** GCC lets us add "attributes" to functions, function
    parameters, etc. to indicate their properties.
    See the GCC manual for details. */
 #define UNUSED __attribute__ ((unused))
@@ -9,7 +9,7 @@
 #define NO_INLINE __attribute__ ((noinline))
 #define PRINTF_FORMAT(FMT, FIRST) __attribute__ ((format (printf, FMT, FIRST)))
 
-/* Halts the OS, printing the source file name, line number, and
+/** Halts the OS, printing the source file name, line number, and
    function name, plus a user-specific message. */
 #define PANIC(...) debug_panic (__FILE__, __LINE__, __func__, __VA_ARGS__)
 
@@ -22,7 +22,7 @@ void debug_backtrace_all (void);
 
 
 
-/* This is outside the header guard so that debug.h may be
+/** This is outside the header guard so that debug.h may be
    included multiple times with different settings of NDEBUG. */
 #undef ASSERT
 #undef NOT_REACHED
@@ -36,4 +36,4 @@ void debug_backtrace_all (void);
 #else
 #define ASSERT(CONDITION) ((void) 0)
 #define NOT_REACHED() for (;;)
-#endif /* lib/debug.h */
+#endif /**< lib/debug.h */

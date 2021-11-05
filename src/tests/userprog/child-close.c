@@ -1,4 +1,4 @@
-/* Child process run by multi-child-fd test.
+/** Child process run by multi-child-fd test.
 
    Attempts to close the file descriptor passed as the first
    command-line argument.  This is invalid, because file

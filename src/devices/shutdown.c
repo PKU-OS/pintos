@@ -14,15 +14,15 @@
 #include "filesys/filesys.h"
 #endif
 
-/* Keyboard control register port. */
+/** Keyboard control register port. */
 #define CONTROL_REG 0x64
 
-/* How to shut down when shutdown() is called. */
+/** How to shut down when shutdown() is called. */
 static enum shutdown_type how = SHUTDOWN_NONE;
 
 static void print_stats (void);
 
-/* Shuts down the machine in the way configured by
+/** Shuts down the machine in the way configured by
    shutdown_configure().  If the shutdown type is SHUTDOWN_NONE
    (which is the default), returns without doing anything. */
 void
@@ -44,7 +44,7 @@ shutdown (void)
     }
 }
 
-/* Sets TYPE as the way that machine will shut down when Pintos
+/** Sets TYPE as the way that machine will shut down when Pintos
    execution is complete. */
 void
 shutdown_configure (enum shutdown_type type)
@@ -52,7 +52,7 @@ shutdown_configure (enum shutdown_type type)
   how = type;
 }
 
-/* Reboots the machine via the keyboard controller. */
+/** Reboots the machine via the keyboard controller. */
 void
 shutdown_reboot (void)
 {
@@ -82,7 +82,7 @@ shutdown_reboot (void)
     }
 }
 
-/* Powers down the machine we're running on,
+/** Powers down the machine we're running on,
    as long as we're running on Bochs or QEMU. */
 void
 shutdown_power_off (void)
@@ -124,7 +124,7 @@ shutdown_power_off (void)
   for (;;);
 }
 
-/* Print statistics about Pintos execution. */
+/** Print statistics about Pintos execution. */
 static void
 print_stats (void)
 {

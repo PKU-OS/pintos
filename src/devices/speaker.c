@@ -4,13 +4,13 @@
 #include "threads/interrupt.h"
 #include "devices/timer.h"
 
-/* Speaker port enable I/O register. */
+/** Speaker port enable I/O register. */
 #define SPEAKER_PORT_GATE	0x61
 
-/* Speaker port enable bits. */
+/** Speaker port enable bits. */
 #define SPEAKER_GATE_ENABLE	0x03
 
-/* Sets the PC speaker to emit a tone at the given FREQUENCY, in
+/** Sets the PC speaker to emit a tone at the given FREQUENCY, in
    Hz. */
 void
 speaker_on (int frequency)
@@ -33,7 +33,7 @@ speaker_on (int frequency)
     }
 }
 
-/* Turn off the PC speaker, by disconnecting the timer channel's
+/** Turn off the PC speaker, by disconnecting the timer channel's
    output from the speaker. */
 void
 speaker_off (void)
@@ -43,7 +43,7 @@ speaker_off (void)
   intr_set_level (old_level);
 }
 
-/* Briefly beep the PC speaker. */
+/** Briefly beep the PC speaker. */
 void
 speaker_beep (void)
 {

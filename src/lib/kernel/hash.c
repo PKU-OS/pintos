@@ -1,4 +1,4 @@
-/* Hash table.
+/** Hash table.
 
    This data structure is thoroughly documented in the Tour of
    Pintos for Project 3.
@@ -19,7 +19,7 @@ static void insert_elem (struct hash *, struct list *, struct hash_elem *);
 static void remove_elem (struct hash *, struct hash_elem *);
 static void rehash (struct hash *);
 
-/* Initializes hash table H to compute hash values using HASH and
+/** Initializes hash table H to compute hash values using HASH and
    compare hash elements using LESS, given auxiliary data AUX. */
 bool
 hash_init (struct hash *h,
@@ -41,7 +41,7 @@ hash_init (struct hash *h,
     return false;
 }
 
-/* Removes all the elements from H.
+/** Removes all the elements from H.
    
    If DESTRUCTOR is non-null, then it is called for each element
    in the hash.  DESTRUCTOR may, if appropriate, deallocate the
@@ -73,7 +73,7 @@ hash_clear (struct hash *h, hash_action_func *destructor)
   h->elem_cnt = 0;
 }
 
-/* Destroys hash table H.
+/** Destroys hash table H.
 
    If DESTRUCTOR is non-null, then it is first called for each
    element in the hash.  DESTRUCTOR may, if appropriate,
@@ -91,7 +91,7 @@ hash_destroy (struct hash *h, hash_action_func *destructor)
   free (h->buckets);
 }
 
-/* Inserts NEW into hash table H and returns a null pointer, if
+/** Inserts NEW into hash table H and returns a null pointer, if
    no equal element is already in the table.
    If an equal element is already in the table, returns it
    without inserting NEW. */   
@@ -109,7 +109,7 @@ hash_insert (struct hash *h, struct hash_elem *new)
   return old; 
 }
 
-/* Inserts NEW into hash table H, replacing any equal element
+/** Inserts NEW into hash table H, replacing any equal element
    already in the table, which is returned. */
 struct hash_elem *
 hash_replace (struct hash *h, struct hash_elem *new) 
@@ -126,7 +126,7 @@ hash_replace (struct hash *h, struct hash_elem *new)
   return old;
 }
 
-/* Finds and returns an element equal to E in hash table H, or a
+/** Finds and returns an element equal to E in hash table H, or a
    null pointer if no equal element exists in the table. */
 struct hash_elem *
 hash_find (struct hash *h, struct hash_elem *e) 
@@ -134,7 +134,7 @@ hash_find (struct hash *h, struct hash_elem *e)
   return find_elem (h, find_bucket (h, e), e);
 }
 
-/* Finds, removes, and returns an element equal to E in hash
+/** Finds, removes, and returns an element equal to E in hash
    table H.  Returns a null pointer if no equal element existed
    in the table.
 
@@ -153,7 +153,7 @@ hash_delete (struct hash *h, struct hash_elem *e)
   return found;
 }
 
-/* Calls ACTION for each element in hash table H in arbitrary
+/** Calls ACTION for each element in hash table H in arbitrary
    order. 
    Modifying hash table H while hash_apply() is running, using
    any of the functions hash_clear(), hash_destroy(),
@@ -179,7 +179,7 @@ hash_apply (struct hash *h, hash_action_func *action)
     }
 }
 
-/* Initializes I for iterating hash table H.
+/** Initializes I for iterating hash table H.
 
    Iteration idiom:
 
@@ -207,7 +207,7 @@ hash_first (struct hash_iterator *i, struct hash *h)
   i->elem = list_elem_to_hash_elem (list_head (i->bucket));
 }
 
-/* Advances I to the next element in the hash table and returns
+/** Advances I to the next element in the hash table and returns
    it.  Returns a null pointer if no elements are left.  Elements
    are returned in arbitrary order.
 
@@ -234,7 +234,7 @@ hash_next (struct hash_iterator *i)
   return i->elem;
 }
 
-/* Returns the current element in the hash table iteration, or a
+/** Returns the current element in the hash table iteration, or a
    null pointer at the end of the table.  Undefined behavior
    after calling hash_first() but before hash_next(). */
 struct hash_elem *
@@ -243,25 +243,25 @@ hash_cur (struct hash_iterator *i)
   return i->elem;
 }
 
-/* Returns the number of elements in H. */
+/** Returns the number of elements in H. */
 size_t
 hash_size (struct hash *h) 
 {
   return h->elem_cnt;
 }
 
-/* Returns true if H contains no elements, false otherwise. */
+/** Returns true if H contains no elements, false otherwise. */
 bool
 hash_empty (struct hash *h) 
 {
   return h->elem_cnt == 0;
 }
 
-/* Fowler-Noll-Vo hash constants, for 32-bit word sizes. */
+/** Fowler-Noll-Vo hash constants, for 32-bit word sizes. */
 #define FNV_32_PRIME 16777619u
 #define FNV_32_BASIS 2166136261u
 
-/* Returns a hash of the SIZE bytes in BUF. */
+/** Returns a hash of the SIZE bytes in BUF. */
 unsigned
 hash_bytes (const void *buf_, size_t size)
 {
@@ -278,7 +278,7 @@ hash_bytes (const void *buf_, size_t size)
   return hash;
 } 
 
-/* Returns a hash of string S. */
+/** Returns a hash of string S. */
 unsigned
 hash_string (const char *s_) 
 {
@@ -294,14 +294,14 @@ hash_string (const char *s_)
   return hash;
 }
 
-/* Returns a hash of integer I. */
+/** Returns a hash of integer I. */
 unsigned
 hash_int (int i) 
 {
   return hash_bytes (&i, sizeof i);
 }
 
-/* Returns the bucket in H that E belongs in. */
+/** Returns the bucket in H that E belongs in. */
 static struct list *
 find_bucket (struct hash *h, struct hash_elem *e) 
 {
@@ -309,7 +309,7 @@ find_bucket (struct hash *h, struct hash_elem *e)
   return &h->buckets[bucket_idx];
 }
 
-/* Searches BUCKET in H for a hash element equal to E.  Returns
+/** Searches BUCKET in H for a hash element equal to E.  Returns
    it if found or a null pointer otherwise. */
 static struct hash_elem *
 find_elem (struct hash *h, struct list *bucket, struct hash_elem *e) 
@@ -325,26 +325,26 @@ find_elem (struct hash *h, struct list *bucket, struct hash_elem *e)
   return NULL;
 }
 
-/* Returns X with its lowest-order bit set to 1 turned off. */
+/** Returns X with its lowest-order bit set to 1 turned off. */
 static inline size_t
 turn_off_least_1bit (size_t x) 
 {
   return x & (x - 1);
 }
 
-/* Returns true if X is a power of 2, otherwise false. */
+/** Returns true if X is a power of 2, otherwise false. */
 static inline size_t
 is_power_of_2 (size_t x) 
 {
   return x != 0 && turn_off_least_1bit (x) == 0;
 }
 
-/* Element per bucket ratios. */
-#define MIN_ELEMS_PER_BUCKET  1 /* Elems/bucket < 1: reduce # of buckets. */
-#define BEST_ELEMS_PER_BUCKET 2 /* Ideal elems/bucket. */
-#define MAX_ELEMS_PER_BUCKET  4 /* Elems/bucket > 4: increase # of buckets. */
+/** Element per bucket ratios. */
+#define MIN_ELEMS_PER_BUCKET  1 /**< Elems/bucket < 1: reduce # of buckets. */
+#define BEST_ELEMS_PER_BUCKET 2 /**< Ideal elems/bucket. */
+#define MAX_ELEMS_PER_BUCKET  4 /**< Elems/bucket > 4: increase # of buckets. */
 
-/* Changes the number of buckets in hash table H to match the
+/** Changes the number of buckets in hash table H to match the
    ideal.  This function can fail because of an out-of-memory
    condition, but that'll just make hash accesses less efficient;
    we can still continue. */
@@ -412,7 +412,7 @@ rehash (struct hash *h)
   free (old_buckets);
 }
 
-/* Inserts E into BUCKET (in hash table H). */
+/** Inserts E into BUCKET (in hash table H). */
 static void
 insert_elem (struct hash *h, struct list *bucket, struct hash_elem *e) 
 {
@@ -420,7 +420,7 @@ insert_elem (struct hash *h, struct list *bucket, struct hash_elem *e)
   list_push_front (bucket, &e->list_elem);
 }
 
-/* Removes E from hash table H. */
+/** Removes E from hash table H. */
 static void
 remove_elem (struct hash *h, struct hash_elem *e) 
 {

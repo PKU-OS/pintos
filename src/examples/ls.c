@@ -1,4 +1,4 @@
-/* ls.c
+/** ls.c
   
    Lists the contents of the directory or directories named on
    the command line, or of the current directory if none are

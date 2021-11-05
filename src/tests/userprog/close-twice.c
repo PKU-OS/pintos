@@ -1,4 +1,4 @@
-/* Opens a file and then tries to close it twice.  The second
+/** Opens a file and then tries to close it twice.  The second
    close must either fail silently or terminate with exit code
    -1. */
 

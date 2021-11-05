@@ -7,4 +7,4 @@ void fsutil_rm (char **argv);
 void fsutil_extract (char **argv);
 void fsutil_append (char **argv);
 
-#endif /* filesys/fsutil.h */
+#endif /**< filesys/fsutil.h */

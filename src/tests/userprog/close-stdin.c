@@ -1,4 +1,4 @@
-/* Tries to close the keyboard input stream, which must either
+/** Tries to close the keyboard input stream, which must either
    fail silently or terminate with exit code -1. */
 
 #include <syscall.h>

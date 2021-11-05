@@ -1,4 +1,4 @@
-/* lineup.c
+/** lineup.c
 
    Converts a file to uppercase in-place.
 

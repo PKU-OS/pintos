@@ -3,4 +3,4 @@
 
 void putbuf (const char *, size_t);
 
-#endif /* lib/kernel/stdio.h */
+#endif /**< lib/kernel/stdio.h */

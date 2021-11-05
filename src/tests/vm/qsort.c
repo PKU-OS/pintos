@@ -3,7 +3,7 @@
 #include <debug.h>
 #include <random.h>
 
-/* Picks a pivot for the quicksort from the SIZE bytes in BUF. */
+/** Picks a pivot for the quicksort from the SIZE bytes in BUF. */
 static unsigned char
 pick_pivot (unsigned char *buf, size_t size) 
 {
@@ -11,7 +11,7 @@ pick_pivot (unsigned char *buf, size_t size)
   return buf[random_ulong () % size];
 }
 
-/* Checks whether the SIZE bytes in ARRAY are divided into an
+/** Checks whether the SIZE bytes in ARRAY are divided into an
    initial LEFT_SIZE elements all less than PIVOT followed by
    SIZE - LEFT_SIZE elements all greater than or equal to
    PIVOT. */
@@ -32,7 +32,7 @@ is_partitioned (const unsigned char *array, size_t size,
   return true;
 }
 
-/* Swaps the bytes at *A and *B. */
+/** Swaps the bytes at *A and *B. */
 static void
 swap (unsigned char *a, unsigned char *b) 
 {
@@ -41,7 +41,7 @@ swap (unsigned char *a, unsigned char *b)
   *b = t;
 }
 
-/* Partitions ARRAY in-place in an initial run of bytes all less
+/** Partitions ARRAY in-place in an initial run of bytes all less
    than PIVOT, followed by a run of bytes all greater than or
    equal to PIVOT.  Returns the length of the initial run. */
 static size_t
@@ -94,7 +94,7 @@ partition (unsigned char *array, size_t size, int pivot)
     }
 }
 
-/* Returns true if the SIZE bytes in BUF are in nondecreasing
+/** Returns true if the SIZE bytes in BUF are in nondecreasing
    order, false otherwise. */
 static bool
 is_sorted (const unsigned char *buf, size_t size) 
@@ -108,7 +108,7 @@ is_sorted (const unsigned char *buf, size_t size)
   return true;
 }
 
-/* Sorts the SIZE bytes in BUF into nondecreasing order, using
+/** Sorts the SIZE bytes in BUF into nondecreasing order, using
    the quick-sort algorithm. */
 void
 qsort_bytes (unsigned char *buf, size_t size) 

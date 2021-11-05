@@ -3,14 +3,14 @@
 
 #include <stddef.h>
 
-/* Standard functions. */
+/** Standard functions. */
 int atoi (const char *);
 void qsort (void *array, size_t cnt, size_t size,
             int (*compare) (const void *, const void *));
 void *bsearch (const void *key, const void *array, size_t cnt,
                size_t size, int (*compare) (const void *, const void *));
 
-/* Nonstandard functions. */
+/** Nonstandard functions. */
 void sort (void *array, size_t cnt, size_t size,
            int (*compare) (const void *, const void *, void *aux),
            void *aux);
@@ -19,4 +19,4 @@ void *binary_search (const void *key, const void *array, size_t cnt,
                      int (*compare) (const void *, const void *, void *aux),
                      void *aux);
 
-#endif /* lib/stdlib.h */
+#endif /**< lib/stdlib.h */

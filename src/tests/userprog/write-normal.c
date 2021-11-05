@@ -1,4 +1,4 @@
-/* Try writing a file in the most normal way. */
+/** Try writing a file in the most normal way. */
 
 #include <syscall.h>
 #include "tests/userprog/sample.inc"

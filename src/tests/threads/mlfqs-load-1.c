@@ -1,4 +1,4 @@
-/* Verifies that a single busy thread raises the load average to
+/** Verifies that a single busy thread raises the load average to
    0.5 in 38 to 45 seconds.  The expected time is 42 seconds, as
    you can verify:
    perl -e '$i++,$a=(59*$a+1)/60while$a<=.5;print "$i\n"'

@@ -8,53 +8,53 @@
 #include "threads/interrupt.h"
 #include "threads/io.h"
 
-/* Keyboard data register port. */
+/** Keyboard data register port. */
 #define DATA_REG 0x60
 
-/* Current state of shift keys.
+/** Current state of shift keys.
    True if depressed, false otherwise. */
-static bool left_shift, right_shift;    /* Left and right Shift keys. */
-static bool left_alt, right_alt;        /* Left and right Alt keys. */
-static bool left_ctrl, right_ctrl;      /* Left and right Ctl keys. */
+static bool left_shift, right_shift;    /**< Left and right Shift keys. */
+static bool left_alt, right_alt;        /**< Left and right Alt keys. */
+static bool left_ctrl, right_ctrl;      /**< Left and right Ctl keys. */
 
-/* Status of Caps Lock.
+/** Status of Caps Lock.
    True when on, false when off. */
 static bool caps_lock;
 
-/* Number of keys pressed. */
+/** Number of keys pressed. */
 static int64_t key_cnt;
 
 static intr_handler_func keyboard_interrupt;
 
-/* Initializes the keyboard. */
+/** Initializes the keyboard. */
 void
 kbd_init (void) 
 {
   intr_register_ext (0x21, keyboard_interrupt, "8042 Keyboard");
 }
 
-/* Prints keyboard statistics. */
+/** Prints keyboard statistics. */
 void
 kbd_print_stats (void) 
 {
   printf ("Keyboard: %lld keys pressed\n", key_cnt);
 }
 
-/* Maps a set of contiguous scancodes into characters. */
+/** Maps a set of contiguous scancodes into characters. */
 struct keymap
   {
-    uint8_t first_scancode;     /* First scancode. */
-    const char *chars;          /* chars[0] has scancode first_scancode,
+    uint8_t first_scancode;     /**< First scancode. */
+    const char *chars;          /**< chars[0] has scancode first_scancode,
                                    chars[1] has scancode first_scancode + 1,
                                    and so on to the end of the string. */
   };
   
-/* Keys that produce the same characters regardless of whether
+/** Keys that produce the same characters regardless of whether
    the Shift keys are down.  Case of letters is an exception
    that we handle elsewhere.  */
 static const struct keymap invariant_keymap[] = 
   {
-    {0x01, "\033"},             /* Escape. */
+    {0x01, "\033"},             /**< Escape. */
     {0x0e, "\b"},
     {0x0f, "\tQWERTYUIOP"},
     {0x1c, "\r"},
@@ -62,11 +62,11 @@ static const struct keymap invariant_keymap[] =
     {0x2c, "ZXCVBNM"},
     {0x37, "*"},
     {0x39, " "},
-    {0x53, "\177"},             /* Delete. */
+    {0x53, "\177"},             /**< Delete. */
     {0, NULL},
   };
 
-/* Characters for keys pressed without Shift, for those keys
+/** Characters for keys pressed without Shift, for those keys
    where it matters. */
 static const struct keymap unshifted_keymap[] = 
   {
@@ -78,7 +78,7 @@ static const struct keymap unshifted_keymap[] =
     {0, NULL},
   };
   
-/* Characters for keys pressed with Shift, for those keys where
+/** Characters for keys pressed with Shift, for those keys where
    it matters. */
 static const struct keymap shifted_keymap[] = 
   {
@@ -194,7 +194,7 @@ keyboard_interrupt (struct intr_frame *args UNUSED)
     }
 }
 
-/* Scans the array of keymaps K for SCANCODE.
+/** Scans the array of keymaps K for SCANCODE.
    If found, sets *C to the corresponding character and returns
    true.
    If not found, returns false and C is ignored. */

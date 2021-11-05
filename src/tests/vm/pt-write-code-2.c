@@ -1,4 +1,4 @@
-/* Try to write to the code segment using a system call.
+/** Try to write to the code segment using a system call.
    The process must be terminated with -1 exit code. */
 
 #include "tests/lib.h"

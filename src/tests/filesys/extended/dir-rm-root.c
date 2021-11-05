@@ -1,4 +1,4 @@
-/* Try to remove the root directory.
+/** Try to remove the root directory.
    This must fail. */
 
 #include <syscall.h>

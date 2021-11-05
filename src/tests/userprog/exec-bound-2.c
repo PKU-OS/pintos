@@ -1,4 +1,4 @@
-/* Invokes an exec system call with the exec string pointer argument
+/** Invokes an exec system call with the exec string pointer argument
    positioned such that only its first byte is valid  memory (bytes 1-3
    of the pointer are invalid).  Must kill process. */
 

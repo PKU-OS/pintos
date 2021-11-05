@@ -1,4 +1,4 @@
-/* Creates a 128 kB file and repeatedly shuffles data in it
+/** Creates a 128 kB file and repeatedly shuffles data in it
    through a memory mapping. */
 
 #include <stdio.h>

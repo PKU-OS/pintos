@@ -1,4 +1,4 @@
-/* Mmaps a 128 kB file "sorts" the bytes in it, using quick sort,
+/** Mmaps a 128 kB file "sorts" the bytes in it, using quick sort,
    a multi-pass divide and conquer algorithm.  */
 
 #include <debug.h>

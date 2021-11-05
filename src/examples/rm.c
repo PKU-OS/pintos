@@ -1,4 +1,4 @@
-/* rm.c
+/** rm.c
 
    Removes files specified on command line. */
 

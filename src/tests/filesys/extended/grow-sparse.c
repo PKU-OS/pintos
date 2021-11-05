@@ -1,4 +1,4 @@
-/* Tests that seeking past the end of a file and writing will
+/** Tests that seeking past the end of a file and writing will
    properly zero out the region in between. */
 
 #include <syscall.h>

@@ -3,4 +3,4 @@
 
 void vga_putc (int);
 
-#endif /* devices/vga.h */
+#endif /**< devices/vga.h */

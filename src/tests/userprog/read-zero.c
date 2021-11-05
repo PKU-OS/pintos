@@ -1,4 +1,4 @@
-/* Try a 0-byte read, which should return 0 without reading
+/** Try a 0-byte read, which should return 0 without reading
    anything. */
 
 #include <syscall.h>

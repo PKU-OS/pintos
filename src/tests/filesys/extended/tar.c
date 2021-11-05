@@ -1,4 +1,4 @@
-/* tar.c
+/** tar.c
 
    Creates a tar archive. */
 

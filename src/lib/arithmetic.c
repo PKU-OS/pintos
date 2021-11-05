@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-/* On x86, division of one 64-bit integer by another cannot be
+/** On x86, division of one 64-bit integer by another cannot be
    done with a single instruction or a short sequence.  Thus, GCC
    implements 64-bit division and remainder operations through
    function calls.  These functions are normally obtained from
@@ -18,7 +18,7 @@
    Pintos is completely self-contained, then that makes it that
    much less mysterious. */
 
-/* Uses x86 DIVL instruction to divide 64-bit N by 32-bit D to
+/** Uses x86 DIVL instruction to divide 64-bit N by 32-bit D to
    yield a 32-bit quotient.  Returns the quotient.
    Traps with a divide error (#DE) if the quotient does not fit
    in 32 bits. */
@@ -36,7 +36,7 @@ divl (uint64_t n, uint32_t d)
   return q;
 }
 
-/* Returns the number of leading zero bits in X,
+/** Returns the number of leading zero bits in X,
    which must be nonzero. */
 static int
 nlz (uint32_t x) 
@@ -72,7 +72,7 @@ nlz (uint32_t x)
   return n;
 }
 
-/* Divides unsigned 64-bit N by unsigned 64-bit D and returns the
+/** Divides unsigned 64-bit N by unsigned 64-bit D and returns the
    quotient. */
 static uint64_t
 udiv64 (uint64_t n, uint64_t d)
@@ -126,7 +126,7 @@ udiv64 (uint64_t n, uint64_t d)
     }
 }
 
-/* Divides unsigned 64-bit N by unsigned 64-bit D and returns the
+/** Divides unsigned 64-bit N by unsigned 64-bit D and returns the
    remainder. */
 static uint32_t
 umod64 (uint64_t n, uint64_t d)
@@ -134,7 +134,7 @@ umod64 (uint64_t n, uint64_t d)
   return n - d * udiv64 (n, d);
 }
 
-/* Divides signed 64-bit N by signed 64-bit D and returns the
+/** Divides signed 64-bit N by signed 64-bit D and returns the
    quotient. */
 static int64_t
 sdiv64 (int64_t n, int64_t d)
@@ -145,7 +145,7 @@ sdiv64 (int64_t n, int64_t d)
   return (n < 0) == (d < 0) ? (int64_t) q_abs : -(int64_t) q_abs;
 }
 
-/* Divides signed 64-bit N by signed 64-bit D and returns the
+/** Divides signed 64-bit N by signed 64-bit D and returns the
    remainder. */
 static int32_t
 smod64 (int64_t n, int64_t d)
@@ -153,35 +153,35 @@ smod64 (int64_t n, int64_t d)
   return n - d * sdiv64 (n, d);
 }
 
-/* These are the routines that GCC calls. */
+/** These are the routines that GCC calls. */
 
 long long __divdi3 (long long n, long long d);
 long long __moddi3 (long long n, long long d);
 unsigned long long __udivdi3 (unsigned long long n, unsigned long long d);
 unsigned long long __umoddi3 (unsigned long long n, unsigned long long d);
 
-/* Signed 64-bit division. */
+/** Signed 64-bit division. */
 long long
 __divdi3 (long long n, long long d) 
 {
   return sdiv64 (n, d);
 }
 
-/* Signed 64-bit remainder. */
+/** Signed 64-bit remainder. */
 long long
 __moddi3 (long long n, long long d) 
 {
   return smod64 (n, d);
 }
 
-/* Unsigned 64-bit division. */
+/** Unsigned 64-bit division. */
 unsigned long long
 __udivdi3 (unsigned long long n, unsigned long long d) 
 {
   return udiv64 (n, d);
 }
 
-/* Unsigned 64-bit remainder. */
+/** Unsigned 64-bit remainder. */
 unsigned long long
 __umoddi3 (unsigned long long n, unsigned long long d) 
 {

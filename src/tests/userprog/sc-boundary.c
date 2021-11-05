@@ -1,4 +1,4 @@
-/* Invokes a system call with the system call number and its
+/** Invokes a system call with the system call number and its
    argument on separate pages.  This must work. */
 
 #include <syscall-nr.h>

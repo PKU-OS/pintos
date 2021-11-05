@@ -44,7 +44,7 @@ main (void)
   return EXIT_SUCCESS;
 }
 
-/* Reads a line of input from the user into LINE, which has room
+/** Reads a line of input from the user into LINE, which has room
    for SIZE bytes.  Handles backspace and Ctrl+U in the ways
    expected by Unix users.  On return, LINE will always be
    null-terminated and will not end in a new-line character. */
@@ -68,7 +68,7 @@ read_line (char line[], size_t size)
           backspace (&pos, line);
           break;
 
-        case ('U' - 'A') + 1:       /* Ctrl+U. */
+        case ('U' - 'A') + 1:       /**< Ctrl+U. */
           while (backspace (&pos, line))
             continue;
           break;
@@ -85,7 +85,7 @@ read_line (char line[], size_t size)
     }
 }
 
-/* If *POS is past the beginning of LINE, backs up one character
+/** If *POS is past the beginning of LINE, backs up one character
    position.  Returns true if successful, false if nothing was
    done. */
 static bool

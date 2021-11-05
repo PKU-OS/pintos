@@ -1,4 +1,4 @@
-/* Wait for a subprocess to finish. */
+/** Wait for a subprocess to finish. */
 
 #include <syscall.h>
 #include "tests/lib.h"

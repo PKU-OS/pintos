@@ -1,4 +1,4 @@
-/* Wait for a subprocess to finish, twice.
+/** Wait for a subprocess to finish, twice.
    The first call must wait in the usual way and return the exit code.
    The second wait call must return -1 immediately. */
 

@@ -1,4 +1,4 @@
-/* Checks that when the alarm clock wakes up threads, the
+/** Checks that when the alarm clock wakes up threads, the
    higher-priority threads run first. */
 
 #include <stdio.h>

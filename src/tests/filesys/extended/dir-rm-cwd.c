@@ -1,4 +1,4 @@
-/* Tries to remove the current directory, which may succeed or
+/** Tries to remove the current directory, which may succeed or
    fail.  The requirements in each case are different; refer to
    the assignment for details. */
 

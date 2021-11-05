@@ -1,4 +1,4 @@
-/* Read from an address 4,096 bytes below the stack pointer.
+/** Read from an address 4,096 bytes below the stack pointer.
    The process must be terminated with -1 exit code. */
 
 #include <string.h>

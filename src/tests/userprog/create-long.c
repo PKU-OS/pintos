@@ -1,4 +1,4 @@
-/* Tries to create a file with a name that is much too long,
+/** Tries to create a file with a name that is much too long,
    which must fail. */
 
 #include <string.h>

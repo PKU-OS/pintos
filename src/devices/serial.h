@@ -8,4 +8,4 @@ void serial_putc (uint8_t);
 void serial_flush (void);
 void serial_notify (void);
 
-#endif /* devices/serial.h */
+#endif /**< devices/serial.h */

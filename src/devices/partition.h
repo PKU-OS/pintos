@@ -5,4 +5,4 @@ struct block;
 
 void partition_scan (struct block *);
 
-#endif /* devices/partition.h */
+#endif /**< devices/partition.h */

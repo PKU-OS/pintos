@@ -1,4 +1,4 @@
-/* hex-dump.c
+/** hex-dump.c
 
    Prints files specified on command line to the console in hex. */
 

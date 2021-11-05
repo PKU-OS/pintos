@@ -8,20 +8,20 @@
 #include "threads/interrupt.h"
 #include "threads/vaddr.h"
 
-/* VGA text screen support.  See [FREEVGA] for more information. */
+/** VGA text screen support.  See [FREEVGA] for more information. */
 
-/* Number of columns and rows on the text display. */
+/** Number of columns and rows on the text display. */
 #define COL_CNT 80
 #define ROW_CNT 25
 
-/* Current cursor position.  (0,0) is in the upper left corner of
+/** Current cursor position.  (0,0) is in the upper left corner of
    the display. */
 static size_t cx, cy;
 
-/* Attribute value for gray text on a black background. */
+/** Attribute value for gray text on a black background. */
 #define GRAY_ON_BLACK 0x07
 
-/* Framebuffer.  See [FREEVGA] under "VGA Text Mode Operation".
+/** Framebuffer.  See [FREEVGA] under "VGA Text Mode Operation".
    The character at (x,y) is fb[y][x][0].
    The attribute at (x,y) is fb[y][x][1]. */
 static uint8_t (*fb)[COL_CNT][2];
@@ -32,7 +32,7 @@ static void newline (void);
 static void move_cursor (void);
 static void find_cursor (size_t *x, size_t *y);
 
-/* Initializes the VGA text display. */
+/** Initializes the VGA text display. */
 static void
 init (void)
 {
@@ -46,7 +46,7 @@ init (void)
     }
 }
 
-/* Writes C to the VGA text display, interpreting control
+/** Writes C to the VGA text display, interpreting control
    characters in the conventional ways.  */
 void
 vga_putc (int c)
@@ -102,7 +102,7 @@ vga_putc (int c)
   intr_set_level (old_level);
 }
 
-/* Clears the screen and moves the cursor to the upper left. */
+/** Clears the screen and moves the cursor to the upper left. */
 static void
 cls (void)
 {
@@ -115,7 +115,7 @@ cls (void)
   move_cursor ();
 }
 
-/* Clears row Y to spaces. */
+/** Clears row Y to spaces. */
 static void
 clear_row (size_t y) 
 {
@@ -128,7 +128,7 @@ clear_row (size_t y)
     }
 }
 
-/* Advances the cursor to the first column in the next line on
+/** Advances the cursor to the first column in the next line on
    the screen.  If the cursor is already on the last line on the
    screen, scrolls the screen upward one line. */
 static void
@@ -144,7 +144,7 @@ newline (void)
     }
 }
 
-/* Moves the hardware cursor to (cx,cy). */
+/** Moves the hardware cursor to (cx,cy). */
 static void
 move_cursor (void) 
 {
@@ -154,7 +154,7 @@ move_cursor (void)
   outw (0x3d4, 0x0f | (cp << 8));
 }
 
-/* Reads the current hardware cursor position into (*X,*Y). */
+/** Reads the current hardware cursor position into (*X,*Y). */
 static void
 find_cursor (size_t *x, size_t *y) 
 {

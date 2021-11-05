@@ -1,4 +1,4 @@
-/* Checks that growing a file updates the file position
+/** Checks that growing a file updates the file position
    correctly. */
 
 #include <syscall.h>

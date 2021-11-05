@@ -1,4 +1,4 @@
-/* The main thread acquires locks A and B, then it creates two
+/** The main thread acquires locks A and B, then it creates two
    higher-priority threads.  Each of these threads blocks
    acquiring one of the locks and thus donate their priority to
    the main thread.  The main thread releases the locks in turn

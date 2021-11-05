@@ -1,7 +1,7 @@
 #include <string.h>
 #include <debug.h>
 
-/* Copies SIZE bytes from SRC to DST, which must not overlap.
+/** Copies SIZE bytes from SRC to DST, which must not overlap.
    Returns DST. */
 void *
 memcpy (void *dst_, const void *src_, size_t size) 
@@ -18,7 +18,7 @@ memcpy (void *dst_, const void *src_, size_t size)
   return dst_;
 }
 
-/* Copies SIZE bytes from SRC to DST, which are allowed to
+/** Copies SIZE bytes from SRC to DST, which are allowed to
    overlap.  Returns DST. */
 void *
 memmove (void *dst_, const void *src_, size_t size) 
@@ -45,7 +45,7 @@ memmove (void *dst_, const void *src_, size_t size)
   return dst;
 }
 
-/* Find the first differing byte in the two blocks of SIZE bytes
+/** Find the first differing byte in the two blocks of SIZE bytes
    at A and B.  Returns a positive value if the byte in A is
    greater, a negative value if the byte in B is greater, or zero
    if blocks A and B are equal. */
@@ -64,7 +64,7 @@ memcmp (const void *a_, const void *b_, size_t size)
   return 0;
 }
 
-/* Finds the first differing characters in strings A and B.
+/** Finds the first differing characters in strings A and B.
    Returns a positive value if the character in A (as an unsigned
    char) is greater, a negative value if the character in B (as
    an unsigned char) is greater, or zero if strings A and B are
@@ -87,7 +87,7 @@ strcmp (const char *a_, const char *b_)
   return *a < *b ? -1 : *a > *b;
 }
 
-/* Returns a pointer to the first occurrence of CH in the first
+/** Returns a pointer to the first occurrence of CH in the first
    SIZE bytes starting at BLOCK.  Returns a null pointer if CH
    does not occur in BLOCK. */
 void *
@@ -105,7 +105,7 @@ memchr (const void *block_, int ch_, size_t size)
   return NULL;
 }
 
-/* Finds and returns the first occurrence of C in STRING, or a
+/** Finds and returns the first occurrence of C in STRING, or a
    null pointer if C does not appear in STRING.  If C == '\0'
    then returns a pointer to the null terminator at the end of
    STRING. */
@@ -125,7 +125,7 @@ strchr (const char *string, int c_)
       string++;
 }
 
-/* Returns the length of the initial substring of STRING that
+/** Returns the length of the initial substring of STRING that
    consists of characters that are not in STOP. */
 size_t
 strcspn (const char *string, const char *stop) 
@@ -138,7 +138,7 @@ strcspn (const char *string, const char *stop)
   return length;
 }
 
-/* Returns a pointer to the first character in STRING that is
+/** Returns a pointer to the first character in STRING that is
    also in STOP.  If no character in STRING is in STOP, returns a
    null pointer. */
 char *
@@ -150,7 +150,7 @@ strpbrk (const char *string, const char *stop)
   return NULL;
 }
 
-/* Returns a pointer to the last occurrence of C in STRING.
+/** Returns a pointer to the last occurrence of C in STRING.
    Returns a null pointer if C does not occur in STRING. */
 char *
 strrchr (const char *string, int c_) 
@@ -164,7 +164,7 @@ strrchr (const char *string, int c_)
   return (char *) p;
 }
 
-/* Returns the length of the initial substring of STRING that
+/** Returns the length of the initial substring of STRING that
    consists of characters in SKIP. */
 size_t
 strspn (const char *string, const char *skip) 
@@ -177,7 +177,7 @@ strspn (const char *string, const char *skip)
   return length;
 }
 
-/* Returns a pointer to the first occurrence of NEEDLE within
+/** Returns a pointer to the first occurrence of NEEDLE within
    HAYSTACK.  Returns a null pointer if NEEDLE does not exist
    within HAYSTACK. */
 char *
@@ -198,7 +198,7 @@ strstr (const char *haystack, const char *needle)
   return NULL;
 }
 
-/* Breaks a string into tokens separated by DELIMITERS.  The
+/** Breaks a string into tokens separated by DELIMITERS.  The
    first time this function is called, S should be the string to
    tokenize, and in subsequent calls it must be a null pointer.
    SAVE_PTR is the address of a `char *' variable used to keep
@@ -274,7 +274,7 @@ strtok_r (char *s, const char *delimiters, char **save_ptr)
   return token;
 }
 
-/* Sets the SIZE bytes in DST to VALUE. */
+/** Sets the SIZE bytes in DST to VALUE. */
 void *
 memset (void *dst_, int value, size_t size) 
 {
@@ -288,7 +288,7 @@ memset (void *dst_, int value, size_t size)
   return dst_;
 }
 
-/* Returns the length of STRING. */
+/** Returns the length of STRING. */
 size_t
 strlen (const char *string) 
 {
@@ -301,7 +301,7 @@ strlen (const char *string)
   return p - string;
 }
 
-/* If STRING is less than MAXLEN characters in length, returns
+/** If STRING is less than MAXLEN characters in length, returns
    its actual length.  Otherwise, returns MAXLEN. */
 size_t
 strnlen (const char *string, size_t maxlen) 
@@ -313,7 +313,7 @@ strnlen (const char *string, size_t maxlen)
   return length;
 }
 
-/* Copies string SRC to DST.  If SRC is longer than SIZE - 1
+/** Copies string SRC to DST.  If SRC is longer than SIZE - 1
    characters, only SIZE - 1 characters are copied.  A null
    terminator is always written to DST, unless SIZE is 0.
    Returns the length of SRC, not including the null terminator.
@@ -342,7 +342,7 @@ strlcpy (char *dst, const char *src, size_t size)
   return src_len;
 }
 
-/* Concatenates string SRC to DST.  The concatenated string is
+/** Concatenates string SRC to DST.  The concatenated string is
    limited to SIZE - 1 characters.  A null terminator is always
    written to DST, unless SIZE is 0.  Returns the length that the
    concatenated string would have assuming that there was

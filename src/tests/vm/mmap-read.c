@@ -1,4 +1,4 @@
-/* Uses a memory mapping to read a file. */
+/** Uses a memory mapping to read a file. */
 
 #include <string.h>
 #include <syscall.h>

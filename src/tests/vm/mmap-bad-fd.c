@@ -1,4 +1,4 @@
-/* Tries to mmap an invalid fd,
+/** Tries to mmap an invalid fd,
    which must either fail silently or terminate the process with
    exit code -1. */
 

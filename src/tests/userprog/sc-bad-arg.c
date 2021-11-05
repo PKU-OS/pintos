@@ -1,4 +1,4 @@
-/* Sticks a system call number (SYS_EXIT) at the very top of the
+/** Sticks a system call number (SYS_EXIT) at the very top of the
    stack, then invokes a system call with the stack pointer
    (%esp) set to its address.  The process must be terminated
    with -1 exit code because the argument to the system call

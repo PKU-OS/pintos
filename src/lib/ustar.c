@@ -4,35 +4,35 @@
 #include <stdio.h>
 #include <string.h>
 
-/* Header for ustar-format tar archive.  See the documentation of
+/** Header for ustar-format tar archive.  See the documentation of
    the "pax" utility in [SUSv3] for the the "ustar" format
    specification. */
 struct ustar_header
   {
-    char name[100];             /* File name.  Null-terminated if room. */
-    char mode[8];               /* Permissions as octal string. */
-    char uid[8];                /* User ID as octal string. */
-    char gid[8];                /* Group ID as octal string. */
-    char size[12];              /* File size in bytes as octal string. */
-    char mtime[12];             /* Modification time in seconds
+    char name[100];             /**< File name.  Null-terminated if room. */
+    char mode[8];               /**< Permissions as octal string. */
+    char uid[8];                /**< User ID as octal string. */
+    char gid[8];                /**< Group ID as octal string. */
+    char size[12];              /**< File size in bytes as octal string. */
+    char mtime[12];             /**< Modification time in seconds
                                    from Jan 1, 1970, as octal string. */
-    char chksum[8];             /* Sum of octets in header as octal string. */
-    char typeflag;              /* An enum ustar_type value. */
-    char linkname[100];         /* Name of link target.
+    char chksum[8];             /**< Sum of octets in header as octal string. */
+    char typeflag;              /**< An enum ustar_type value. */
+    char linkname[100];         /**< Name of link target.
                                    Null-terminated if room. */
-    char magic[6];              /* "ustar\0" */
-    char version[2];            /* "00" */
-    char uname[32];             /* User name, always null-terminated. */
-    char gname[32];             /* Group name, always null-terminated. */
-    char devmajor[8];           /* Device major number as octal string. */
-    char devminor[8];           /* Device minor number as octal string. */
-    char prefix[155];           /* Prefix to file name.
+    char magic[6];              /**< "ustar\0" */
+    char version[2];            /**< "00" */
+    char uname[32];             /**< User name, always null-terminated. */
+    char gname[32];             /**< Group name, always null-terminated. */
+    char devmajor[8];           /**< Device major number as octal string. */
+    char devminor[8];           /**< Device minor number as octal string. */
+    char prefix[155];           /**< Prefix to file name.
                                    Null-terminated if room. */
-    char padding[12];           /* Pad to 512 bytes. */
+    char padding[12];           /**< Pad to 512 bytes. */
   }
 PACKED;
 
-/* Returns the checksum for the given ustar format HEADER. */
+/** Returns the checksum for the given ustar format HEADER. */
 static unsigned int
 calculate_chksum (const struct ustar_header *h)
 {
@@ -53,7 +53,7 @@ calculate_chksum (const struct ustar_header *h)
   return chksum;
 }
 
-/* Drop possibly dangerous prefixes from FILE_NAME and return the
+/** Drop possibly dangerous prefixes from FILE_NAME and return the
    stripped name.  An archive with file names that start with "/"
    or "../" could cause a naive tar extractor to write to
    arbitrary parts of the file system, not just the destination
@@ -72,7 +72,7 @@ strip_antisocial_prefixes (const char *file_name)
   return *file_name == '\0' || !strcmp (file_name, "..") ? "." : file_name;
 }
 
-/* Composes HEADER as a USTAR_HEADER_SIZE (512)-byte archive
+/** Composes HEADER as a USTAR_HEADER_SIZE (512)-byte archive
    header in ustar format for a SIZE-byte file named FILE_NAME of
    the given TYPE.  The caller is responsible for writing the
    header to a file or device.
@@ -117,7 +117,7 @@ ustar_make_header (const char *file_name, enum ustar_type type,
   return true;
 }
 
-/* Parses a SIZE-byte octal field in S in the format used by
+/** Parses a SIZE-byte octal field in S in the format used by
    ustar format.  If successful, stores the field's value in
    *VALUE and returns true; on failure, returns false.
 
@@ -161,7 +161,7 @@ parse_octal_field (const char *s, size_t size, unsigned long int *value)
   return false;
 }
 
-/* Returns true if the CNT bytes starting at BLOCK are all zero,
+/** Returns true if the CNT bytes starting at BLOCK are all zero,
    false otherwise. */
 static bool
 is_all_zeros (const char *block, size_t cnt)
@@ -172,7 +172,7 @@ is_all_zeros (const char *block, size_t cnt)
   return true;
 }
 
-/* Parses HEADER as a ustar-format archive header for a regular
+/** Parses HEADER as a ustar-format archive header for a regular
    file or directory.  If successful, stores the archived file's
    name in *FILE_NAME (as a pointer into HEADER or a string
    literal), its type in *TYPE, and its size in bytes in *SIZE,

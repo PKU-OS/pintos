@@ -1,4 +1,4 @@
-/* Writes out the contents of a fairly large file all at once,
+/** Writes out the contents of a fairly large file all at once,
    and then reads it back to make sure that it was written
    properly. */
 

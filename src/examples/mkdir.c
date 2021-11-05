@@ -1,4 +1,4 @@
-/* mkdir.c
+/** mkdir.c
 
    Creates a directory. */
 

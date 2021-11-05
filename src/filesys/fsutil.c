@@ -11,7 +11,7 @@
 #include "threads/palloc.h"
 #include "threads/vaddr.h"
 
-/* List files in the root directory. */
+/** List files in the root directory. */
 void
 fsutil_ls (char **argv UNUSED) 
 {
@@ -28,7 +28,7 @@ fsutil_ls (char **argv UNUSED)
   printf ("End of listing.\n");
 }
 
-/* Prints the contents of file ARGV[1] to the system console as
+/** Prints the contents of file ARGV[1] to the system console as
    hex and ASCII. */
 void
 fsutil_cat (char **argv)
@@ -56,7 +56,7 @@ fsutil_cat (char **argv)
   file_close (file);
 }
 
-/* Deletes file ARGV[1]. */
+/** Deletes file ARGV[1]. */
 void
 fsutil_rm (char **argv) 
 {
@@ -67,7 +67,7 @@ fsutil_rm (char **argv)
     PANIC ("%s: delete failed\n", file_name);
 }
 
-/* Extracts a ustar-format tar archive from the scratch block
+/** Extracts a ustar-format tar archive from the scratch block
    device into the Pintos file system. */
 void
 fsutil_extract (char **argv UNUSED) 
@@ -155,7 +155,7 @@ fsutil_extract (char **argv UNUSED)
   free (header);
 }
 
-/* Copies file FILE_NAME from the file system to the scratch
+/** Copies file FILE_NAME from the file system to the scratch
    device, in ustar format.
 
    The first call to this function will write starting at the

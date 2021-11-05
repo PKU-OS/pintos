@@ -1,4 +1,4 @@
-/* This program attempts to execute code at address 0, which is not mapped.
+/** This program attempts to execute code at address 0, which is not mapped.
    This should terminate the process with a -1 exit code. */
 
 #include "tests/lib.h"
