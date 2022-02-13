@@ -29,4 +29,5 @@ cscope:: cscope.files
 	cscope -b -q -k
 
 submission::
-  	tar cjvf submission.tar.bz2 *
+	make clean
+	tar cjvf submission.tar.bz2 *
