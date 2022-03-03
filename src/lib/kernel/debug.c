@@ -113,11 +113,11 @@ print_stacktrace(struct thread *t, void *aux UNUSED)
 }
 
 /** Prints call stack of all threads. */
-void
+/*void
 debug_backtrace_all (void)
 {
   enum intr_level oldlevel = intr_disable ();
 
   thread_foreach (print_stacktrace, 0);
   intr_set_level (oldlevel);
-}
+}*/

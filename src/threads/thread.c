@@ -26,7 +26,7 @@ static struct list ready_list;
 
 /** List of all processes.  Processes are added to this list
    when they are first scheduled and removed when they exit. */
-static struct list all_list;
+//  static struct list all_list;
 
 /** Idle thread. */
 static struct thread *idle_thread;
@@ -91,7 +91,7 @@ thread_init (void)
 
   lock_init (&tid_lock);
   list_init (&ready_list);
-  list_init (&all_list);
+  // list_init (&all_list);
 
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();
@@ -290,7 +290,7 @@ thread_exit (void)
      and schedule another process.  That process will destroy us
      when it calls thread_schedule_tail(). */
   intr_disable ();
-  list_remove (&thread_current()->allelem);
+  // list_remove (&thread_current()->allelem);
   thread_current ()->status = THREAD_DYING;
   schedule ();
   NOT_REACHED ();
@@ -316,7 +316,7 @@ thread_yield (void)
 
 /** Invoke function 'func' on all threads, passing along 'aux'.
    This function must be called with interrupts off. */
-void
+/*void
 thread_foreach (thread_action_func *func, void *aux)
 {
   struct list_elem *e;
@@ -329,7 +329,7 @@ thread_foreach (thread_action_func *func, void *aux)
       struct thread *t = list_entry (e, struct thread, allelem);
       func (t, aux);
     }
-}
+}*/
 
 /** Sets the current thread's priority to NEW_PRIORITY. */
 void
@@ -464,9 +464,9 @@ init_thread (struct thread *t, const char *name, int priority)
   t->priority = priority;
   t->magic = THREAD_MAGIC;
 
-  old_level = intr_disable ();
+  /*old_level = intr_disable ();
   list_push_back (&all_list, &t->allelem);
-  intr_set_level (old_level);
+  intr_set_level (old_level);*/
 }
 
 /** Allocates a SIZE-byte frame at the top of thread T's stack and
