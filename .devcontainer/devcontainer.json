@@ -1,0 +1,12 @@
+{
+	"name": "Pintos",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	// "features": {},
+	"customizations": {
+		"vscode": {
+			"extensions": []
+		}
+	}
+}
