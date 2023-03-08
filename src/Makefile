@@ -30,4 +30,4 @@ cscope:: cscope.files
 
 submission::
 	make clean
-	tar cjvf submission.tar.bz2 *
+	tar cjvf submission_2100012732.tar.bz2 *

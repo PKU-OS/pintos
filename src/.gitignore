@@ -5,3 +5,4 @@ tags
 *.a
 *.o
 .*.swp
+*.tar.bz2
