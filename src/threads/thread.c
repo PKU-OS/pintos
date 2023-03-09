@@ -75,7 +75,7 @@ void thread_schedule_tail(struct thread *prev);
 static tid_t allocate_tid(void);
 
 /** Compares the priority of two threads. */
-static bool thread_compare_priority(const struct list_elem *a, const struct list_elem *b, void *aux)
+bool thread_compare_priority(const struct list_elem *a, const struct list_elem *b, void *aux)
 {
   struct thread *thread_a = list_entry(a, struct thread, elem);
   struct thread *thread_b = list_entry(b, struct thread, elem);
@@ -207,6 +207,8 @@ tid_t thread_create(const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock(t);
+
+  thread_yield();
 
   return tid;
 }
@@ -373,10 +375,28 @@ void thread_try_wakeup()
   }
 }
 
+/** re-sort the ready list */
+void thread_reorder_readylist()
+{
+  list_sort(&ready_list, &thread_compare_priority, NULL);
+}
+
 /** Sets the current thread's priority to NEW_PRIORITY. */
 void thread_set_priority(int new_priority)
 {
-  thread_current()->priority = new_priority;
+  struct thread *current = thread_current();
+  int is_donated = current->priority != current->original_priority;
+  int should_yield = new_priority < current->priority;
+  current->original_priority = new_priority;
+  if (!is_donated)
+  {
+    current->priority = new_priority;
+    thread_reorder_readylist();
+    if (should_yield)
+    {
+      thread_yield();
+    }
+  }
 }
 
 /** Returns the current thread's priority. */
@@ -501,8 +521,9 @@ init_thread(struct thread *t, const char *name, int priority)
   t->status = THREAD_BLOCKED;
   strlcpy(t->name, name, sizeof t->name);
   t->stack = (uint8_t *)t + PGSIZE;
-  t->priority = priority;
+  t->priority = t->original_priority = priority;
   t->magic = THREAD_MAGIC;
+  list_init(&t->acquired_locks);
 
   old_level = intr_disable();
   list_push_back(&all_list, &t->allelem);
@@ -621,3 +642,51 @@ allocate_tid(void)
 /** Offset of `stack' member within `struct thread'.
    Used by switch.S, which can't figure it out on its own. */
 uint32_t thread_stack_ofs = offsetof(struct thread, stack);
+
+void _thread_priority_propagate(struct thread *thread)
+{
+  if (!thread->blocked_on)
+    return;
+  ASSERT(thread->blocked_on->holder != NULL);
+  if (thread->priority > thread->blocked_on->holder->priority)
+  {
+    thread->blocked_on->holder->priority = thread->priority;
+    _thread_priority_propagate(thread->blocked_on->holder);
+  }
+}
+
+void thread_priority_propagate()
+{
+  enum intr_level old_level = intr_disable();
+  _thread_priority_propagate(thread_current());
+  thread_reorder_readylist();
+  intr_set_level(old_level);
+}
+
+void thread_priority_revert()
+{
+  enum intr_level old_level = intr_disable();
+  struct thread *cur = thread_current();
+  int new_priority = cur->original_priority;
+
+  struct list_elem *e, *f;
+  for (e = list_begin(&cur->acquired_locks); e != list_end(&cur->acquired_locks);
+       e = list_next(e))
+  {
+    struct lock *lock = list_entry(e, struct lock, elem);
+    for (f = list_begin(&lock->semaphore.waiters); f != list_end(&lock->semaphore.waiters);
+         f = list_next(f))
+    {
+      struct thread *t = list_entry(f, struct thread, elem);
+      if (t->priority > new_priority)
+        new_priority = t->priority;
+    }
+  }
+
+  int should_yield = new_priority < cur->priority;
+  cur->priority = new_priority;
+  thread_reorder_readylist();
+  intr_set_level(old_level);
+  if (should_yield)
+    thread_yield();
+}
