@@ -196,7 +196,7 @@ void lock_acquire(struct lock *lock)
   ASSERT(!intr_context());
   ASSERT(!lock_held_by_current_thread(lock));
 
-  if (lock->holder)
+  if (!thread_mlfqs && lock->holder)
   {
     thread_current()->blocked_on = lock;
     thread_priority_propagate();
@@ -247,7 +247,10 @@ void lock_release(struct lock *lock)
 
   sema_up(&lock->semaphore);
 
-  thread_priority_revert();
+  if (!thread_mlfqs)
+  {
+    thread_priority_revert();
+  }
 }
 
 /** Returns true if the current thread holds LOCK, false

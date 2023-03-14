@@ -101,6 +101,8 @@ struct thread
    int64_t wakeup_timestamp;   /**< When to wakeup. */
    struct lock *blocked_on;    /**< Lock that this thread is waiting for. */
    struct list acquired_locks; /**< List of locks that this thread has acquired. */
+   int nice;                   /**< Nice value. */
+   int recent_cpu;             /**< Recent CPU value. */
 
    /* Shared between thread.c and synch.c. */
    struct list_elem elem; /**< List element. */
@@ -118,6 +120,16 @@ struct thread
    If true, use multi-level feedback queue scheduler.
    Controlled by kernel command-line option "-o mlfqs". */
 extern bool thread_mlfqs;
+
+/** TAG: mlfqs */
+/** The system load avg */
+extern int load_avg;
+
+void thread_increase_recent_cpu(void);
+void thread_update_load_avg(void);
+void thread_update_recent_cpus(void);
+void thread_update_priorities(void);
+/** ENDTAG: mlfqs */
 
 void thread_init(void);
 void thread_start(void);
@@ -146,7 +158,7 @@ typedef void thread_action_func(struct thread *t, void *aux);
 void thread_foreach(thread_action_func *, void *);
 
 void thread_sleep(int64_t ticks);
-void thread_try_wakeup();
+void thread_try_wakeup(void);
 
 int thread_get_priority(void);
 void thread_set_priority(int);
