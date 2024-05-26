@@ -1,0 +1,8 @@
+services:
+  pintos:
+    image: pkuflyingpig/pintos
+    container_name: pintos
+    volumes:
+      - type: bind
+        source: /home/estankevich/Documents/code/pintos
+        target: /home/PKUOS/pintos
