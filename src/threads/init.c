@@ -37,7 +37,7 @@
 #include "filesys/filesys.h"
 #include "filesys/fsutil.h"
 #endif
-
+#define BUFFER_SIZE_KERNEL_SHELL 16
 /** Page directory with kernel mappings only. */
 uint32_t *init_page_dir;
 
@@ -133,7 +133,35 @@ pintos_init (void)
     /* Run actions specified on kernel command line. */
     run_actions (argv);
   } else {
-    // TODO: no command line passed to kernel. Run interactively 
+    // TODO: no command line passed to kernel. Run interactively
+    //char *buffer;
+    printf ("Pintos> ");
+    uint8_t c;
+    char buffer[BUFFER_SIZE_KERNEL_SHELL];
+    int index = 0;
+
+    while (1)
+      {
+        c = input_getc ();
+        if ('\n' == c)
+          {
+            buffer[index] = '\0';
+            putchar (c);
+            index = 0; 
+            if (strcmp ("whoami", buffer) == 0)
+              {
+                putbuf ("warcr701\n", 9);
+              }
+          }
+        else
+          {
+            if (index < BUFFER_SIZE_KERNEL_SHELL - 1)
+              {
+                buffer[index++] = c;
+                putchar (c);
+              }
+          }
+      }
   }
 
   /* Finish up. */
