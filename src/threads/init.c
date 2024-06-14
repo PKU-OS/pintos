@@ -38,6 +38,7 @@
 #include "filesys/fsutil.h"
 #endif
 #define BUFFER_SIZE_KERNEL_SHELL 16
+#define ME "warcr701";
 /** Page directory with kernel mappings only. */
 uint32_t *init_page_dir;
 
@@ -134,39 +135,35 @@ pintos_init (void)
     run_actions (argv);
   } else {
     // TODO: no command line passed to kernel. Run interactively
-    //char *buffer;
-    printf ("Pintos> ");
-    uint8_t c;
+    uint8_t c = '\0';
     char buffer[BUFFER_SIZE_KERNEL_SHELL];
     int index = 0;
-
+    
+    printf ("Pintos> ");
     while (1)
       {
         c = input_getc ();
-        if ('\n' == c)
+        putchar (c);
+        if ('\r' == c)
           {
             buffer[index] = '\0';
-            putchar (c);
-            index = 0; 
-            if (strcmp ("whoami", buffer) == 0)
-              {
-                putbuf ("warcr701\n", 9);
-              }
+            if (0 == strcmp ("exit", buffer))
+              break;
+            if (0 == strcmp ("whoami", buffer))
+              printf ("\nwarcr701");
+            else
+              printf ("\ninvalid command");
+            printf ("\nPintos> ");
+            index = 0;  
           }
         else
           {
             if (index < BUFFER_SIZE_KERNEL_SHELL - 1)
-              {
-                buffer[index++] = c;
-                putchar (c);
-              }
-          }
+              buffer[index++] = c;
+         }
       }
-  }
-
-  /* Finish up. */
-  shutdown ();
-  thread_exit ();
+ }
+  shutdown_power_off ();
 }
 
 /** Clear the "BSS", a segment that should be initialized to
