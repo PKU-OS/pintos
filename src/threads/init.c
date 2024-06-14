@@ -38,7 +38,7 @@
 #include "filesys/fsutil.h"
 #endif
 #define BUFFER_SIZE_KERNEL_SHELL 16
-#define ME "warcr701";
+const char *ME = "warcr701";
 /** Page directory with kernel mappings only. */
 uint32_t *init_page_dir;
 
@@ -150,7 +150,7 @@ pintos_init (void)
             if (0 == strcmp ("exit", buffer))
               break;
             if (0 == strcmp ("whoami", buffer))
-              printf ("\nwarcr701");
+              printf ("\n%s", ME);
             else
               printf ("\ninvalid command");
             printf ("\nPintos> ");
