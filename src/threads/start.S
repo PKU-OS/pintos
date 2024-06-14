@@ -24,6 +24,12 @@ start:
 
 # The loader called into us with CS = 0x2000, SS = 0x0000, ESP = 0xf000,
 # but we should initialize the other segment registers.
+# In both real and protected modes, the system uses 16-bit segment registers to derive the actual memory address. 
+# In real mode, the registers CS, DS, SS, and ES point to the currently used program:
+# * code segment (CS)
+# * the current data segment (DS)
+# * the current stack segment (SS)
+# * and one extra segment determined by the programmer (ES).
 
 	mov $0x2000, %ax
 	mov %ax, %ds

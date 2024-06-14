@@ -1,0 +1,96 @@
+mkdir -p build/devices
+mkdir -p build/lib
+mkdir -p build/lib/kernel
+mkdir -p build/lib/user
+mkdir -p build/tests/threads
+mkdir -p build/threads
+cp ../Makefile.build build/Makefile
+cd build && make all
+make[1]: Entering directory '/home/PKUOS/pintos/src/threads/build'
+
+# Compile all *.S and *.c files
+
+i386-elf-gcc -E -nostdinc -I../.. -I../../lib -I../../lib/kernel -P ../../threads/kernel.lds.S > threads/kernel.lds.s
+i386-elf-gcc -c ../../threads/start.S -o threads/start.o -Wa,--gstabs,--32 -nostdinc -I../.. -I../../lib -I../../lib/kernel  -MMD -MF threads/start.d
+i386-elf-gcc -c ../../threads/init.c -o threads/init.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF threads/init.d
+i386-elf-gcc -c ../../threads/thread.c -o threads/thread.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF threads/thread.d
+i386-elf-gcc -c ../../threads/switch.S -o threads/switch.o -Wa,--gstabs,--32 -nostdinc -I../.. -I../../lib -I../../lib/kernel  -MMD -MF threads/switch.d
+i386-elf-gcc -c ../../threads/interrupt.c -o threads/interrupt.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF threads/interrupt.d
+i386-elf-gcc -c ../../threads/intr-stubs.S -o threads/intr-stubs.o -Wa,--gstabs,--32 -nostdinc -I../.. -I../../lib -I../../lib/kernel  -MMD -MF threads/intr-stubs.d
+i386-elf-gcc -c ../../threads/synch.c -o threads/synch.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF threads/synch.d
+i386-elf-gcc -c ../../threads/palloc.c -o threads/palloc.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF threads/palloc.d
+i386-elf-gcc -c ../../threads/malloc.c -o threads/malloc.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF threads/malloc.d
+i386-elf-gcc -c ../../devices/pit.c -o devices/pit.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/pit.d
+i386-elf-gcc -c ../../devices/timer.c -o devices/timer.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/timer.d
+i386-elf-gcc -c ../../devices/kbd.c -o devices/kbd.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/kbd.d
+i386-elf-gcc -c ../../devices/vga.c -o devices/vga.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/vga.d
+i386-elf-gcc -c ../../devices/serial.c -o devices/serial.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/serial.d
+i386-elf-gcc -c ../../devices/block.c -o devices/block.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/block.d
+i386-elf-gcc -c ../../devices/partition.c -o devices/partition.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/partition.d
+i386-elf-gcc -c ../../devices/ide.c -o devices/ide.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/ide.d
+i386-elf-gcc -c ../../devices/input.c -o devices/input.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/input.d
+i386-elf-gcc -c ../../devices/intq.c -o devices/intq.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/intq.d
+i386-elf-gcc -c ../../devices/rtc.c -o devices/rtc.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/rtc.d
+i386-elf-gcc -c ../../devices/shutdown.c -o devices/shutdown.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/shutdown.d
+i386-elf-gcc -c ../../devices/speaker.c -o devices/speaker.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF devices/speaker.d
+i386-elf-gcc -c ../../lib/debug.c -o lib/debug.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/debug.d
+i386-elf-gcc -c ../../lib/random.c -o lib/random.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/random.d
+i386-elf-gcc -c ../../lib/stdio.c -o lib/stdio.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/stdio.d
+i386-elf-gcc -c ../../lib/stdlib.c -o lib/stdlib.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/stdlib.d
+i386-elf-gcc -c ../../lib/string.c -o lib/string.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/string.d
+i386-elf-gcc -c ../../lib/arithmetic.c -o lib/arithmetic.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/arithmetic.d
+i386-elf-gcc -c ../../lib/ustar.c -o lib/ustar.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/ustar.d
+i386-elf-gcc -c ../../lib/kernel/debug.c -o lib/kernel/debug.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/kernel/debug.d
+i386-elf-gcc -c ../../lib/kernel/list.c -o lib/kernel/list.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/kernel/list.d
+i386-elf-gcc -c ../../lib/kernel/bitmap.c -o lib/kernel/bitmap.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/kernel/bitmap.d
+i386-elf-gcc -c ../../lib/kernel/hash.c -o lib/kernel/hash.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/kernel/hash.d
+i386-elf-gcc -c ../../lib/kernel/console.c -o lib/kernel/console.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF lib/kernel/console.d
+i386-elf-gcc -c ../../tests/threads/tests.c -o tests/threads/tests.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/tests.d
+i386-elf-gcc -c ../../tests/threads/alarm-wait.c -o tests/threads/alarm-wait.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/alarm-wait.d
+i386-elf-gcc -c ../../tests/threads/alarm-simultaneous.c -o tests/threads/alarm-simultaneous.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/alarm-simultaneous.d
+i386-elf-gcc -c ../../tests/threads/alarm-priority.c -o tests/threads/alarm-priority.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/alarm-priority.d
+i386-elf-gcc -c ../../tests/threads/alarm-zero.c -o tests/threads/alarm-zero.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/alarm-zero.d
+i386-elf-gcc -c ../../tests/threads/alarm-negative.c -o tests/threads/alarm-negative.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/alarm-negative.d
+i386-elf-gcc -c ../../tests/threads/priority-change.c -o tests/threads/priority-change.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-change.d
+i386-elf-gcc -c ../../tests/threads/priority-donate-one.c -o tests/threads/priority-donate-one.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-donate-one.d
+i386-elf-gcc -c ../../tests/threads/priority-donate-multiple.c -o tests/threads/priority-donate-multiple.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-donate-multiple.d
+i386-elf-gcc -c ../../tests/threads/priority-donate-multiple2.c -o tests/threads/priority-donate-multiple2.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-donate-multiple2.d
+i386-elf-gcc -c ../../tests/threads/priority-donate-nest.c -o tests/threads/priority-donate-nest.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-donate-nest.d
+i386-elf-gcc -c ../../tests/threads/priority-donate-sema.c -o tests/threads/priority-donate-sema.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-donate-sema.d
+i386-elf-gcc -c ../../tests/threads/priority-donate-lower.c -o tests/threads/priority-donate-lower.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-donate-lower.d
+i386-elf-gcc -c ../../tests/threads/priority-fifo.c -o tests/threads/priority-fifo.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-fifo.d
+i386-elf-gcc -c ../../tests/threads/priority-preempt.c -o tests/threads/priority-preempt.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-preempt.d
+i386-elf-gcc -c ../../tests/threads/priority-sema.c -o tests/threads/priority-sema.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-sema.d
+i386-elf-gcc -c ../../tests/threads/priority-condvar.c -o tests/threads/priority-condvar.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-condvar.d
+i386-elf-gcc -c ../../tests/threads/priority-donate-chain.c -o tests/threads/priority-donate-chain.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/priority-donate-chain.d
+i386-elf-gcc -c ../../tests/threads/mlfqs-load-1.c -o tests/threads/mlfqs-load-1.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/mlfqs-load-1.d
+i386-elf-gcc -c ../../tests/threads/mlfqs-load-60.c -o tests/threads/mlfqs-load-60.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/mlfqs-load-60.d
+i386-elf-gcc -c ../../tests/threads/mlfqs-load-avg.c -o tests/threads/mlfqs-load-avg.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/mlfqs-load-avg.d
+i386-elf-gcc -c ../../tests/threads/mlfqs-recent-1.c -o tests/threads/mlfqs-recent-1.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/mlfqs-recent-1.d
+i386-elf-gcc -c ../../tests/threads/mlfqs-fair.c -o tests/threads/mlfqs-fair.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/mlfqs-fair.d
+i386-elf-gcc -c ../../tests/threads/mlfqs-block.c -o tests/threads/mlfqs-block.o -m32 -g -msoft-float -O0 -fno-stack-protector -nostdinc -I../.. -I../../lib -I../../lib/kernel -Wall -W -Wstrict-prototypes -Wmissing-prototypes -Wsystem-headers  -MMD -MF tests/threads/mlfqs-block.d
+
+# Compiling is finished, now linking is started
+# To link kernel we provide linker script threads/kernel.lds.s then all relocatable object files (ELF) to merge to kernel.o
+# TODO learn linker script format
+
+i386-elf-ld -melf_i386 -T threads/kernel.lds.s -o kernel.o threads/start.o threads/init.o threads/thread.o threads/switch.o threads/interrupt.o threads/intr-stubs.o threads/synch.o threads/palloc.o threads/malloc.o devices/pit.o devices/timer.o devices/kbd.o devices/vga.o devices/serial.o devices/block.o devices/partition.o devices/ide.o devices/input.o devices/intq.o devices/rtc.o devices/shutdown.o devices/speaker.o lib/debug.o lib/random.o lib/stdio.o lib/stdlib.o lib/string.o lib/arithmetic.o lib/ustar.o lib/kernel/debug.o lib/kernel/list.o lib/kernel/bitmap.o lib/kernel/hash.o lib/kernel/console.o tests/threads/tests.o tests/threads/alarm-wait.o tests/threads/alarm-simultaneous.o tests/threads/alarm-priority.o tests/threads/alarm-zero.o tests/threads/alarm-negative.o tests/threads/priority-change.o tests/threads/priority-donate-one.o tests/threads/priority-donate-multiple.o tests/threads/priority-donate-multiple2.o tests/threads/priority-donate-nest.o tests/threads/priority-donate-sema.o tests/threads/priority-donate-lower.o tests/threads/priority-fifo.o tests/threads/priority-preempt.o tests/threads/priority-sema.o tests/threads/priority-condvar.o tests/threads/priority-donate-chain.o tests/threads/mlfqs-load-1.o tests/threads/mlfqs-load-60.o tests/threads/mlfqs-load-avg.o tests/threads/mlfqs-recent-1.o tests/threads/mlfqs-fair.o tests/threads/mlfqs-block.o
+i386-elf-objdump -S kernel.o > kernel.asm
+i386-elf-nm -n kernel.o > kernel.sym
+i386-elf-objcopy -R .note -R .comment -S kernel.o kernel.bin
+
+# Compile loader code, output is threads/loader.o (ELF file)
+i386-elf-gcc -c ../../threads/loader.S -o threads/loader.o -Wa,--gstabs,--32 -nostdinc -I../.. -I../../lib 
+
+# Simple linking with setting .text section section as 0x7c00 (It is just convention https://en.wikipedia.org/wiki/Boot_sector)
+# -Ttext ADDRESS              Set address of .text section
+# -N, --omagic                Do not page align data, do not make text readonly
+# -e ADDRESS, --entry ADDRESS Set start address
+i386-elf-ld -melf_i386 -N -e 0 -Ttext 0x7c00 -o loader.out threads/loader.o
+i386-elf-objdump -S loader.out > loader.asm
+
+# Strange manipulations with ELF file - takes only code in .text section
+# -j --only-section <name>         Only copy section <name> into the output
+i386-elf-objcopy -S -O binary -j .text loader.out loader.bin
+rm loader.out
+make[1]: Leaving directory '/home/PKUOS/pintos/src/threads/build'

@@ -2,6 +2,8 @@ services:
   pintos:
     image: pkuflyingpig/pintos
     container_name: pintos
+    ports:
+      - "1234:1234"
     volumes:
       - type: bind
         source: /home/estankevich/Documents/code/pintos

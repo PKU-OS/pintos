@@ -57,6 +57,8 @@ static const char *swap_bdev_name;
 /** -ul: Maximum number of pages to put into palloc's user pool. */
 static size_t user_page_limit = SIZE_MAX;
 
+static void emulate_tiny_kernel_shell(void);
+static int define_command(const char* line);
 static void bss_init (void);
 static void paging_init (void);
 
@@ -71,6 +73,10 @@ static void locate_block_device (enum block_type, const char *name);
 #endif
 
 int pintos_init (void) NO_RETURN;
+
+#define UNDEFINED 0
+#define WHOAMI_COMMAND 1
+#define EXIT_COMMAND 2
 
 /** Pintos main entry point. */
 int
@@ -133,14 +139,62 @@ pintos_init (void)
     /* Run actions specified on kernel command line. */
     run_actions (argv);
   } else {
-    // TODO: no command line passed to kernel. Run interactively 
+      emulate_tiny_kernel_shell();
   }
 
   /* Finish up. */
   shutdown ();
   thread_exit ();
 }
-
+
+static void
+emulate_tiny_kernel_shell(void)
+{
+    static uint8_t line_buffer[80];
+    short exit = 0;
+    while (!exit) {
+      putbuf("PKUOS>", 6);
+      int pos = 0;
+      do {
+        line_buffer[pos++] = input_getc();
+        putchar(line_buffer[pos - 1]);
+      } while (pos < 80 && line_buffer[pos - 1] != 13);
+      line_buffer[pos - 1] = 0;
+      
+      int command = define_command(line_buffer);
+      switch (command) {
+        case WHOAMI_COMMAND:
+          puts("Evgenii Stankevich");
+          break;
+
+        case EXIT_COMMAND:
+          exit = 1;
+          break;
+      
+        default:
+          puts("invalid command");
+          break;
+      }
+      memset((void*) line_buffer, 0, 80);
+    }
+
+    puts("Exit from the tiny Shell (press Cntl+C)");
+}
+
+static int
+define_command(const char* line)
+{
+  if (!strcmp(line, "whoami"))
+  {
+    return WHOAMI_COMMAND;
+  }
+  else if (!strcmp(line, "exit"))
+  {
+    return EXIT_COMMAND;
+  }
+  return UNDEFINED;
+}
+
 /** Clear the "BSS", a segment that should be initialized to
    zeros.  It isn't actually stored on disk or zeroed by the
    kernel loader, so we have to zero it ourselves.
