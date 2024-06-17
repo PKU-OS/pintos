@@ -376,12 +376,28 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority) 
 {
+  /** Disable interrupts */
   enum intr_level old = intr_disable ();
-  thread_current ()->priority = new_priority;
-  if (thread_current ()->status == THREAD_READY)
-    list_insert_ordered (&ready_list, &thread_current ()->elem, priority_compare, NULL);
-  if (list_entry (list_head (&ready_list), struct thread, elem)->priority > thread_get_priority ())
-    thread_yield ();
+  
+  /** Set the new priority for the current thread */ 
+  struct thread *cur = thread_current ();
+  cur->priority = new_priority;
+  
+  /** Reorder the ready_list based on this new priority */
+  if (cur->status == THREAD_READY)
+    {
+      list_remove (&cur->elem);
+      list_insert_ordered (&ready_list, &cur->elem, priority_compare, NULL);
+    }
+
+  /** Get the priority of current front of the ready_list */ 
+  if (!list_empty (&ready_list)) 
+    {
+      struct thread *front = list_entry (list_front (&ready_list), struct thread, elem);  
+      if (front->priority > cur->priority)
+        thread_yield ();
+    }  
+  
   intr_set_level (old);
 }
 
