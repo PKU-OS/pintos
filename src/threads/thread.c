@@ -73,7 +73,7 @@ static void schedule (void);
 void thread_schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
 static bool wakeup_time_compare (const struct list_elem *, const struct list_elem *, void *aux UNUSED);
-static bool priority_compare (const struct list_elem *, const struct list_elem *, void *aux UNUSED);
+
 /** Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
    general and it is possible in this case only because loader.S
@@ -393,7 +393,8 @@ thread_set_priority (int new_priority)
   /** Get the priority of current front of the ready_list */ 
   if (!list_empty (&ready_list)) 
     {
-      struct thread *front = list_entry (list_front (&ready_list), struct thread, elem);  
+      struct thread *front = list_entry (list_front (&ready_list), struct thread, elem); 
+      /** Yield CPU if new priority is no longer highest */ 
       if (front->priority > cur->priority)
         thread_yield ();
     }  
@@ -656,7 +657,7 @@ wakeup_time_compare (const struct list_elem *a, const struct list_elem *b, void 
 }
 
 /** Returns true if priority of thread_a is greater than that of thread_b */
-static bool
+bool
 priority_compare (const struct list_elem *a, const struct list_elem *b, void *aux UNUSED)
 {
   ASSERT (a != NULL);
