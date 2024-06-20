@@ -88,11 +88,14 @@ struct thread
     char name[16];                      /**< Name (for debugging purposes). */
     uint8_t *stack;                     /**< Saved stack pointer. */
     int priority;                       /**< Priority. */
+    int priority_base;
+    struct lock *lock_waiting_for;
     struct list_elem allelem;           /**< List element for all threads list. */
+    struct list locks_held;
 
+    uint64_t wakeup_time;
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /**< List element. */
-    uint64_t wakeup_time;
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
     uint32_t *pagedir;                  /**< Page directory. */
@@ -118,7 +121,6 @@ tid_t thread_create (const char *name, int priority, thread_func *, void *);
 
 void thread_sleep (uint64_t);
 void thread_wakeup (void);
-bool priority_compare (const struct list_elem *, const struct list_elem *, void * UNUSED);
 void thread_block (void);
 void thread_unblock (struct thread *);
 
@@ -140,5 +142,6 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
+bool priority_compare (const struct list_elem *, const struct list_elem *, void * UNUSED);
 
 #endif /**< threads/thread.h */
