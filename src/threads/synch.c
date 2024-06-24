@@ -119,16 +119,18 @@ sema_up (struct semaphore *sema)
 
   old_level = intr_disable ();
   if (!list_empty (&sema->waiters)) 
-    {
-      next = list_entry (list_pop_front (&sema->waiters), struct thread, elem);
+    { 
+      list_sort (&sema->waiters, priority_compare, NULL);
+      next = list_entry (list_pop_front(&sema->waiters), struct thread, elem);
       thread_unblock (next);
     }
   sema->value++;
-  /** Preempt if the front of the waiters has higher priority than currently running thread */
- if (next != NULL && next->priority > cur->priority)
-    thread_yield ();
-
+  
   intr_set_level (old_level);
+  /** Preempt if the front of the waiters has higher priority than currently running thread */
+  //if (next != NULL && next->priority > cur->priority)
+   // thread_yield ();
+  thread_try_yield ();
 }
 
 static void sema_test_helper (void *sema_);
@@ -209,22 +211,49 @@ lock_acquire (struct lock *lock)
   ASSERT (!lock_held_by_current_thread (lock));
   
   struct thread *cur = thread_current ();
-  
+  struct thread *t = cur; 
   /** Compare the priority with that of the highest waiter */
   if (lock->holder != NULL)
     {
-      cur->lock_waiting_for = lock; 
-      if (cur->priority > lock->holder->priority)
-        priority_donate (cur, lock->holder);
+      enum intr_level old = intr_disable ();
+      t->lock_waiting_for = lock;
+      int priority = t->priority;
+      while (t->lock_waiting_for != NULL)
+        {
+          if (priority > t->lock_waiting_for->holder->priority)
+            {
+              t->lock_waiting_for->holder->priority = priority;
+              t->lock_waiting_for->priority_current = priority;
+              
+              list_sort (&t->lock_waiting_for->semaphore.waiters, priority_compare, NULL);
+              list_sort (&t->lock_waiting_for->holder->locks_held, lock_priority_compare, NULL);
+              if (t->status == THREAD_READY)
+                thread_check_ready_list ();
+            }
+          if (t->lock_waiting_for->holder != NULL)
+            t = t->lock_waiting_for->holder;
+        }
+      intr_set_level (old); 
+      // if (cur->priority > lock->holder->priority)
+      //   {
+      //     priority_donate (cur, lock->holder);
+      //     lock->priority_current = cur->priority;
+      //   }
     }
   /** The call to sema_down adds this thread to the locks' list of waiters, 
    *  sorted by priority. */
-  sema_down (&lock->semaphore); 
-  lock->holder = cur;
-  lock->priority_current = cur->priority;
-  cur->lock_waiting_for = NULL;
-  
+  sema_down (&lock->semaphore);
+
+  enum intr_level old = intr_disable ();
+  lock->holder = thread_current ();
+  lock->priority_current = thread_current ()->priority;
+  thread_current ()->lock_waiting_for = NULL;
   list_insert_ordered (&cur->locks_held, &lock->elem, lock_priority_compare, NULL);
+  int lock_priority_max = list_entry (list_max (&cur->locks_held, lock_priority_compare, NULL), struct lock, elem)->priority_current;
+  int priority_base = cur->priority_base;
+  cur->priority = priority_base > lock_priority_max ? priority_base : lock_priority_max;
+  intr_set_level (old);
+  thread_yield ();
 }
 
 /** Tries to acquires LOCK and returns true if successful or false
@@ -259,26 +288,40 @@ lock_release (struct lock *lock)
   ASSERT (lock_held_by_current_thread (lock));
   //lock->holder = NULL;
   //sema_up (&lock->semaphore);
+  enum intr_level old;
+  old = intr_disable (); 
   struct thread *cur = thread_current ();
-
   lock->holder = NULL;
-  
+
+   
   /** Remove this lock from the list of held locks */
   list_remove (&lock->elem);
+  bool empty = list_empty (&cur->locks_held);
+  intr_set_level (old);
   /** Restore the thread's original priority */
-  thread_set_priority (cur->priority_base);
+  //thread_set_priority (cur->priority_base);
   
-  if (!list_empty(&cur->locks_held)) 
+  if (!empty) 
     {
-          struct lock *lock_highest_priority = list_entry(list_front(&cur->locks_held), struct lock, elem);
-          if (!list_empty(&lock_highest_priority->semaphore.waiters)) {
-              struct thread *t = list_entry(list_front(&lock_highest_priority->semaphore.waiters), struct thread, elem);
-              if (t->priority > cur->priority) {
-                  //current_thread->priority = t->priority;
-                thread_set_priority (t->priority);
-              }
-          }
-    } 
+      old = intr_disable (); 
+      list_sort (&cur->locks_held, lock_priority_compare, NULL);
+      struct lock *lock_highest_priority = list_entry(list_max(&cur->locks_held, lock_priority_compare, NULL), struct lock, elem);
+      int lock_priority = lock_highest_priority->priority_current;
+      int priority_base = cur->priority_base;
+      cur->priority = priority_base > lock_priority ? priority_base : lock_priority; 
+      intr_set_level (old); 
+      /*
+      if (!list_empty(&lock_highest_priority->semaphore.waiters)) 
+        {
+          struct thread *t = list_entry(list_front(&lock_highest_priority->semaphore.waiters), struct thread, elem);
+          if (t->priority > cur->priority)
+            thread_set_priority (t->priority);
+
+        }
+        */
+    }
+  else
+    cur->priority = cur->priority_base;
   sema_up (&lock->semaphore);
 }
 
@@ -410,7 +453,7 @@ lock_priority_compare (const struct list_elem *a, const struct list_elem *b, voi
   const struct lock *lock_a = list_entry (a, struct lock, elem);
   const struct lock *lock_b = list_entry (b, struct lock, elem);
 
-  return lock_a->priority_current >= lock_b->priority_current;
+  return lock_a->priority_current > lock_b->priority_current;
 }
 
 /** Perform priority donation from thread a to thread b */
@@ -419,11 +462,11 @@ priority_donate (struct thread *a, struct thread *b)
 {
   /** If thread a has higher priority than thread b, update
    *  thread b's priority to match that of a. */
-  if (a->priority > b->priority)
-    b->priority = a->priority;
-  
+  b->priority = a->priority;
+  if (thread_current () == b)
+    thread_set_priority (a->priority);
   /** If thread b is waiting on another lock, perform a donation to the thread holding
    *  the lock thread b is waiting on. */
-  if (b->lock_waiting_for != NULL)
+  if (b->lock_waiting_for != NULL && b->priority > b->lock_waiting_for->holder->priority)
     priority_donate (b, b->lock_waiting_for->holder);
 }

@@ -206,8 +206,9 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
-  if (t->priority > thread_get_priority ())
-    thread_yield ();
+  //if (t->priority > thread_get_priority ())
+  //  thread_yield ();
+  thread_try_yield ();
   return tid;
 }
 
@@ -355,6 +356,20 @@ thread_yield (void)
   intr_set_level (old_level);
 }
 
+
+void 
+thread_try_yield (void)
+{
+  enum intr_level old = intr_disable ();
+  bool result = !list_empty (&ready_list) &&
+                list_entry (list_front (&ready_list), struct thread, elem)->priority >
+                thread_current ()->priority;
+  intr_set_level (old);
+  if (result)
+    thread_yield ();
+}
+
+
 /** Invoke function 'func' on all threads, passing along 'aux'.
    This function must be called with interrupts off. */
 void
@@ -381,8 +396,14 @@ thread_set_priority (int new_priority)
   
   /** Set the new priority for the current thread */ 
   struct thread *cur = thread_current ();
-  cur->priority = new_priority;
-  
+  cur->priority_base = new_priority;
+  if (list_empty (&cur->locks_held))
+    cur->priority = new_priority;
+  else
+    {
+      int priority = list_entry (list_front (&cur->locks_held), struct lock, elem)->priority_current;
+      cur->priority = cur->priority_base > priority ? cur->priority_base : priority;
+    }
   /** Reorder the ready_list based on this new priority */
   if (cur->status == THREAD_READY)
     {
@@ -401,6 +422,23 @@ thread_set_priority (int new_priority)
   
   intr_set_level (old);
 }
+
+void
+thread_check_ready_list (void)
+{
+  enum intr_level old = intr_disable ();
+  if (!list_empty (&ready_list))
+    {
+      list_sort (&ready_list, priority_compare, NULL);
+      //struct thread *front = list_entry (list_front (&ready_list), struct thread, elem); 
+      /** Yield CPU if new priority is no longer highest */ 
+      //if (front->priority > thread_current ()->priority)
+      //  thread_yield ();
+    }
+  intr_set_level (old);
+}
+
+
 
 /** Returns the current thread's priority. */
 int
