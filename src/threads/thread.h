@@ -87,13 +87,13 @@ struct thread
     enum thread_status status;          /**< Thread state. */
     char name[16];                      /**< Name (for debugging purposes). */
     uint8_t *stack;                     /**< Saved stack pointer. */
-    int priority;                       /**< Priority. */
-    int priority_base;
-    struct lock *lock_waiting_for;
+    int priority;                       /**< "Effective" Priority. */
+    int priority_base;                  /**< Original priority. */
+    struct lock *lock_waiting_for;      /**< Lock currently waiting on */
     struct list_elem allelem;           /**< List element for all threads list. */
-    struct list locks_held;
+    struct list locks_held;             /**< All locks held by this thread. */
 
-    uint64_t wakeup_time;
+    uint64_t wakeup_time;               /**< Time (in ticks) to be woken up. */
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /**< List element. */
 #ifdef USERPROG
@@ -135,7 +135,6 @@ void thread_yield (void);
 typedef void thread_action_func (struct thread *t, void *aux);
 void thread_foreach (thread_action_func *, void *);
 
-void thread_try_yield (void);
 int thread_get_priority (void);
 void thread_set_priority (int);
 void thread_check_ready_list (void);

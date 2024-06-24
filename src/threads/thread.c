@@ -357,7 +357,7 @@ thread_yield (void)
   intr_set_level (old_level);
 }
 
-
+/*
 void 
 thread_try_yield (void)
 {
@@ -369,7 +369,7 @@ thread_try_yield (void)
   if (result)
     thread_yield ();
 }
-
+*/
 /** Invoke function 'func' on all threads, passing along 'aux'.
    This function must be called with interrupts off. */
 void
