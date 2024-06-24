@@ -96,13 +96,8 @@ timer_sleep (int64_t ticks)
   int64_t wakeup_time = start + ticks;
   
   ASSERT (intr_get_level () == INTR_ON);
-  //list_insert_ordered ()
   /* Place the thread in a sleep queue so we can keep track of it */
   thread_sleep (wakeup_time);
-  /*
-    while (timer_elapsed (start) < ticks) 
-    thread_yield ();
-  */
 }
 
 /** Sleeps for approximately MS milliseconds.  Interrupts must be

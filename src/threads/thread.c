@@ -206,9 +206,10 @@ thread_create (const char *name, int priority,
 
   /* Add to run queue. */
   thread_unblock (t);
-  //if (t->priority > thread_get_priority ())
-  //  thread_yield ();
-  thread_try_yield ();
+  
+  if (t->priority > thread_get_priority ())
+    thread_yield ();
+  
   return tid;
 }
 
@@ -369,7 +370,6 @@ thread_try_yield (void)
     thread_yield ();
 }
 
-
 /** Invoke function 'func' on all threads, passing along 'aux'.
    This function must be called with interrupts off. */
 void
@@ -423,6 +423,7 @@ thread_set_priority (int new_priority)
   intr_set_level (old);
 }
 
+
 void
 thread_check_ready_list (void)
 {
@@ -430,10 +431,10 @@ thread_check_ready_list (void)
   if (!list_empty (&ready_list))
     {
       list_sort (&ready_list, priority_compare, NULL);
-      //struct thread *front = list_entry (list_front (&ready_list), struct thread, elem); 
+      struct thread *front = list_entry (list_front (&ready_list), struct thread, elem); 
       /** Yield CPU if new priority is no longer highest */ 
-      //if (front->priority > thread_current ()->priority)
-      //  thread_yield ();
+      if (front->priority > thread_current ()->priority)
+        thread_yield ();
     }
   intr_set_level (old);
 }
