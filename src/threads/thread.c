@@ -357,19 +357,7 @@ thread_yield (void)
   intr_set_level (old_level);
 }
 
-/*
-void 
-thread_try_yield (void)
-{
-  enum intr_level old = intr_disable ();
-  bool result = !list_empty (&ready_list) &&
-                list_entry (list_front (&ready_list), struct thread, elem)->priority >
-                thread_current ()->priority;
-  intr_set_level (old);
-  if (result)
-    thread_yield ();
-}
-*/
+
 /** Invoke function 'func' on all threads, passing along 'aux'.
    This function must be called with interrupts off. */
 void
@@ -391,6 +379,9 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority) 
 {
+  if (thread_mlfqs)
+    return;
+
   /** Disable interrupts */
   enum intr_level old = intr_disable ();
   

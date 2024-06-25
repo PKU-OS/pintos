@@ -113,7 +113,6 @@ void
 sema_up (struct semaphore *sema) 
 {
   enum intr_level old_level;
-  struct thread *cur = thread_current ();
   struct thread *next = NULL;
   ASSERT (sema != NULL);
 
