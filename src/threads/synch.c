@@ -229,10 +229,13 @@ lock_acquire (struct lock *lock)
            * than the holder of the lock we are waiting for, donate priority */
           if (priority > t->lock_waiting_for->holder->priority)
             {
-              t->lock_waiting_for->holder->priority = priority;
+              if (!thread_mlfqs)
+                {
+                  t->lock_waiting_for->holder->priority = priority;
 
-              /** Adjust the lock's copy of the priority of its holder thread */
-              t->lock_waiting_for->priority_current = priority;
+                  /** Adjust the lock's copy of the priority of its holder thread */
+                  t->lock_waiting_for->priority_current = priority;
+                }
               
               /** Priorities have changed. Sort the ready list and
                * check if thread switch should occur. */
@@ -305,15 +308,18 @@ lock_release (struct lock *lock)
   /** Restore the thread's original priority based on locks still held. */
   if (!list_empty (&cur->locks_held))
     {
-      /** Get the lock still held with the highest priority, and set the 
-       *  the thread's new priority based on the thread waiting for this with
-       *  the highest priority. */
-      struct lock *lock_highest_priority = list_entry(list_max(&cur->locks_held, lock_priority_compare, NULL), struct lock, elem);
-      if (!list_empty(&lock_highest_priority->semaphore.waiters)) 
-        {
-          struct thread *t = list_entry(list_max (&lock_highest_priority->semaphore.waiters, priority_compare, NULL), struct thread, elem);//list_front(&lock_highest_priority->semaphore.waiters), struct thread, elem);
-          cur->priority = cur->priority_base > t->priority ? cur->priority_base : t->priority;
-        }
+      if (!thread_mlfqs)
+      {
+        /** Get the lock still held with the highest priority, and set the 
+         *  the thread's new priority based on the thread waiting for this with
+         *  the highest priority. */
+        struct lock *lock_highest_priority = list_entry(list_max(&cur->locks_held, lock_priority_compare, NULL), struct lock, elem);
+        if (!list_empty(&lock_highest_priority->semaphore.waiters)) 
+          {
+            struct thread *t = list_entry(list_max (&lock_highest_priority->semaphore.waiters, priority_compare, NULL), struct thread, elem);//list_front(&lock_highest_priority->semaphore.waiters), struct thread, elem);
+            cur->priority = cur->priority_base > t->priority ? cur->priority_base : t->priority;
+          }
+      }
         
     }
   else

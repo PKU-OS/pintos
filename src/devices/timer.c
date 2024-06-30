@@ -89,15 +89,15 @@ timer_elapsed (int64_t then)
 void
 timer_sleep (int64_t ticks) 
 {
-  if (ticks < 0)
+  if (ticks <= 0)
     return;
 
-  int64_t start = timer_ticks ();
-  int64_t wakeup_time = start + ticks;
+  //int64_t start = timer_ticks ();
+  //int64_t wakeup_time = start + ticks;
   
   ASSERT (intr_get_level () == INTR_ON);
   /* Place the thread in a sleep queue so we can keep track of it */
-  thread_sleep (wakeup_time);
+  thread_sleep (timer_ticks() + ticks);//wakeup_time);
 }
 
 /** Sleeps for approximately MS milliseconds.  Interrupts must be
@@ -174,9 +174,16 @@ timer_print_stats (void)
 static void
 timer_interrupt (struct intr_frame *args UNUSED)
 {
-  ticks++;
+  ++ticks;
+  //thread_recent_cpu_increment ();
+  thread_current ()->recent_cpu += FACTOR;
+  /** Every 1 second */
+  // if (thread_mlfqs && timer_ticks () % TIMER_FREQ == 0)
+  //   {
+  //     thread_load_avg_calculate ();
+  //     thread_foreach (thread_recent_cpu_calculate, NULL);
+  //   }
   thread_tick ();
-  //thread_wakeup (ticks);
 }
 
 /** Returns true if LOOPS iterations waits for more than one timer

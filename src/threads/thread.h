@@ -5,6 +5,8 @@
 #include <list.h>
 #include <stdint.h>
 
+#include "threads/fixed_point.h"
+
 /** States in a thread's life cycle. */
 enum thread_status
   {
@@ -93,7 +95,12 @@ struct thread
     struct list_elem allelem;           /**< List element for all threads list. */
     struct list locks_held;             /**< All locks held by this thread. */
 
+    /**< mlfqs */
+    int nice;                           /**< nice represents thread's willingness to give up cpu time. */
+    int recent_cpu;                     /**< The recent cpu usage for this thread. */
+    
     uint64_t wakeup_time;               /**< Time (in ticks) to be woken up. */
+    
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /**< List element. */
 #ifdef USERPROG
@@ -142,6 +149,11 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
-bool priority_compare (const struct list_elem *, const struct list_elem *, void * UNUSED);
+void thread_priority_calculate (struct thread *, void *aux UNUSED);
+void thread_recent_cpu_calculate (struct thread *, void *aux UNUSED);
+void thread_load_avg_calculate (void);
+void thread_recent_cpu_increment (void);
+
+bool priority_compare (const struct list_elem *, const struct list_elem *, void *aux UNUSED);
 
 #endif /**< threads/thread.h */
