@@ -97,7 +97,7 @@ struct thread
 
     /**< mlfqs */
     int nice;                           /**< nice represents thread's willingness to give up cpu time. */
-    int recent_cpu;                     /**< The recent cpu usage for this thread. */
+    int64_t recent_cpu;                     /**< The recent cpu usage for this thread. */
     
     uint64_t wakeup_time;               /**< Time (in ticks) to be woken up. */
     

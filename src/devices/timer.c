@@ -175,14 +175,15 @@ static void
 timer_interrupt (struct intr_frame *args UNUSED)
 {
   ++ticks;
-  //thread_recent_cpu_increment ();
-  thread_current ()->recent_cpu += FACTOR;
+  thread_recent_cpu_increment ();
+  //if (thread_current () != i)
+  //thread_current ()->recent_cpu += FACTOR;
   /** Every 1 second */
-  // if (thread_mlfqs && timer_ticks () % TIMER_FREQ == 0)
-  //   {
-  //     thread_load_avg_calculate ();
-  //     thread_foreach (thread_recent_cpu_calculate, NULL);
-  //   }
+  if (thread_mlfqs && timer_ticks () % TIMER_FREQ == 0)
+    {
+      thread_load_avg_calculate ();
+      thread_foreach (thread_recent_cpu_calculate, NULL);
+    }
   thread_tick ();
 }
 
