@@ -95,10 +95,11 @@ struct thread
     struct list_elem allelem;           /**< List element for all threads list. */
     struct list locks_held;             /**< All locks held by this thread. */
 
-    /**< mlfqs */
+    /**< if thread_mlfqs == true */
     int nice;                           /**< nice represents thread's willingness to give up cpu time. */
-    fixed_t recent_cpu;                     /**< The recent cpu usage for this thread. */
+    fixed_t recent_cpu;                 /**< The recent cpu usage for this thread. */
     
+    /** For timer_sleep */
     int64_t wakeup_time;               /**< Time (in ticks) to be woken up. */
     
     /* Shared between thread.c and synch.c. */
@@ -144,7 +145,7 @@ void thread_foreach (thread_action_func *, void *);
 
 int thread_get_priority (void);
 void thread_set_priority (int);
-void thread_check_ready_list (void);
+void thread_ready_list_sort_and_yield (void);
 int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
@@ -153,7 +154,6 @@ void thread_priority_calculate (struct thread *, void *aux UNUSED);
 void thread_recent_cpu_calculate (struct thread *, void *aux UNUSED);
 void thread_load_avg_calculate (void);
 void thread_recent_cpu_increment (void);
-
 bool priority_compare (const struct list_elem *, const struct list_elem *, void *aux UNUSED);
 
 #endif /**< threads/thread.h */

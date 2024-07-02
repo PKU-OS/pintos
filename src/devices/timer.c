@@ -91,13 +91,11 @@ timer_sleep (int64_t ticks)
 {
   if (ticks <= 0)
     return;
-
   int64_t start = timer_ticks ();
-  //int64_t wakeup_time = start + ticks;
-  
   ASSERT (intr_get_level () == INTR_ON);
+  
   /* Place the thread in a sleep queue so we can keep track of it */
-  thread_sleep (start + ticks);//wakeup_time);
+  thread_sleep (start + ticks);
 }
 
 /** Sleeps for approximately MS milliseconds.  Interrupts must be
@@ -170,17 +168,18 @@ timer_print_stats (void)
   printf ("Timer: %"PRId64" ticks\n", timer_ticks ());
 }
 
+
 /** Timer interrupt handler. */
 static void
 timer_interrupt (struct intr_frame *args UNUSED)
 {
   ++ticks;
-  //thread_recent_cpu_increment ();
-  //if (thread_current () != i)
   if (thread_mlfqs)
     {
-      thread_current ()->recent_cpu += FACTOR;
-      /** Every 1 second */
+      /** Increment the current thread's recent cpu every tick. */
+      thread_recent_cpu_increment ();
+      
+      /** Every 1 second calculate the load average and update the recent cup of all threads. */
       if (timer_ticks () % TIMER_FREQ == 0)
         {
           thread_load_avg_calculate ();

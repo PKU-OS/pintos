@@ -132,13 +132,8 @@ thread_start (void)
 void
 thread_tick (void) 
 {
-  // if (thread_mlfqs && timer_ticks () % TIMER_FREQ == 0)
-  //   {
-  //     thread_load_avg_calculate ();
-  //     thread_foreach (thread_recent_cpu_calculate, NULL);
-  //   }
-  
-  if (thread_mlfqs && /*thread_ticks*/ timer_ticks () % TIME_SLICE == 0)
+  /** For mlfqs, calculate every thread's priority every TIME_SLICE ticks. */
+  if (thread_mlfqs && timer_ticks () % TIME_SLICE == 0)
       thread_foreach (thread_priority_calculate, NULL);
   
   struct thread *t = thread_current ();
@@ -156,7 +151,8 @@ thread_tick (void)
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
     intr_yield_on_return ();
-
+  
+  /** Check sleeping threads to see if any need to be woken up. */
   thread_wakeup ();
 }
 
@@ -222,12 +218,13 @@ thread_create (const char *name, int priority,
   /* Add to run queue. */
   thread_unblock (t);
   
+  /** Yield the CPU if the newly created thread has higher priority than 
+   * the currently running thread. */
   if (t->priority > thread_get_priority ())
     thread_yield ();
   
   return tid;
 }
-
 
 /** Puts a thread into the sleep_list */
 void
@@ -390,7 +387,8 @@ thread_foreach (thread_action_func *func, void *aux)
     }
 }
 
-/** Sets the current thread's priority to NEW_PRIORITY. */
+/** Sets the current thread's priority to NEW_PRIORITY. 
+ *  Only used by non-mlfqs scheduler. */
 void
 thread_set_priority (int new_priority) 
 {
@@ -429,9 +427,9 @@ thread_set_priority (int new_priority)
   intr_set_level (old);
 }
 
-
+/** Sort the ready list and yield the CPU if list head has greater priority than current thread. */
 void
-thread_check_ready_list (void)
+thread_ready_list_sort_and_yield (void)
 {
   enum intr_level old = intr_disable ();
   if (!list_empty (&ready_list))
@@ -446,8 +444,6 @@ thread_check_ready_list (void)
   intr_set_level (old);
 }
 
-/** MLFQS */
-
 /** Returns the current thread's priority. */
 int
 thread_get_priority (void) 
@@ -455,88 +451,91 @@ thread_get_priority (void)
   return thread_current ()->priority;
 }
 
-/** Sets the current thread's nice value to NICE. */
+/** FOR MLFQS. Sets the current thread's nice value to NICE. 
+ *  Recalculate priority, resort ready list and yield if necessary. */
 void
 thread_set_nice (int nice) 
 {
   thread_current ()->nice = nice;
-  //thread_recent_cpu_calculate (thread_current (), NULL);
   thread_priority_calculate (thread_current (), NULL);
-  thread_check_ready_list ();
+  thread_ready_list_sort_and_yield ();
 }
 
-/** Returns the current thread's nice value. */
+/** FOR MLFQS. Returns the current thread's nice value. */
 int
 thread_get_nice (void) 
 {
   return thread_current ()->nice;
 }
 
-/** Returns 100 times the system load average. */
+/** FOR MLFQS. Returns 100 times the system load average. */
 int
 thread_get_load_avg (void) 
 {
   return FIXED_TO_NEAREST_INT (FIXED_MULTIPLY_INT (load_avg, 100)); 
 }
 
-/** Returns 100 times the current thread's recent_cpu value. */
+/** FOR MLFQS. Returns 100 times the current thread's recent_cpu value. */
 int
 thread_get_recent_cpu (void) 
 {
   return FIXED_TO_NEAREST_INT (FIXED_MULTIPLY_INT (thread_current ()->recent_cpu, 100)); 
 }
 
+/** FOR MLFQS. Calculate the priority of the given thread according to:
+ *  priority = PRI_MAX - (1/4) * recent_cpu - 2 * nice, using 17.14 fixed point arithmetic.
+ *  The result must be between (inclusive) PRI_MIN and PRI_MAX. */
 void 
 thread_priority_calculate (struct thread *t, void *aux UNUSED)
 {
   int priority = FIXED_TO_INT_ROUND_DOWN (FIXED_SUBTRACT_INT (FIXED_SUBTRACT(INT_TO_FIXED (PRI_MAX), FIXED_DIVIDE_INT (t->recent_cpu, 4)), 2 * t->nice));
-  //PRI_MAX - FIXED_TO_INT_TOWARD_ZERO (FIXED_SUBTRACT (FIXED_DIVIDE (t->recent_cpu, 4), INT_TO_FIXED (2 * t->nice)));
   
   if (priority > PRI_MAX)
     t->priority = PRI_MAX;
-  if (priority < PRI_MIN)
+  else if (priority < PRI_MIN)
     t->priority = PRI_MIN;
   else 
     t->priority = priority;
-  
 }
 
+/** FOR MLFQS. Calculate recent_cpu value for the given thread according to:
+ *  recent_cpu = (2 * load_avg / (2 * load_avg + 1)) * recent_cpu + nice, using 17.14 fixed point
+ *  arithmetic. */
 void 
 thread_recent_cpu_calculate (struct thread *t, void *aux UNUSED)
 {
-  // t->recent_cpu = FIXED_ADD (FIXED_DIVIDE (FIXED_MULTIPLY (FIXED_MULTIPLY_INT (load_avg, 2), t->recent_cpu), 
-  //                            FIXED_ADD_INT (FIXED_MULTIPLY_INT (load_avg, 2), 1)), t->nice);
+  /** Broken up for sake of readability */
   fixed_t lhs_numerator = FIXED_MULTIPLY (FIXED_MULTIPLY_INT (load_avg, 2), t->recent_cpu);
   fixed_t lhs_denonminator = FIXED_ADD_INT (FIXED_MULTIPLY_INT (load_avg, 2), 1);
+  
   t->recent_cpu = FIXED_ADD_INT (FIXED_DIVIDE (lhs_numerator, lhs_denonminator), t->nice);
-  //thread_priority_calculate (t, NULL);
 }
 
+/** FOR MLFQS. Calculate the system-wide load average according to: 
+ *  load_avg = (59/60) * load_avg + (1/60) * ready_threads, using 17.14 fixed point arithmetic. */
 void
 thread_load_avg_calculate (void)
 {
   int num_threads_ready;
+  
   enum intr_level old = intr_disable ();
-  if (thread_current () == idle_thread)
-    num_threads_ready = list_size (&ready_list);
-  else 
-    num_threads_ready = list_size (&ready_list) + 1; 
-  //load_avg = FIXED_DIVIDE_INT (FIXED_ADD_INT (FIXED_MULTIPLY_INT (load_avg, 59), num_threads_ready), 60);
-  //load_avg = FIXED_MULTIPLY (16111, load_avg) + num_threads_ready * 273;//FIXED_DIVIDE_INT (num_threads_ready * FACTOR, 60);
-  fixed_t lhs = FIXED_DIVIDE_INT (FIXED_MULTIPLY_INT (load_avg, 59), 60);
-  fixed_t rhs = FIXED_DIVIDE_INT (INT_TO_FIXED (num_threads_ready), 60);
-  load_avg = FIXED_ADD (lhs, rhs);
-
+  size_t ready_list_size = list_size (&ready_list);
   intr_set_level (old);
+
+  num_threads_ready = thread_current () == idle_thread ? ready_list_size : ready_list_size + 1;
+  
+  load_avg = FIXED_ADD (FIXED_DIVIDE_INT (FIXED_MULTIPLY_INT (load_avg, 59), 60),
+                        FIXED_DIVIDE_INT (INT_TO_FIXED (num_threads_ready), 60)); 
 }
 
+/** FOR MLFQS. Increment the value of the current thread's recent_cpu value by 1 using 17.14 fixed point
+ *  arithmetic. */
 void 
 thread_recent_cpu_increment (void)
 {
-  //if (thread_current () != idle_thread)
-  //  thread_current ()->recent_cpu += FACTOR; //FIXED_ADD_INT (thread_current ()->recent_cpu, 1);
+  if (thread_current () != idle_thread)
+    thread_current ()->recent_cpu += FACTOR; 
 }
-
 
 
 /** Idle thread.  Executes when no other thread is ready to run.
@@ -629,14 +628,17 @@ init_thread (struct thread *t, const char *name, int priority)
     {
       if (t == initial_thread)
         {
+          /** If t is the initial_thread, start with nice and recent_cpu of 0. */
           t->nice = 0;
           t->recent_cpu = 0;
         }
       else
         {
+          /** Otherwise, inherit the nice and recent_cpu values of the current_thread. */
           t->nice = thread_get_nice ();
-          t->recent_cpu = thread_get_recent_cpu (); //thread_current ()->recent_cpu; //thread_get_recent_cpu ();
+          t->recent_cpu = thread_get_recent_cpu (); 
         } 
+      /** Set priority based on mlfqs. */
       thread_priority_calculate (t, NULL);
     }
   else 

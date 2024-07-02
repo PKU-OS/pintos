@@ -131,7 +131,7 @@ sema_up (struct semaphore *sema)
   intr_set_level (old_level);
 
   /** Check if thread switch should occur */
-  thread_check_ready_list ();
+  thread_ready_list_sort_and_yield ();
 }
 
 static void sema_test_helper (void *sema_);
@@ -212,58 +212,55 @@ lock_acquire (struct lock *lock)
   ASSERT (!lock_held_by_current_thread (lock));
   
   struct thread *cur = thread_current ();
-  struct thread *t = cur; 
-  /** Compare the priority with that of the highest waiter */
-  if (lock->holder != NULL)
+  
+  if (!thread_mlfqs) 
     {
-      enum intr_level old = intr_disable ();
-      cur->lock_waiting_for = lock;
-      
-      /* Save the current thread's priority */
-      int priority = cur->priority;
-
-      if (!thread_mlfqs)
-      {
-      /* Iterate until a thread is not waiting on a lock */
-      while (t->lock_waiting_for != NULL)
-        {
-          /** If the current thread has a higher priority 
-           * than the holder of the lock we are waiting for, donate priority */
-          if (priority > t->lock_waiting_for->holder->priority)
+      /** Compare the priority with that of the highest waiter */
+      if (lock->holder != NULL)
+        {    
+          cur->lock_waiting_for = lock;
+          /* Save the current thread's priority */
+          int priority = cur->priority;
+          struct thread *t = cur; 
+          
+          /** Iterate through the chain of threads holding a lock another thread is waiting on, 
+           *  for example: T1 waiting on L1, which is held by T2 who is waiting on L2, which is 
+           *  held by T3, etc. */
+          while (t->lock_waiting_for != NULL)
             {
-              if (!thread_mlfqs)
+              /** If the current thread has a higher priority 
+               * than the holder of the lock we are waiting for, donate priority */
+              if (priority > t->lock_waiting_for->holder->priority)
                 {
                   t->lock_waiting_for->holder->priority = priority;
-
                   /** Adjust the lock's copy of the priority of its holder thread */
                   t->lock_waiting_for->priority_current = priority;
+                  
+                  /** Priorities have changed. Sort the ready list and
+                   * check if thread switch should occur. */
+                  thread_ready_list_sort_and_yield ();
                 }
               
-              /** Priorities have changed. Sort the ready list and
-               * check if thread switch should occur. */
-              thread_check_ready_list ();
+              if (t->lock_waiting_for->holder != NULL)
+                t = t->lock_waiting_for->holder;
             }
-          if (t->lock_waiting_for->holder != NULL)
-            t = t->lock_waiting_for->holder;
         }
-      }
-      intr_set_level (old); 
     }
+
   /** Block until the lock is acquired */
   sema_down (&lock->semaphore);
   
   /** Now we have the lock */
-  enum intr_level old = intr_disable ();
-
   /** Update the lock's and current thread's data members */
   lock->holder = thread_current ();
-  lock->priority_current = thread_current ()->priority;
-  thread_current ()->lock_waiting_for = NULL;
-  
-  /** Add this lock to the list of locks this thread holds, ordered by 
-   *  priority. */
-  list_insert_ordered (&cur->locks_held, &lock->elem, lock_priority_compare, NULL);
-  intr_set_level (old);
+
+  /** If not using the mlfqs, add this lock (in order of priority) to the threads locks_held list. */
+  if (!thread_mlfqs) 
+    {
+      lock->priority_current = thread_current ()->priority;
+      thread_current ()->lock_waiting_for = NULL;
+      list_insert_ordered (&cur->locks_held, &lock->elem, lock_priority_compare, NULL);
+    }
 }
 
 /** Tries to acquires LOCK and returns true if successful or false
@@ -297,41 +294,39 @@ lock_release (struct lock *lock)
   ASSERT (lock != NULL);
   ASSERT (lock_held_by_current_thread (lock));
   
-  enum intr_level old;
-  old = intr_disable (); 
-  
-  struct thread *cur = thread_current ();
   lock->holder = NULL;
-
-  /** Remove this lock from the list of held locks */
-  list_remove (&lock->elem);
-
+  
   if (!thread_mlfqs)
     { 
-  /** Restore the thread's original priority based on locks still held. */
-  if (!list_empty (&cur->locks_held))
-    {
-      if (!thread_mlfqs)
-      {
-        /** Get the lock still held with the highest priority, and set the 
-         *  the thread's new priority based on the thread waiting for this with
-         *  the highest priority. */
-        struct lock *lock_highest_priority = list_entry(list_max(&cur->locks_held, lock_priority_compare, NULL), struct lock, elem);
-        if (!list_empty(&lock_highest_priority->semaphore.waiters)) 
-          {
-            struct thread *t = list_entry(list_max (&lock_highest_priority->semaphore.waiters, priority_compare, NULL), struct thread, elem);//list_front(&lock_highest_priority->semaphore.waiters), struct thread, elem);
-            cur->priority = cur->priority_base > t->priority ? cur->priority_base : t->priority;
-          }
-      }
-        
+      struct thread *cur = thread_current ();
+      /** Remove this lock from the list of held locks */
+      list_remove (&lock->elem);
+    
+      /** Restore the thread's original priority based on locks still held. */
+      if (!list_empty (&cur->locks_held))
+        {
+          /** Get the lock still held with the highest priority, and set the 
+           *  the thread's new priority based on the thread waiting for this with
+           *  the highest priority. */
+          struct lock *lock_highest_priority = list_entry (list_max (&cur->locks_held, lock_priority_compare, NULL), 
+                                                            struct lock, elem);
+          
+          if (!list_empty (&lock_highest_priority->semaphore.waiters)) 
+            {
+              struct thread *t = list_entry (list_max (&lock_highest_priority->semaphore.waiters, priority_compare, NULL), 
+                                              struct thread, elem);
+              /** If the current thread has a higher base priority than the thread with highest priority waiting for this lock, 
+               *  set the new effective priority as the original priority. Otherwise, set it to the priority of the thread with highest
+               *  priority waiting for this lock. */                            
+              cur->priority = cur->priority_base > t->priority ? cur->priority_base : t->priority;
+            }
+        }
+      else
+        {
+          /** Otherwise restore the priority based on the original priority */
+          cur->priority = cur->priority_base;
+        }
     }
-  else
-    {
-      /** Otherwise restore the priority based on the original priority */
-      cur->priority = cur->priority_base;
-    }
-    }
-  intr_set_level (old);
   sema_up (&lock->semaphore);
 }
 
