@@ -128,10 +128,11 @@ sema_up (struct semaphore *sema)
     }
   sema->value++;
   
-  intr_set_level (old_level);
+  //intr_set_level (old_level);
 
   /** Check if thread switch should occur */
   thread_ready_list_sort_and_yield ();
+  intr_set_level (old_level);
 }
 
 static void sema_test_helper (void *sema_);
