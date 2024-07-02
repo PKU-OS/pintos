@@ -222,6 +222,8 @@ lock_acquire (struct lock *lock)
       /* Save the current thread's priority */
       int priority = cur->priority;
 
+      if (!thread_mlfqs)
+      {
       /* Iterate until a thread is not waiting on a lock */
       while (t->lock_waiting_for != NULL)
         {
@@ -244,7 +246,7 @@ lock_acquire (struct lock *lock)
           if (t->lock_waiting_for->holder != NULL)
             t = t->lock_waiting_for->holder;
         }
-
+      }
       intr_set_level (old); 
     }
   /** Block until the lock is acquired */
@@ -301,10 +303,11 @@ lock_release (struct lock *lock)
   struct thread *cur = thread_current ();
   lock->holder = NULL;
 
-   
   /** Remove this lock from the list of held locks */
   list_remove (&lock->elem);
-  
+
+  if (!thread_mlfqs)
+    { 
   /** Restore the thread's original priority based on locks still held. */
   if (!list_empty (&cur->locks_held))
     {
@@ -327,7 +330,7 @@ lock_release (struct lock *lock)
       /** Otherwise restore the priority based on the original priority */
       cur->priority = cur->priority_base;
     }
-
+    }
   intr_set_level (old);
   sema_up (&lock->semaphore);
 }
