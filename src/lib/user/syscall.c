@@ -87,6 +87,18 @@ wait (pid_t pid)
   return syscall1 (SYS_WAIT, pid);
 }
 
+void
+sleep (int milliseconds)
+{
+  syscall1 (SYS_SLEEP, milliseconds);
+}
+
+void
+plist (void)
+{
+  syscall0(SYS_PLIST);
+}
+
 bool
 create (const char *file, unsigned initial_size)
 {

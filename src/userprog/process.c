@@ -17,6 +17,25 @@
 #include "threads/palloc.h"
 #include "threads/thread.h"
 #include "threads/vaddr.h"
+#include "threads/synch.h"
+#include "threads/malloc.h"
+#include "lib/user/syscall.h"
+
+struct parameters_to_start_process
+{
+  char *command_line;
+  struct semaphore sema_start_p;
+  pid_t pid_new;
+  unsigned child_load_success;
+};
+
+/* Print a list of all running processes. The list shall include all
+ * relevant debug information in a clean, readable format. */
+void process_print_list (void)
+{
+  plist_print ();
+}
+
 
 static thread_func start_process NO_RETURN;
 static bool load (const char *cmdline, void (**eip) (void), void **esp);
@@ -26,24 +45,40 @@ static bool load (const char *cmdline, void (**eip) (void), void **esp);
    before process_execute() returns.  Returns the new process's
    thread id, or TID_ERROR if the thread cannot be created. */
 tid_t
-process_execute (const char *file_name) 
+process_execute (const char *command_line) 
 {
-  char *fn_copy;
-  tid_t tid;
+  //char *fn_copy;
+  char file_name[64];
+  size_t size_file_name = strlen (command_line) + 1;
+  tid_t tid = -1;
+  int process_id = -1;
+
+  struct parameters_to_start_process arguments;
+  sema_init (&arguments.sema_start_p, 0);
 
   /* Make a copy of FILE_NAME.
      Otherwise there's a race between the caller and load(). */
-  fn_copy = palloc_get_page (0);
-  if (fn_copy == NULL)
-    return TID_ERROR;
-  strlcpy (fn_copy, file_name, PGSIZE);
+  // fn_copy = palloc_get_page (0);
+  // if (fn_copy == NULL)
+  //   return TID_ERROR;
+  // strlcpy (fn_copy, file_name, PGSIZE);
+  arguments.command_line = malloc (size_file_name);
+  strlcpy (arguments.command_line, file_name, size_file_name);
+
+  strlcpy_first_word (file_name, command_line, 64);
 
   /* Create a new thread to execute FILE_NAME. */
-  tid = thread_create (file_name, PRI_DEFAULT, start_process, fn_copy);
-  if (tid == TID_ERROR)
-    palloc_free_page (fn_copy); 
+  tid = thread_create (file_name, PRI_DEFAULT, start_process, &arguments);
+  //if (tid == TID_ERROR)
+  //  palloc_free_page (fn_copy); 
+  if (TID_ERROR == tid)
+  {
+    free (arguments.command_line);
+    return process_id;
+  }
   return tid;
 }
+
 
 /** A thread function that loads a user process and starts it
    running. */
@@ -91,13 +126,16 @@ process_wait (tid_t child_tid UNUSED)
   return -1;
 }
 
+
 /** Free the current process's resources. */
 void
-process_exit (void)
+process_exit ()
 {
   struct thread *cur = thread_current ();
   uint32_t *pd;
-
+  int status = -1;
+  printf ("%s: exit(%d)\n", thread_name (), status);
+  
   /* Destroy the current process's page directory and switch back
      to the kernel-only page directory. */
   pd = cur->pagedir;

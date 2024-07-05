@@ -338,6 +338,7 @@ thread_exit (void)
   ASSERT (!intr_context ());
 
 #ifdef USERPROG
+ // process_cleanup ();
   process_exit ();
 #endif
 

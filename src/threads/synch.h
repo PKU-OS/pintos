@@ -43,6 +43,25 @@ void cond_wait (struct condition *, struct lock *);
 void cond_signal (struct condition *, struct lock *);
 void cond_broadcast (struct condition *, struct lock *);
 
+
+/** Readers / Writers Lock 
+ *  This is implemented based on the description given by Arpaci-Dusseau in
+ *  Operating Systems: Three Easy Pieces, pages 400-402
+*/
+struct rw_lock
+  {
+    struct semaphore lock;
+    struct semaphore write_lock;
+    int readers;
+  };
+
+void rw_lock_init (struct rw_lock *);
+void rw_lock_acquire_readlock (struct rw_lock *);
+void rw_lock_release_readlock (struct rw_lock *);
+void rw_lock_acquire_writelock (struct rw_lock *);
+void rw_lock_release_writelock (struct rw_lock *);
+
+
 /** Optimization barrier.
 
    The compiler will not reorder operations across an

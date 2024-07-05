@@ -9,6 +9,8 @@ enum
     SYS_EXIT,                   /**< Terminate this process. */
     SYS_EXEC,                   /**< Start another process. */
     SYS_WAIT,                   /**< Wait for a child process to die. */
+    SYS_SLEEP,                  /**< Put a process to sleep for a set time. */
+    SYS_PLIST,                  /**< Print a list of all processes. */
     SYS_CREATE,                 /**< Create a file. */
     SYS_REMOVE,                 /**< Delete a file. */
     SYS_OPEN,                   /**< Open a file. */

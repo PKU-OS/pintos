@@ -438,6 +438,63 @@ cond_broadcast (struct condition *cond, struct lock *lock)
     cond_signal (cond, lock);
 }
 
+
+/* Initializes rw_lock RW. This is basically just two semaphores
+   and a counter for how many processes are reading a protected
+   area at the same time. The goal is to allow several parallel 
+   reads but only exclusive writes. */
+void
+rw_lock_init (struct rw_lock *rw)
+{
+  rw->readers = 0;
+  sema_init (&rw->lock, 1);
+  sema_init (&rw->write_lock, 1);
+}
+
+
+/* Acquires RW_LOCK for reading, sleeping until it becomes available if
+   necessary. Can be acquired by many reading processes. */
+void
+rw_lock_acquire_readlock (struct rw_lock *rw)
+{
+  sema_down (&rw->lock);
+  ++rw->readers;
+  if (rw->readers == 1)
+    sema_down (&rw->write_lock);
+  sema_up (&rw->lock);
+}
+
+
+/* Releases RW_LOCK used for reading. */
+void 
+rw_lock_release_readlock (struct rw_lock *rw)
+{
+  sema_down (&rw->lock);
+  --rw->readers;
+  if (rw->readers == 0)
+    sema_up (&rw->write_lock);
+  sema_up (&rw->lock);
+}
+
+
+/* Acquires RW_LOCK for writing, sleeping until it becomes available if
+   necessary. Can only be held by one writing process and not while others
+   are reading. */
+void
+rw_lock_acquire_writelock (struct rw_lock *rw)
+{
+  sema_down (&rw->write_lock);
+}
+
+
+/* Releases RW_LOCK used for writing. */
+void
+rw_lock_release_writelock (struct rw_lock *rw)
+{
+  sema_up (&rw->write_lock);
+}
+
+
 /** Compares two semaphore_elems based on the priority of the threads that called them in the 
  *  list of semaphores for a condition variable */
 static bool

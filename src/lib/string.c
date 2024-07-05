@@ -342,6 +342,35 @@ strlcpy (char *dst, const char *src, size_t size)
   return src_len;
 }
 
+/* As strlcpy, but only copies the first word from SRC. Words are
+ * delimeted by space. Leading space is ignored.
+ * ( added by klaar@ida )
+ */
+size_t
+strlcpy_first_word (char *dst, const char *src, size_t size)
+{
+  size_t i = size;
+
+  /* skip leading spaces */
+  while (*src != '\0' && *src == ' ')
+    ++src;
+
+  /* copy at most size characters */
+  if (size > 0)
+  {
+    while (i > 1) /* save 1 for '\0' */
+    {
+      if (*src == '\0' || *src == ' ')
+        break;
+
+      *dst++ = *src++;
+      --i;
+    }
+    *dst = '\0';
+  }
+  return size - i; /* strlen (dst) */
+}
+
 /** Concatenates string SRC to DST.  The concatenated string is
    limited to SIZE - 1 characters.  A null terminator is always
    written to DST, unless SIZE is 0.  Returns the length that the
