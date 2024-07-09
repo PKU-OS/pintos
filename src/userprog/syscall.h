@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include "threads/synch.h"
 #include "plist.h"
-#include "flist.h"
 
 #define STDIN_FILENO 0
 #define STDOUT_FILENO 1
@@ -28,6 +27,4 @@ void seek (int, unsigned);
 unsigned tell (int);
 void close (int);
 
-void syscall_init (void);
-
-#endif /**< userprog/syscall.h */
+#endif /* userprog/syscall.h */

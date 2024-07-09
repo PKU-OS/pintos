@@ -199,7 +199,7 @@ thread_create (const char *name, int priority,
   /* Initialize thread. */
   init_thread (t, name, priority);
   tid = t->tid = allocate_tid ();
-
+  t->parent = thread_current ();
   /* Stack frame for kernel_thread(). */
   kf = alloc_frame (t, sizeof *kf);
   kf->eip = NULL;
@@ -338,8 +338,8 @@ thread_exit (void)
   ASSERT (!intr_context ());
 
 #ifdef USERPROG
- // process_cleanup ();
-  process_exit ();
+  process_cleanup ();
+  //process_exit ();
 #endif
 
   /* Remove thread from all threads list, set our status to dying,
@@ -653,11 +653,13 @@ init_thread (struct thread *t, const char *name, int priority)
       t->recent_cpu = 0;
       t->priority = priority;
     }
-  
+  t->executable = NULL;
+  flist_init (&t->f_table); 
   t->priority_base = t->priority;
   t->lock_waiting_for = NULL;
   t->magic = THREAD_MAGIC;
   t->wakeup_time = 0;
+
   list_init (&t->locks_held);
   old_level = intr_disable ();
   list_push_back (&all_list, &t->allelem);

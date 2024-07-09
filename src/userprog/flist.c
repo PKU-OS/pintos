@@ -116,8 +116,8 @@ void flist_remove_if(struct flist *fl, bool (*pred)(key_t k, value_t v, int aux)
 /**
  * Close all files in the file table
  */
-// void flist_close_all (void)
-// {
-//   for (unsigned i = 2; i < FLIST_MAX_LENGTH; i++)
-//     close (i);
-// }
+void flist_close_all (void)
+{
+  for (unsigned i = 2; i < FLIST_MAX_LENGTH; i++)
+    close (i);
+}

@@ -4,6 +4,7 @@
 #include "threads/interrupt.h"
 #include "threads/thread.h"
 
+/* header files you probably need, they are not used yet */
 #include <string.h>
 #include "filesys/filesys.h"
 #include "filesys/file.h"
@@ -17,6 +18,7 @@
 #include "threads/synch.h"
 #include "devices/shutdown.h"
 
+
 /* Helper functions */
 static bool is_valid_fixed_buffer (void *, unsigned);
 static bool is_valid_variable_buffer (char *);
@@ -25,25 +27,56 @@ static int file_pointer_insert (struct file*);
 static struct file* file_pointer_get (int);
 static struct file* file_pointer_remove (int);
 
+
+/* System call handler */
 static void syscall_handler (struct intr_frame *);
 
+
+/* System calls */
+
 void
-syscall_init (void) 
+syscall_init (void)
 {
   intr_register_int (0x30, 3, INTR_ON, syscall_handler, "syscall");
 }
 
-static void
-syscall_handler (struct intr_frame *f) 
-{
-  int32_t *esp = (int32_t *) f->esp;
 
-  if (esp == NULL || !is_valid_fixed_buffer ((void *) esp, 4))
+/* This array defined the number of arguments each syscall expects.
+   For example, if you want to find out the number of arguments for
+   the read system call you shall write:
+
+   int sys_read_arg_count = argc[ SYS_READ ];
+
+   All system calls have a name such as SYS_READ defined as an enum
+   type, see `lib/syscall-nr.h'. Use them instead of numbers.
+ */
+const int argc[] = 
+{
+  /* basic calls */
+  0, 1, 1, 1, 2, 1, 1, 1, 3, 3, 2, 1, 1,
+  /* not implemented */
+  2, 1, 1, 1, 2, 1, 1,
+  /* extended, you may need to change the order of these two (plist, sleep) */
+  0, 1
+};
+
+
+static void
+syscall_handler (struct intr_frame *f)
+{
+  int32_t* esp = (int32_t*)f->esp;
+
+  /* Check esp. 
+     We expect that esp != NULL and that there are AT LEAST 4 bytes
+     of valid memory for system calls with 0 arguments. Others are checked
+     later for larger sizes */
+
+  if (esp == NULL  || !is_valid_fixed_buffer ((void *) esp, 4))
     exit (-1);
 
   switch (*esp)
-    {
-      case SYS_HALT: /* 0 args */
+  {
+    case SYS_HALT: /* 0 args */
       halt ();
       break;
 
@@ -212,8 +245,9 @@ syscall_handler (struct intr_frame *f)
       thread_exit ();
       break;
     }
-    }
+  }
 }
+
 
 /* System calls */
 
@@ -234,7 +268,7 @@ halt (void)
 void 
 exit (int status)
 {
-  process_exit ();
+  process_exit (status);
   thread_exit ();
   NOT_REACHED ();
 }
@@ -511,6 +545,7 @@ close (int fd)
     filesys_close (file);
 }
 
+
 /**********************************************************************************************************/
 
 /* Helper functions */
@@ -662,3 +697,4 @@ file_pointer_remove (int fd)
   struct file *file = flist_remove (&(thread_current()->f_table), fd);
   return file;
 }
+

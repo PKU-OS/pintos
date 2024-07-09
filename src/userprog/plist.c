@@ -4,6 +4,7 @@
 
 #include "threads/malloc.h"
 #include "threads/thread.h"
+#include "filesys/file.h"
 #include "plist.h"
 
 /* The global process list */
@@ -17,7 +18,7 @@ struct rw_lock lock_plist_rw;
 /* Allocates and initializes a process struct and returns a pointer to 
  * the process struct
  */
-process_t process_create (unsigned tid, char *p_name, pid_t parent) // pid_t me, pid_t parent)
+process_t process_create (unsigned tid, char *p_name, pid_t parent, struct file *executable) 
 {
   process_t p = malloc (sizeof (struct process));
   
@@ -29,10 +30,9 @@ process_t process_create (unsigned tid, char *p_name, pid_t parent) // pid_t me,
     p->tid = tid;
     p->is_alive = 1;
     p->parent_alive = 1;
-
+    p->executable = executable;
     /* Default */
     p->exit_status = -1; 
-    
     sema_init (&p->sema_p_wait, 0);
     sema_init (&p->sema_p, 1);
   }
@@ -46,6 +46,8 @@ process_t process_create (unsigned tid, char *p_name, pid_t parent) // pid_t me,
 void
 process_destroy (process_t p)
 {
+  file_allow_write (p->executable);
+  file_close (p->executable);
   free (p);
 }
 

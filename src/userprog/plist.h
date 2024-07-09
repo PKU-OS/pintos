@@ -41,8 +41,9 @@ typedef int pid_t;
 
 struct process
 {                                   
+  struct file *executable; 
   struct semaphore sema_p;
-  struct semaphore sema_p_wait;     
+  struct semaphore sema_p_wait;  
   char name[NAME_LENGTH + 1];       
   unsigned tid;                     
   int exit_status;                  
@@ -65,7 +66,7 @@ extern struct rw_lock lock_plist_rw;
 
 
 /* Process functions */
-process_t process_create (unsigned, char *, pid_t); //, pid_t);
+process_t process_create (unsigned, char *, pid_t, struct file *); 
 void process_destroy (process_t);
 
 /* Process list functions */
