@@ -653,7 +653,6 @@ init_thread (struct thread *t, const char *name, int priority)
       t->recent_cpu = 0;
       t->priority = priority;
     }
-  //t->executable = NULL;
   flist_init (&t->f_table); 
   t->priority_base = t->priority;
   t->lock_waiting_for = NULL;

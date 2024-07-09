@@ -198,16 +198,12 @@ load (const char *file_name, void (**eip) (void), void **esp)
     if (success)
       {
         file_deny_write (file);
-        //thread_current ()->executable = file;
-        return file;
       }
     else
-    {
-      file_close (file);
-      file = NULL;
-    }
-    //return file;
-    //return success;
+      {
+        file_close (file);
+        file = NULL;
+      }
   return file;
 }
 

@@ -94,11 +94,6 @@ process_execute (const char *command_line)
   struct parameters_to_start_process arguments;
   sema_init (&arguments.sema_start_p, 0);
 
-  // debug ("%s#%d: process_execute(\"%s\") ENTERED\n",
-  //       thread_current ()->name,
-  //       thread_current ()->tid,
-  //       command_line);
-
   /* COPY command line out of parent process memory */
   arguments.command_line = malloc (command_line_size);
   strlcpy (arguments.command_line, command_line, command_line_size);
@@ -135,11 +130,6 @@ process_execute (const char *command_line)
   /* WHICH thread may still be using this right now? */
   free (arguments.command_line);
 
-  // debug ("%s#%d: process_execute(\"%s\") RETURNS %d\n",
-  //       thread_current ()->name,
-  //       thread_current ()->tid,
-  //       command_line, process_id);
-
   /* MUST be -1 if `load' in `start_process' return false */
   return process_id;
 }
@@ -168,30 +158,20 @@ start_process (struct parameters_to_start_process* parameters)
    */
   strlcpy (debug_params, parameters->command_line, 64);
 
-
-  // debug ("%s#%d: start_process(\"%s\") ENTERED\n",
-  //       thread_current ()->name,
-  //       thread_current ()->tid, debug_params);
-
   /* Initialize interrupt frame and load executable. */
   memset (&if_, 0, sizeof if_);
   if_.gs = if_.fs = if_.es = if_.ds = if_.ss = SEL_UDSEG;
   if_.cs = SEL_UCSEG;
   if_.eflags = FLAG_IF | FLAG_MBS;
-  executable = load (file_name, &if_.eip, &if_.esp); 
-  //if (load (file_name, &if_.eip, &if_.esp) != NULL)
-  //if (executable != NULL) 
-     success = executable != NULL ? true : false;
-  /*success*/ 
-  //success = load (file_name, &if_.eip, &if_.esp); //== NULL ? false : true;
   
-  // debug("%s#%d: start_process(...): load returned %d\n",
-  //       thread_current ()->name,
-  //       thread_current ()->tid,
-  //       success);
-
+  executable = load (file_name, &if_.eip, &if_.esp); 
+  success = executable != NULL ? true : false;
+  
   if (success)
   {
+
+    /*************** Notes from TDIU16 version ***************/
+
     /* We managed to load the new program to a process, and have
        allocated memory for a process stack. The stack top is in
        if_.esp, now we must prepare and place the arguments to main on
@@ -214,6 +194,8 @@ start_process (struct parameters_to_start_process* parameters)
 
     // dump_stack ( PHYS_BASE + 15, PHYS_BASE - if_.esp + 16 );
 
+    /*************** END Notes from TDIU16 version ***************/
+    
     /* Set the child load success flag */
     parameters->child_load_success = 1;
     
@@ -221,8 +203,9 @@ start_process (struct parameters_to_start_process* parameters)
     rw_lock_acquire_readlock (&lock_plist_rw); 
     pid_t parent = plist_get_proc_from_tid (parameters->parent);
     rw_lock_release_readlock (&lock_plist_rw); 
-    
-    struct process *p = process_create (t_current->tid, t_current->name, parent, executable); //, loaded_file); 
+
+    /** Create a new process for the process table (plist) to manage this process. */ 
+    struct process *p = process_create (t_current->tid, t_current->name, parent, executable); 
         
     if (p != NULL)
     {
@@ -242,16 +225,11 @@ start_process (struct parameters_to_start_process* parameters)
 
     if_.esp = setup_main_stack_asm(parameters->command_line, if_.esp);
   }
-
-  // debug ("%s#%d: start_process(\"%s\") DONE\n",
-  //       thread_current ()->name,
-  //       thread_current ()->tid,
-  //       debug_params); 
   
   /* If load fail, quit. Load may fail for several reasons.
      Some simple examples:
-     - File doeas not exist
-     - File do not contain a valid program
+     - File does not exist
+     - File does not contain a valid program
      - Not enough memory
   */
   if (!success)
@@ -291,9 +269,6 @@ process_wait (int child_id)
 {
   int status = -1;
   struct thread *cur = thread_current ();
-
-  // debug ("%s#%d: process_wait(%d) ENTERED\n",
-  //       cur->name, cur->tid, child_id);
   
   rw_lock_acquire_readlock (&lock_plist_rw);
   pid_t pid_current = plist_get_proc_from_tid (cur->tid);
@@ -319,9 +294,6 @@ process_wait (int child_id)
   rw_lock_release_writelock (&lock_plist_rw);
   
   process_destroy (p_child);
-  
-  // debug ("%s#%d: process_wait(%d) RETURNS %d\n",
-  //     cur->name, cur->tid, child_id, status);
   
   return status;
 }
@@ -425,11 +397,6 @@ process_cleanup (void)
   rw_lock_release_writelock (&lock_plist_rw);
   
   cur->parent = NULL;
-  // if (cur->executable != NULL)
-  //   file_allow_write (cur->executable);
-
-  //file_close (cur->executable);
-  //cur->executable = NULL;
 
   /* Close all files in file table */
   flist_close_all ();

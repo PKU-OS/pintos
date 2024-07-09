@@ -29,7 +29,6 @@
 
    - A function that print the entire content of the list in a nice,
      clean, readable format.
-
  */
 
 #define PLIST_MAX_LENGTH 255  

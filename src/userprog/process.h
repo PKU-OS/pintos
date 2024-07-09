@@ -6,9 +6,6 @@
 
 #define PROCESS_NAME_LENGTH 64
 
-
-
-
 void process_init (void);
 void process_print_list (void);
 void process_exit (int status);
