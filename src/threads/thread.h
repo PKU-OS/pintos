@@ -92,7 +92,7 @@ struct thread
     int priority;                       /**< "Effective" Priority. */
     int priority_base;                  /**< Original priority. */
     struct lock *lock_waiting_for;      /**< Lock currently waiting on */
-    struct file *executable;
+    //struct file *executable;
     struct list_elem allelem;           /**< List element for all threads list. */
     struct list locks_held;             /**< All locks held by this thread. */
     struct thread *parent;              /**< Parent thread. */

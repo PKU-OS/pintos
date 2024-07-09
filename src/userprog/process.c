@@ -429,7 +429,7 @@ process_cleanup (void)
   //   file_allow_write (cur->executable);
 
   //file_close (cur->executable);
-  cur->executable = NULL;
+  //cur->executable = NULL;
 
   /* Close all files in file table */
   flist_close_all ();
